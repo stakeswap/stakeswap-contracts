@@ -114,7 +114,7 @@ contract RocketPoolAdapter is BaseAdapter {
         BalancerV2VaultInterface _BalancerV2Vault = BalancerV2Vault();
 
         BalancerV2VaultInterface.SingleSwap memory singleSwap;
-        singleSwap.poolId = 0x1e19cf2d73a72ef1332c882f20534b6519be0276000200000000000000000112; // https://etherscan.io/address/0x1e19cf2d73a72ef1332c882f20534b6519be0276/advanced#readContract
+        singleSwap.poolId = BalancerV2_rETH_ETH_POOL_ID(); // https://etherscan.io/address/0x1e19cf2d73a72ef1332c882f20534b6519be0276/advanced#readContract
         singleSwap.kind = BalancerV2VaultInterface.SwapKind.GIVEN_IN;
         singleSwap.assetIn = address(0); // ETH
         singleSwap.assetOut = address(rETH()); // rETH
@@ -137,7 +137,7 @@ contract RocketPoolAdapter is BaseAdapter {
         rETH().approve(address(_BalancerV2Vault), amount);
 
         BalancerV2VaultInterface.SingleSwap memory singleSwap;
-        singleSwap.poolId = 0x1e19cf2d73a72ef1332c882f20534b6519be0276000200000000000000000112; // https://etherscan.io/address/0x1e19cf2d73a72ef1332c882f20534b6519be0276/advanced#readContract
+        singleSwap.poolId = BalancerV2_rETH_ETH_POOL_ID();
         singleSwap.kind = BalancerV2VaultInterface.SwapKind.GIVEN_IN;
         singleSwap.assetIn = address(rETH()); // rETH
         singleSwap.assetOut = address(WETH()); // WETH

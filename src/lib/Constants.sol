@@ -86,6 +86,11 @@ contract Constants {
         revert('unknown chain id');
     }
 
+    function BalancerV2_rETH_ETH_POOL_ID() public view returns (bytes32) {
+        if (block.chainid == 1) return 0x1e19cf2d73a72ef1332c882f20534b6519be0276000200000000000000000112;
+        revert('unknown chain id');
+    }
+
     ////////////////////////////////////////////////////////////////
     // Curve
     ////////////////////////////////////////////////////////////////
