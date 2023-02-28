@@ -14,7 +14,11 @@ import type {
   Signer,
   utils,
 } from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -26,15 +30,15 @@ import type {
 
 export interface RocketPoolAdapterInterface extends utils.Interface {
   functions: {
+    "BalancerV2Vault()": FunctionFragment;
     "PRECISION()": FunctionFragment;
-    "accDeposit()": FunctionFragment;
-    "accWithdraw()": FunctionFragment;
+    "WETH()": FunctionFragment;
     "adaptorName()": FunctionFragment;
+    "buyToken()": FunctionFragment;
     "canDeposit(uint256)": FunctionFragment;
     "canWithdraw()": FunctionFragment;
     "deposit()": FunctionFragment;
     "getAPR()": FunctionFragment;
-    "getDepositAmount(uint256)": FunctionFragment;
     "getRocketDAOProtocolSettingsDeposit()": FunctionFragment;
     "getRocketDrocketDepositPool()": FunctionFragment;
     "getRocketPoolContractAddresst(string)": FunctionFragment;
@@ -42,20 +46,21 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
     "getTokens()": FunctionFragment;
     "rETH()": FunctionFragment;
     "rocketPoolStorage()": FunctionFragment;
+    "sellToken(uint256)": FunctionFragment;
     "withdraw(uint256)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "BalancerV2Vault"
       | "PRECISION"
-      | "accDeposit"
-      | "accWithdraw"
+      | "WETH"
       | "adaptorName"
+      | "buyToken"
       | "canDeposit"
       | "canWithdraw"
       | "deposit"
       | "getAPR"
-      | "getDepositAmount"
       | "getRocketDAOProtocolSettingsDeposit"
       | "getRocketDrocketDepositPool"
       | "getRocketPoolContractAddresst"
@@ -63,22 +68,21 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
       | "getTokens"
       | "rETH"
       | "rocketPoolStorage"
+      | "sellToken"
       | "withdraw"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "BalancerV2Vault",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "PRECISION", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "accDeposit",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "accWithdraw",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "adaptorName",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "buyToken", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "canDeposit",
     values: [PromiseOrValue<BigNumberish>]
@@ -89,10 +93,6 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
   encodeFunctionData(functionFragment: "getAPR", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "getDepositAmount",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
   encodeFunctionData(
     functionFragment: "getRocketDAOProtocolSettingsDeposit",
     values?: undefined
@@ -116,20 +116,25 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "sellToken",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "withdraw",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
 
-  decodeFunctionResult(functionFragment: "PRECISION", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "accDeposit", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "accWithdraw",
+    functionFragment: "BalancerV2Vault",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "PRECISION", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "adaptorName",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "buyToken", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "canDeposit", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "canWithdraw",
@@ -137,10 +142,6 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getAPR", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getDepositAmount",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "getRocketDAOProtocolSettingsDeposit",
     data: BytesLike
@@ -163,10 +164,39 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
     functionFragment: "rocketPoolStorage",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "sellToken", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "Deposited(address,uint256)": EventFragment;
+    "Withdrawn(address,uint256)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "Deposited"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Withdrawn"): EventFragment;
 }
+
+export interface DepositedEventObject {
+  account: string;
+  ethAmount: BigNumber;
+}
+export type DepositedEvent = TypedEvent<
+  [string, BigNumber],
+  DepositedEventObject
+>;
+
+export type DepositedEventFilter = TypedEventFilter<DepositedEvent>;
+
+export interface WithdrawnEventObject {
+  account: string;
+  ethAmount: BigNumber;
+}
+export type WithdrawnEvent = TypedEvent<
+  [string, BigNumber],
+  WithdrawnEventObject
+>;
+
+export type WithdrawnEventFilter = TypedEventFilter<WithdrawnEvent>;
 
 export interface RocketPoolAdapter extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -195,13 +225,17 @@ export interface RocketPoolAdapter extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    BalancerV2Vault(overrides?: CallOverrides): Promise<[string]>;
+
     PRECISION(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    accDeposit(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    accWithdraw(overrides?: CallOverrides): Promise<[BigNumber]>;
+    WETH(overrides?: CallOverrides): Promise<[string]>;
 
     adaptorName(overrides?: CallOverrides): Promise<[string]>;
+
+    buyToken(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     canDeposit(
       amount: PromiseOrValue<BigNumberish>,
@@ -215,11 +249,6 @@ export interface RocketPoolAdapter extends BaseContract {
     ): Promise<ContractTransaction>;
 
     getAPR(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    getDepositAmount(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
 
     getRocketDAOProtocolSettingsDeposit(
       overrides?: CallOverrides
@@ -248,19 +277,28 @@ export interface RocketPoolAdapter extends BaseContract {
 
     rocketPoolStorage(overrides?: CallOverrides): Promise<[string]>;
 
+    sellToken(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     withdraw(
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
+  BalancerV2Vault(overrides?: CallOverrides): Promise<string>;
+
   PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
 
-  accDeposit(overrides?: CallOverrides): Promise<BigNumber>;
-
-  accWithdraw(overrides?: CallOverrides): Promise<BigNumber>;
+  WETH(overrides?: CallOverrides): Promise<string>;
 
   adaptorName(overrides?: CallOverrides): Promise<string>;
+
+  buyToken(
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   canDeposit(
     amount: PromiseOrValue<BigNumberish>,
@@ -274,11 +312,6 @@ export interface RocketPoolAdapter extends BaseContract {
   ): Promise<ContractTransaction>;
 
   getAPR(overrides?: CallOverrides): Promise<BigNumber>;
-
-  getDepositAmount(
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
 
   getRocketDAOProtocolSettingsDeposit(
     overrides?: CallOverrides
@@ -307,19 +340,26 @@ export interface RocketPoolAdapter extends BaseContract {
 
   rocketPoolStorage(overrides?: CallOverrides): Promise<string>;
 
+  sellToken(
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   withdraw(
     amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    BalancerV2Vault(overrides?: CallOverrides): Promise<string>;
+
     PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
 
-    accDeposit(overrides?: CallOverrides): Promise<BigNumber>;
-
-    accWithdraw(overrides?: CallOverrides): Promise<BigNumber>;
+    WETH(overrides?: CallOverrides): Promise<string>;
 
     adaptorName(overrides?: CallOverrides): Promise<string>;
+
+    buyToken(overrides?: CallOverrides): Promise<BigNumber>;
 
     canDeposit(
       amount: PromiseOrValue<BigNumberish>,
@@ -331,11 +371,6 @@ export interface RocketPoolAdapter extends BaseContract {
     deposit(overrides?: CallOverrides): Promise<BigNumber>;
 
     getAPR(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getDepositAmount(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     getRocketDAOProtocolSettingsDeposit(
       overrides?: CallOverrides
@@ -364,22 +399,49 @@ export interface RocketPoolAdapter extends BaseContract {
 
     rocketPoolStorage(overrides?: CallOverrides): Promise<string>;
 
+    sellToken(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     withdraw(
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
-  filters: {};
+  filters: {
+    "Deposited(address,uint256)"(
+      account?: PromiseOrValue<string> | null,
+      ethAmount?: null
+    ): DepositedEventFilter;
+    Deposited(
+      account?: PromiseOrValue<string> | null,
+      ethAmount?: null
+    ): DepositedEventFilter;
+
+    "Withdrawn(address,uint256)"(
+      account?: PromiseOrValue<string> | null,
+      ethAmount?: null
+    ): WithdrawnEventFilter;
+    Withdrawn(
+      account?: PromiseOrValue<string> | null,
+      ethAmount?: null
+    ): WithdrawnEventFilter;
+  };
 
   estimateGas: {
+    BalancerV2Vault(overrides?: CallOverrides): Promise<BigNumber>;
+
     PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
 
-    accDeposit(overrides?: CallOverrides): Promise<BigNumber>;
-
-    accWithdraw(overrides?: CallOverrides): Promise<BigNumber>;
+    WETH(overrides?: CallOverrides): Promise<BigNumber>;
 
     adaptorName(overrides?: CallOverrides): Promise<BigNumber>;
+
+    buyToken(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     canDeposit(
       amount: PromiseOrValue<BigNumberish>,
@@ -393,11 +455,6 @@ export interface RocketPoolAdapter extends BaseContract {
     ): Promise<BigNumber>;
 
     getAPR(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getDepositAmount(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     getRocketDAOProtocolSettingsDeposit(
       overrides?: CallOverrides
@@ -418,6 +475,11 @@ export interface RocketPoolAdapter extends BaseContract {
 
     rocketPoolStorage(overrides?: CallOverrides): Promise<BigNumber>;
 
+    sellToken(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     withdraw(
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -425,13 +487,17 @@ export interface RocketPoolAdapter extends BaseContract {
   };
 
   populateTransaction: {
+    BalancerV2Vault(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     PRECISION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    accDeposit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    accWithdraw(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    WETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     adaptorName(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    buyToken(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     canDeposit(
       amount: PromiseOrValue<BigNumberish>,
@@ -445,11 +511,6 @@ export interface RocketPoolAdapter extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getAPR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getDepositAmount(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     getRocketDAOProtocolSettingsDeposit(
       overrides?: CallOverrides
@@ -471,6 +532,11 @@ export interface RocketPoolAdapter extends BaseContract {
     rETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     rocketPoolStorage(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    sellToken(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     withdraw(
       amount: PromiseOrValue<BigNumberish>,

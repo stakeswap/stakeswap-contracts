@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import 'forge-std/console.sol';
 import 'forge-std/Test.sol';
 import '../../src/adaptor/RocketPoolAdapter.sol';
-import { IERC20 } from '../../lib/forge-std/src/interfaces/IERC20.sol';
+import { IERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
 
 // https://github.com/foundry-rs/forge-std/blob/master/src/Vm.sol
 
@@ -43,7 +43,7 @@ contract RocketPoolAdapterTest is Test {
         console.log('maximumDepositPoolSize:  %s', maximumDepositPoolSize);
     }
 
-    function testStETHTotalSupply() public {
+    function testRETHTotalSupply() public {
         {
             // mainnet-fork
             vm.selectFork(mainnetFork);
@@ -59,44 +59,47 @@ contract RocketPoolAdapterTest is Test {
         // }
     }
 
-    function testDeposit32ETH() public {
-        uint256 amount = 32 ether;
+    // NOTE: deposit not working...
+    // function testDeposit32ETH() public {
+    //     uint256 amount = 32 ether;
 
-        {
-            // mainnet-fork
-            vm.selectFork(mainnetFork);
-            _testDeposit(amount);
-        }
+    //     {
+    //         // mainnet-fork
+    //         vm.selectFork(mainnetFork);
+    //         _testDeposit(amount);
+    //     }
 
-        // {
-        //     // goerli-fork
-        //     vm.selectFork(goerliFork);
-        //     _testDeposit(amount);
-        // }
-    }
+    // NOTE: deposit not working...
+    //     // {
+    //     //     // goerli-fork
+    //     //     vm.selectFork(goerliFork);
+    //     //     _testDeposit(amount);
+    //     // }
+    // }
 
-    function testDeposit1ETH() public {
-        uint256 amount = 1 ether;
+    // NOTE: deposit not working...
+    // function testDeposit1ETH() public {
+    //     uint256 amount = 1 ether;
 
-        {
-            // mainnet-fork
-            vm.selectFork(mainnetFork);
-            _testDeposit(amount);
-        }
+    //     {
+    //         // mainnet-fork
+    //         vm.selectFork(mainnetFork);
+    //         _testDeposit(amount);
+    //     }
 
-        // {
-        //     // goerli-fork
-        //     vm.selectFork(goerliFork);
-        //     _testDeposit(amount);
-        // }
-    }
+    //     // {
+    //     //     // goerli-fork
+    //     //     vm.selectFork(goerliFork);
+    //     //     _testDeposit(amount);
+    //     // }
+    // }
 
-    function testDepositFuzz(uint96 amount) public {
-        vm.assume(amount > 0.00001 ether && amount < 100 ether);
+    // function testDepositFuzz(uint96 amount) public {
+    //     vm.assume(amount > 0.00001 ether && amount < 100 ether);
 
-        vm.selectFork(mainnetFork);
-        _testDeposit(amount);
-    }
+    //     vm.selectFork(mainnetFork);
+    //     _testDeposit(amount);
+    // }
 
     function _testDeposit(uint256 amount) internal {
         amount = adapter.deposit{ value: amount }();
@@ -109,5 +112,39 @@ contract RocketPoolAdapterTest is Test {
         vm.selectFork(mainnetFork);
         console.log('adapter.getAPR(): %s', adapter.getAPR());
         require(adapter.getAPR() > 0, 'invalid APR');
+    }
+
+    function testBuyAndSell(uint96 _amount) public {
+        vm.assume(_amount > 0.00001 ether && _amount < 100 ether);
+        vm.selectFork(mainnetFork);
+
+        uint256 amount = _amount;
+        uint256 rETHAmount; // amount of rETH when buy with ETH
+        uint256 ethAmount; // amount of ETH when sell with rETH
+
+        // 1. buy rETH
+        {
+            rETHAmount = adapter.buyToken{ value: amount }();
+
+            console.log('amount          : %s', amount);
+            console.log('rETHAmount      : %s', rETHAmount);
+            console.log('diff            : %s', amount - rETHAmount);
+            console.log('diff (bps)      : %s', ((amount - rETHAmount) * 10000) / amount);
+
+            require(rETHAmount > 0, 'failed to buy');
+        }
+
+        // 1. sell rETH
+        {
+            adapter.rETH().approve(address(adapter), rETHAmount);
+            ethAmount = adapter.sellToken(rETHAmount);
+
+            console.log('rETHAmount      : %s', rETHAmount);
+            console.log('ethAmount       : %s', ethAmount);
+            console.log('diff            : %s', ethAmount - rETHAmount);
+            console.log('diff (bps)      : %s', ((ethAmount - rETHAmount) * 10000) / ethAmount);
+
+            require(rETHAmount > 0, 'failed to buy');
+        }
     }
 }

@@ -15,7 +15,7 @@ contract LSDAggregator is Ownable, ReentrancyGuard {
     constructor() {}
 
     modifier onlyAdaptor() {
-        require(isAdaptor[BaseAdapter(msg.sender)] == true, 'non-adaptor');
+        require(isAdaptor[BaseAdapter(payable(msg.sender))] == true, 'non-adaptor');
         _;
     }
 

@@ -3,12 +3,20 @@ pragma solidity ^0.8.13;
 
 import 'forge-std/console.sol';
 
+import { IERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
+import { SafeERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol';
+import { ILido as ST_ETH } from '../lib/ILido.sol';
+import { IWstETH as WST_ETH } from '../lib/IWstETH.sol';
+
 import { BaseAdapter } from './BaseAdapter.sol';
 import { IrETH as R_ETH } from '../lib/IrETH.sol';
 import { RocketStorageInterface } from '../lib/RocketStorageInterface.sol';
 import { RocketDepositPoolInterface } from '../lib/RocketDepositPoolInterface.sol';
 import { RocketDAOProtocolSettingsDepositInterface } from '../lib/RocketDAOProtocolSettingsDepositInterface.sol';
 import { RocketVaultInterface } from '../lib/RocketVaultInterface.sol';
+import { frxETHMinter as FrxETHMinter } from '../../lib/frxETH-public/src/frxETHMinter.sol';
+import { BalancerV2VaultInterface } from '../lib/balancer/BalancerV2VaultInterface.sol';
+import { WETHInterface } from '../lib/WETHInterface.sol';
 
 // deposit: ETH -> rETH
 //
@@ -105,6 +113,65 @@ contract RocketPoolAdapter is BaseAdapter {
         // direct converting rETH to ETH in lido system is not supported.
         // instead, use Curve's rETH-ETH pool
         return 0;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    // BUY-SELL
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+    function BalancerV2Vault() public view returns (BalancerV2VaultInterface) {
+        if (block.chainid == 1) return BalancerV2VaultInterface(payable(0xBA12222222228d8Ba445958a75a0704d566BF2C8));
+        revert('unknown chain id');
+    }
+
+    /// @dev use Balancer's WETH-rETH pool to buy rETH
+    function _buyToken() internal override returns (uint256) {
+        BalancerV2VaultInterface _BalancerV2Vault = BalancerV2Vault();
+
+        BalancerV2VaultInterface.SingleSwap memory singleSwap;
+        singleSwap.poolId = 0x1e19cf2d73a72ef1332c882f20534b6519be0276000200000000000000000112; // https://etherscan.io/address/0x1e19cf2d73a72ef1332c882f20534b6519be0276/advanced#readContract
+        singleSwap.kind = BalancerV2VaultInterface.SwapKind.GIVEN_IN;
+        singleSwap.assetIn = address(0); // ETH
+        singleSwap.assetOut = address(rETH()); // rETH
+        singleSwap.amount = msg.value;
+        singleSwap.userData = ''; // set empty bytes to avoid invoking `onSwap` hook of the pool
+
+        BalancerV2VaultInterface.FundManagement memory funds;
+        funds.sender = address(this); // use token0 held in `this` contract to swap
+        funds.fromInternalBalance = false; // send ERC20 token directly, not updating deposit balance of the pool
+        funds.recipient = payable(address(this)); // receive token1 to `this` contract during swap
+        funds.toInternalBalance = false; // receive ERC20 token directly, not updating deposit balance of the pool
+
+        return _BalancerV2Vault.swap{ value: msg.value }(singleSwap, funds, 0, block.timestamp);
+    }
+
+    /// @dev use Balancer's WETH-rETH pool to sell rETH for WETH
+    function _sellToken(uint256 amount) internal override returns (uint256) {
+        BalancerV2VaultInterface _BalancerV2Vault = BalancerV2Vault();
+
+        rETH().approve(address(_BalancerV2Vault), amount);
+
+        BalancerV2VaultInterface.SingleSwap memory singleSwap;
+        singleSwap.poolId = 0x1e19cf2d73a72ef1332c882f20534b6519be0276000200000000000000000112; // https://etherscan.io/address/0x1e19cf2d73a72ef1332c882f20534b6519be0276/advanced#readContract
+        singleSwap.kind = BalancerV2VaultInterface.SwapKind.GIVEN_IN;
+        singleSwap.assetIn = address(rETH()); // rETH
+        singleSwap.assetOut = address(WETH()); // WETH
+        singleSwap.amount = amount;
+        singleSwap.userData = ''; // set empty bytes to avoid invoking `onSwap` hook of the pool
+
+        BalancerV2VaultInterface.FundManagement memory funds;
+        funds.sender = address(this); // use token0 held in `this` contract to swap
+        funds.fromInternalBalance = false; // send ERC20 token directly, not updating deposit balance of the pool
+        funds.recipient = payable(address(this)); // receive token1 to `this` contract during swap
+        funds.toInternalBalance = false; // receive ERC20 token directly, not updating deposit balance of the pool
+
+        // rETH -> WETH
+        uint256 wethAmount = _BalancerV2Vault.swap(singleSwap, funds, 0, block.timestamp);
+
+        // WETH -> ETH
+        WETH().withdraw(wethAmount);
+
+        return wethAmount;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////

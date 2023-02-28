@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import 'forge-std/console.sol';
 import { BaseAdapter } from './BaseAdapter.sol';
 import { frxETHMinter as FrxETHMinter } from '../../lib/frxETH-public/src/frxETHMinter.sol';
-import { IERC20 } from '../../lib/forge-std/src/interfaces/IERC20.sol';
+import { IERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
 import { sfrxETH as SFRX_ETH } from '../../lib/frxETH-public/src/sfrxETH.sol';
 import { xERC4626 } from '../../lib/frxETH-public/lib/ERC4626/src/xERC4626.sol';
 
@@ -85,6 +85,17 @@ contract FraxAdapter is BaseAdapter {
         // direct converting (s)frxETH to ETH in frax system is not supported.
         // instead, use Curve's frxETH-ETH pool
         return 0;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    // BUY-SELL
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    function _buyToken() internal override returns (uint256) {
+        revert('NOT_IMPLEMENTD');
+    }
+
+    function _sellToken(uint256 amount) internal override returns (uint256) {
+        revert('NOT_IMPLEMENTD');
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////

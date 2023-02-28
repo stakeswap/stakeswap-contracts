@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import 'forge-std/console.sol';
 import 'forge-std/Test.sol';
 import '../../src/adaptor/FraxAdapter.sol';
-import { IERC20 } from '../../lib/forge-std/src/interfaces/IERC20.sol';
+import { IERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
 
 // https://github.com/foundry-rs/forge-std/blob/master/src/Vm.sol
 
