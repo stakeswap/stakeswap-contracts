@@ -1,8 +1,9 @@
-build: src/*
+build: src/**/*
 	forge build
+	yarn generate-typechain
 
-test: test/*
-	forge test
+test: test/**/* src/**/*
+	forge test -vvvv
 
 clean:
 	rm -rf cache

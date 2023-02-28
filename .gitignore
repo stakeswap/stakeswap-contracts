@@ -105,3 +105,6 @@ dist
 
 # foundry compile cache file
 cache
+
+# foundry build outputs
+out

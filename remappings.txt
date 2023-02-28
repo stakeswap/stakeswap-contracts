@@ -1,2 +1,8 @@
+ERC4626/=lib/frxETH-public/lib/ERC4626/src/
 ds-test/=lib/forge-std/lib/ds-test/src/
 forge-std/=lib/forge-std/src/
+frxETH-public/=lib/frxETH-public/src/
+lido-dao/=lib/lido-dao/
+openzeppelin-contracts/=lib/frxETH-public/lib/openzeppelin-contracts/
+rocketpool/=lib/rocketpool/
+solmate/=lib/frxETH-public/lib/solmate/src/
