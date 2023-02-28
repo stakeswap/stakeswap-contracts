@@ -25,33 +25,11 @@ contract FraxAdapter is BaseAdapter {
     // Getter - tokens
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    function frxETH() public view returns (IERC20) {
-        if (block.chainid == 1) return IERC20(0x5E8422345238F34275888049021821E8E08CAa1f);
-        if (block.chainid == 5) return IERC20(0x3E04888B1C07a9805861c19551f7ed53145BD8D4); // frx finance - dev
-        revert('unknown chain id');
-    }
-
-    function sfrxETH() public view returns (SFRX_ETH) {
-        if (block.chainid == 1) return SFRX_ETH(0xac3E018457B222d93114458476f3E3416Abbe38F);
-        if (block.chainid == 5) return SFRX_ETH(0x3E04888B1C07a9805861c19551f7ed53145BD8D4); // TODO: find actual sfrxETH on goerli
-        revert('unknown chain id');
-    }
-
     /// @dev get a list of tokens. returned `token0` must be yield-bearing token.
     function getTokens() public view override returns (address token0, address token1, address token2) {
         token0 = address(sfrxETH());
         token1 = address(frxETH());
         token2 = address(0);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////
-    // Getter - Frax Finance system
-    ////////////////////////////////////////////////////////////////////////////////////////////
-
-    function frxETHMinter() public view returns (FrxETHMinter) {
-        if (block.chainid == 1) return FrxETHMinter(payable(0xbAFA44EFE7901E04E39Dad13167D089C559c1138));
-        if (block.chainid == 5) return FrxETHMinter(payable(0x6421d1Ca6Cd35852362806a2Ded2A49b6fa8bEF5)); // frx finance - dev
-        revert('unknown chain id');
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////

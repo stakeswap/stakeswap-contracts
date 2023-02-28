@@ -47,6 +47,58 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "BalancerV2Vault",
+    outputs: [
+      {
+        internalType: "contract BalancerV2VaultInterface",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "BalancerV2_wstETH_WETH_POOL_ID",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "Curve_stETH_ETH_POOL_ADDRESS",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "PRECISION",
     outputs: [
       {
@@ -144,6 +196,32 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "frxETH",
+    outputs: [
+      {
+        internalType: "contract IERC20",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "frxETHMinter",
+    outputs: [
+      {
+        internalType: "contract frxETHMinter",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "getAPR",
     outputs: [
       {
@@ -179,6 +257,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "rETH",
+    outputs: [
+      {
+        internalType: "contract IrETH",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -198,6 +289,32 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "sfrxETH",
+    outputs: [
+      {
+        internalType: "contract sfrxETH",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "stETH",
+    outputs: [
+      {
+        internalType: "contract ILido",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -214,6 +331,19 @@ const _abi = [
       },
     ],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "wstETH",
+    outputs: [
+      {
+        internalType: "contract IWstETH",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {

@@ -5,7 +5,7 @@
   "[solidity]": {
     "editor.defaultFormatter": "JuanBlanco.solidity"
   },
-  "solidity.formatter": "forge",
+  "solidity.formatter": "none",
   // "solidity.formatter": "prettier",
   "solidity.compileUsingRemoteVersion": "v0.8.17"
 }

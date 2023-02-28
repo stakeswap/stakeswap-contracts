@@ -17,22 +17,6 @@ contract LidoAdapter is BaseAdapter {
         return 'lido';
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////
-    // Getter - tokens
-    ////////////////////////////////////////////////////////////////////////////////////////////
-
-    function stETH() public view returns (ST_ETH) {
-        if (block.chainid == 1) return ST_ETH(payable(0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84));
-        if (block.chainid == 5) return ST_ETH(payable(0x1643E812aE58766192Cf7D2Cf9567dF2C37e9B7F));
-        revert('unknown chain id');
-    }
-
-    function wstETH() public view returns (WST_ETH) {
-        if (block.chainid == 1) return WST_ETH(payable(0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0));
-        if (block.chainid == 5) return WST_ETH(payable(0x6320cD32aA674d2898A68ec82e869385Fc5f7E2f));
-        revert('unknown chain id');
-    }
-
     /// @dev get a list of tokens. returned `token0` must be yield-bearing token.
     function getTokens() public view override returns (address token0, address token1, address token2) {
         token0 = address(wstETH());

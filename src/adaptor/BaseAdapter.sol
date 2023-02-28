@@ -7,8 +7,9 @@ import { SafeERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC2
 import { ReentrancyGuard } from '../../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol';
 
 import { WETHInterface } from '../lib/WETHInterface.sol';
+import { Constants } from '../lib/Constants.sol';
 
-abstract contract BaseAdapter is ReentrancyGuard {
+abstract contract BaseAdapter is ReentrancyGuard, Constants {
     uint256 public constant PRECISION = 1e18;
 
     event Deposited(address indexed account, uint256 ethAmount);
@@ -16,12 +17,6 @@ abstract contract BaseAdapter is ReentrancyGuard {
 
     receive() external payable {
         require(msg.sender == address(WETH()), 'NOT WETH');
-    }
-
-    function WETH() public view returns (WETHInterface) {
-        if (block.chainid == 1) return WETHInterface(payable(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2));
-        if (block.chainid == 5) return WETHInterface(payable(0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6));
-        revert('unknown chain id');
     }
 
     /// @dev return a name of adaptor

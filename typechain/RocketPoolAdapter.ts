@@ -31,6 +31,9 @@ import type {
 export interface RocketPoolAdapterInterface extends utils.Interface {
   functions: {
     "BalancerV2Vault()": FunctionFragment;
+    "BalancerV2_wstETH_WETH_POOL_ID()": FunctionFragment;
+    "Curve_stETH_ETH_POOL_ADDRESS()": FunctionFragment;
+    "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS()": FunctionFragment;
     "PRECISION()": FunctionFragment;
     "WETH()": FunctionFragment;
     "adaptorName()": FunctionFragment;
@@ -38,6 +41,8 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
     "canDeposit(uint256)": FunctionFragment;
     "canWithdraw()": FunctionFragment;
     "deposit()": FunctionFragment;
+    "frxETH()": FunctionFragment;
+    "frxETHMinter()": FunctionFragment;
     "getAPR()": FunctionFragment;
     "getRocketDAOProtocolSettingsDeposit()": FunctionFragment;
     "getRocketDrocketDepositPool()": FunctionFragment;
@@ -47,12 +52,18 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
     "rETH()": FunctionFragment;
     "rocketPoolStorage()": FunctionFragment;
     "sellToken(uint256)": FunctionFragment;
+    "sfrxETH()": FunctionFragment;
+    "stETH()": FunctionFragment;
     "withdraw(uint256)": FunctionFragment;
+    "wstETH()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "BalancerV2Vault"
+      | "BalancerV2_wstETH_WETH_POOL_ID"
+      | "Curve_stETH_ETH_POOL_ADDRESS"
+      | "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS"
       | "PRECISION"
       | "WETH"
       | "adaptorName"
@@ -60,6 +71,8 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
       | "canDeposit"
       | "canWithdraw"
       | "deposit"
+      | "frxETH"
+      | "frxETHMinter"
       | "getAPR"
       | "getRocketDAOProtocolSettingsDeposit"
       | "getRocketDrocketDepositPool"
@@ -69,11 +82,26 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
       | "rETH"
       | "rocketPoolStorage"
       | "sellToken"
+      | "sfrxETH"
+      | "stETH"
       | "withdraw"
+      | "wstETH"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "BalancerV2Vault",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "BalancerV2_wstETH_WETH_POOL_ID",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Curve_stETH_ETH_POOL_ADDRESS",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "PRECISION", values?: undefined): string;
@@ -92,6 +120,11 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
+  encodeFunctionData(functionFragment: "frxETH", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "frxETHMinter",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "getAPR", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getRocketDAOProtocolSettingsDeposit",
@@ -119,13 +152,28 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
     functionFragment: "sellToken",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(functionFragment: "sfrxETH", values?: undefined): string;
+  encodeFunctionData(functionFragment: "stETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(functionFragment: "wstETH", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "BalancerV2Vault",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "BalancerV2_wstETH_WETH_POOL_ID",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "Curve_stETH_ETH_POOL_ADDRESS",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "PRECISION", data: BytesLike): Result;
@@ -141,6 +189,11 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "frxETH", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "frxETHMinter",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getAPR", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getRocketDAOProtocolSettingsDeposit",
@@ -165,7 +218,10 @@ export interface RocketPoolAdapterInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "sellToken", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "sfrxETH", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "stETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "wstETH", data: BytesLike): Result;
 
   events: {
     "Deposited(address,uint256)": EventFragment;
@@ -227,6 +283,16 @@ export interface RocketPoolAdapter extends BaseContract {
   functions: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<[string]>;
 
+    BalancerV2_wstETH_WETH_POOL_ID(
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    Curve_stETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<[string]>;
+
+    Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
     PRECISION(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     WETH(overrides?: CallOverrides): Promise<[string]>;
@@ -247,6 +313,10 @@ export interface RocketPoolAdapter extends BaseContract {
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    frxETH(overrides?: CallOverrides): Promise<[string]>;
+
+    frxETHMinter(overrides?: CallOverrides): Promise<[string]>;
 
     getAPR(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -282,13 +352,27 @@ export interface RocketPoolAdapter extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    sfrxETH(overrides?: CallOverrides): Promise<[string]>;
+
+    stETH(overrides?: CallOverrides): Promise<[string]>;
+
     withdraw(
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    wstETH(overrides?: CallOverrides): Promise<[string]>;
   };
 
   BalancerV2Vault(overrides?: CallOverrides): Promise<string>;
+
+  BalancerV2_wstETH_WETH_POOL_ID(overrides?: CallOverrides): Promise<string>;
+
+  Curve_stETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<string>;
+
+  Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -310,6 +394,10 @@ export interface RocketPoolAdapter extends BaseContract {
   deposit(
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  frxETH(overrides?: CallOverrides): Promise<string>;
+
+  frxETHMinter(overrides?: CallOverrides): Promise<string>;
 
   getAPR(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -345,13 +433,27 @@ export interface RocketPoolAdapter extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  sfrxETH(overrides?: CallOverrides): Promise<string>;
+
+  stETH(overrides?: CallOverrides): Promise<string>;
+
   withdraw(
     amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  wstETH(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<string>;
+
+    BalancerV2_wstETH_WETH_POOL_ID(overrides?: CallOverrides): Promise<string>;
+
+    Curve_stETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<string>;
+
+    Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -369,6 +471,10 @@ export interface RocketPoolAdapter extends BaseContract {
     canWithdraw(overrides?: CallOverrides): Promise<boolean>;
 
     deposit(overrides?: CallOverrides): Promise<BigNumber>;
+
+    frxETH(overrides?: CallOverrides): Promise<string>;
+
+    frxETHMinter(overrides?: CallOverrides): Promise<string>;
 
     getAPR(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -404,10 +510,16 @@ export interface RocketPoolAdapter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    sfrxETH(overrides?: CallOverrides): Promise<string>;
+
+    stETH(overrides?: CallOverrides): Promise<string>;
+
     withdraw(
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    wstETH(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -433,6 +545,16 @@ export interface RocketPoolAdapter extends BaseContract {
   estimateGas: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<BigNumber>;
 
+    BalancerV2_wstETH_WETH_POOL_ID(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_stETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<BigNumber>;
+
+    Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
 
     WETH(overrides?: CallOverrides): Promise<BigNumber>;
@@ -453,6 +575,10 @@ export interface RocketPoolAdapter extends BaseContract {
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    frxETH(overrides?: CallOverrides): Promise<BigNumber>;
+
+    frxETHMinter(overrides?: CallOverrides): Promise<BigNumber>;
 
     getAPR(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -480,14 +606,32 @@ export interface RocketPoolAdapter extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    sfrxETH(overrides?: CallOverrides): Promise<BigNumber>;
+
+    stETH(overrides?: CallOverrides): Promise<BigNumber>;
+
     withdraw(
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    wstETH(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    BalancerV2_wstETH_WETH_POOL_ID(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Curve_stETH_ETH_POOL_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     PRECISION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -509,6 +653,10 @@ export interface RocketPoolAdapter extends BaseContract {
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    frxETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    frxETHMinter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getAPR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -538,9 +686,15 @@ export interface RocketPoolAdapter extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    sfrxETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    stETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     withdraw(
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    wstETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

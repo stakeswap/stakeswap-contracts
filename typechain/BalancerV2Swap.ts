@@ -8,17 +8,12 @@ import type {
   BytesLike,
   CallOverrides,
   ContractTransaction,
-  Overrides,
   PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
 } from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -28,28 +23,19 @@ import type {
   PromiseOrValue,
 } from "./common";
 
-export interface LidoAdapterInterface extends utils.Interface {
+export interface BalancerV2SwapInterface extends utils.Interface {
   functions: {
     "BalancerV2Vault()": FunctionFragment;
     "BalancerV2_wstETH_WETH_POOL_ID()": FunctionFragment;
     "Curve_stETH_ETH_POOL_ADDRESS()": FunctionFragment;
     "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS()": FunctionFragment;
-    "PRECISION()": FunctionFragment;
     "WETH()": FunctionFragment;
-    "adaptorName()": FunctionFragment;
-    "buyToken()": FunctionFragment;
-    "canDeposit(uint256)": FunctionFragment;
-    "canWithdraw()": FunctionFragment;
-    "deposit()": FunctionFragment;
+    "balancer_swap(address,address,uint256,bytes32)": FunctionFragment;
     "frxETH()": FunctionFragment;
     "frxETHMinter()": FunctionFragment;
-    "getAPR()": FunctionFragment;
-    "getTokens()": FunctionFragment;
     "rETH()": FunctionFragment;
-    "sellToken(uint256)": FunctionFragment;
     "sfrxETH()": FunctionFragment;
     "stETH()": FunctionFragment;
-    "withdraw(uint256)": FunctionFragment;
     "wstETH()": FunctionFragment;
   };
 
@@ -59,22 +45,13 @@ export interface LidoAdapterInterface extends utils.Interface {
       | "BalancerV2_wstETH_WETH_POOL_ID"
       | "Curve_stETH_ETH_POOL_ADDRESS"
       | "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS"
-      | "PRECISION"
       | "WETH"
-      | "adaptorName"
-      | "buyToken"
-      | "canDeposit"
-      | "canWithdraw"
-      | "deposit"
+      | "balancer_swap"
       | "frxETH"
       | "frxETHMinter"
-      | "getAPR"
-      | "getTokens"
       | "rETH"
-      | "sellToken"
       | "sfrxETH"
       | "stETH"
-      | "withdraw"
       | "wstETH"
   ): FunctionFragment;
 
@@ -94,40 +71,24 @@ export interface LidoAdapterInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "PRECISION", values?: undefined): string;
   encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "adaptorName",
-    values?: undefined
+    functionFragment: "balancer_swap",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
+    ]
   ): string;
-  encodeFunctionData(functionFragment: "buyToken", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "canDeposit",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "canWithdraw",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
   encodeFunctionData(functionFragment: "frxETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "frxETHMinter",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "getAPR", values?: undefined): string;
-  encodeFunctionData(functionFragment: "getTokens", values?: undefined): string;
   encodeFunctionData(functionFragment: "rETH", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "sellToken",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
   encodeFunctionData(functionFragment: "sfrxETH", values?: undefined): string;
   encodeFunctionData(functionFragment: "stETH", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "withdraw",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
   encodeFunctionData(functionFragment: "wstETH", values?: undefined): string;
 
   decodeFunctionResult(
@@ -146,70 +107,30 @@ export interface LidoAdapterInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "PRECISION", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "adaptorName",
+    functionFragment: "balancer_swap",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "buyToken", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "canDeposit", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "canWithdraw",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "frxETH", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "frxETHMinter",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "getAPR", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getTokens", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "rETH", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "sellToken", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "sfrxETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stETH", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "wstETH", data: BytesLike): Result;
 
-  events: {
-    "Deposited(address,uint256)": EventFragment;
-    "Withdrawn(address,uint256)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "Deposited"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Withdrawn"): EventFragment;
+  events: {};
 }
 
-export interface DepositedEventObject {
-  account: string;
-  ethAmount: BigNumber;
-}
-export type DepositedEvent = TypedEvent<
-  [string, BigNumber],
-  DepositedEventObject
->;
-
-export type DepositedEventFilter = TypedEventFilter<DepositedEvent>;
-
-export interface WithdrawnEventObject {
-  account: string;
-  ethAmount: BigNumber;
-}
-export type WithdrawnEvent = TypedEvent<
-  [string, BigNumber],
-  WithdrawnEventObject
->;
-
-export type WithdrawnEventFilter = TypedEventFilter<WithdrawnEvent>;
-
-export interface LidoAdapter extends BaseContract {
+export interface BalancerV2Swap extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: LidoAdapterInterface;
+  interface: BalancerV2SwapInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -243,24 +164,13 @@ export interface LidoAdapter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    PRECISION(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     WETH(overrides?: CallOverrides): Promise<[string]>;
 
-    adaptorName(overrides?: CallOverrides): Promise<[string]>;
-
-    buyToken(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    canDeposit(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    canWithdraw(overrides?: CallOverrides): Promise<[boolean]>;
-
-    deposit(
+    balancer_swap(
+      fromToken: PromiseOrValue<string>,
+      toToken: PromiseOrValue<string>,
+      fromTokenAmount: PromiseOrValue<BigNumberish>,
+      poolId: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -268,33 +178,11 @@ export interface LidoAdapter extends BaseContract {
 
     frxETHMinter(overrides?: CallOverrides): Promise<[string]>;
 
-    getAPR(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    getTokens(
-      overrides?: CallOverrides
-    ): Promise<
-      [string, string, string] & {
-        token0: string;
-        token1: string;
-        token2: string;
-      }
-    >;
-
     rETH(overrides?: CallOverrides): Promise<[string]>;
-
-    sellToken(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     sfrxETH(overrides?: CallOverrides): Promise<[string]>;
 
     stETH(overrides?: CallOverrides): Promise<[string]>;
-
-    withdraw(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     wstETH(overrides?: CallOverrides): Promise<[string]>;
   };
@@ -309,24 +197,13 @@ export interface LidoAdapter extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
-
   WETH(overrides?: CallOverrides): Promise<string>;
 
-  adaptorName(overrides?: CallOverrides): Promise<string>;
-
-  buyToken(
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  canDeposit(
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  canWithdraw(overrides?: CallOverrides): Promise<boolean>;
-
-  deposit(
+  balancer_swap(
+    fromToken: PromiseOrValue<string>,
+    toToken: PromiseOrValue<string>,
+    fromTokenAmount: PromiseOrValue<BigNumberish>,
+    poolId: PromiseOrValue<BytesLike>,
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -334,33 +211,11 @@ export interface LidoAdapter extends BaseContract {
 
   frxETHMinter(overrides?: CallOverrides): Promise<string>;
 
-  getAPR(overrides?: CallOverrides): Promise<BigNumber>;
-
-  getTokens(
-    overrides?: CallOverrides
-  ): Promise<
-    [string, string, string] & {
-      token0: string;
-      token1: string;
-      token2: string;
-    }
-  >;
-
   rETH(overrides?: CallOverrides): Promise<string>;
-
-  sellToken(
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   sfrxETH(overrides?: CallOverrides): Promise<string>;
 
   stETH(overrides?: CallOverrides): Promise<string>;
-
-  withdraw(
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   wstETH(overrides?: CallOverrides): Promise<string>;
 
@@ -375,77 +230,30 @@ export interface LidoAdapter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
-
     WETH(overrides?: CallOverrides): Promise<string>;
 
-    adaptorName(overrides?: CallOverrides): Promise<string>;
-
-    buyToken(overrides?: CallOverrides): Promise<BigNumber>;
-
-    canDeposit(
-      amount: PromiseOrValue<BigNumberish>,
+    balancer_swap(
+      fromToken: PromiseOrValue<string>,
+      toToken: PromiseOrValue<string>,
+      fromTokenAmount: PromiseOrValue<BigNumberish>,
+      poolId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    canWithdraw(overrides?: CallOverrides): Promise<boolean>;
-
-    deposit(overrides?: CallOverrides): Promise<BigNumber>;
+    ): Promise<BigNumber>;
 
     frxETH(overrides?: CallOverrides): Promise<string>;
 
     frxETHMinter(overrides?: CallOverrides): Promise<string>;
 
-    getAPR(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getTokens(
-      overrides?: CallOverrides
-    ): Promise<
-      [string, string, string] & {
-        token0: string;
-        token1: string;
-        token2: string;
-      }
-    >;
-
     rETH(overrides?: CallOverrides): Promise<string>;
-
-    sellToken(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     sfrxETH(overrides?: CallOverrides): Promise<string>;
 
     stETH(overrides?: CallOverrides): Promise<string>;
 
-    withdraw(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     wstETH(overrides?: CallOverrides): Promise<string>;
   };
 
-  filters: {
-    "Deposited(address,uint256)"(
-      account?: PromiseOrValue<string> | null,
-      ethAmount?: null
-    ): DepositedEventFilter;
-    Deposited(
-      account?: PromiseOrValue<string> | null,
-      ethAmount?: null
-    ): DepositedEventFilter;
-
-    "Withdrawn(address,uint256)"(
-      account?: PromiseOrValue<string> | null,
-      ethAmount?: null
-    ): WithdrawnEventFilter;
-    Withdrawn(
-      account?: PromiseOrValue<string> | null,
-      ethAmount?: null
-    ): WithdrawnEventFilter;
-  };
+  filters: {};
 
   estimateGas: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<BigNumber>;
@@ -460,24 +268,13 @@ export interface LidoAdapter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
-
     WETH(overrides?: CallOverrides): Promise<BigNumber>;
 
-    adaptorName(overrides?: CallOverrides): Promise<BigNumber>;
-
-    buyToken(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    canDeposit(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    canWithdraw(overrides?: CallOverrides): Promise<BigNumber>;
-
-    deposit(
+    balancer_swap(
+      fromToken: PromiseOrValue<string>,
+      toToken: PromiseOrValue<string>,
+      fromTokenAmount: PromiseOrValue<BigNumberish>,
+      poolId: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -485,25 +282,11 @@ export interface LidoAdapter extends BaseContract {
 
     frxETHMinter(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getAPR(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getTokens(overrides?: CallOverrides): Promise<BigNumber>;
-
     rETH(overrides?: CallOverrides): Promise<BigNumber>;
-
-    sellToken(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
 
     sfrxETH(overrides?: CallOverrides): Promise<BigNumber>;
 
     stETH(overrides?: CallOverrides): Promise<BigNumber>;
-
-    withdraw(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
 
     wstETH(overrides?: CallOverrides): Promise<BigNumber>;
   };
@@ -523,24 +306,13 @@ export interface LidoAdapter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    PRECISION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     WETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    adaptorName(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    buyToken(
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    canDeposit(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    canWithdraw(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    deposit(
+    balancer_swap(
+      fromToken: PromiseOrValue<string>,
+      toToken: PromiseOrValue<string>,
+      fromTokenAmount: PromiseOrValue<BigNumberish>,
+      poolId: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -548,25 +320,11 @@ export interface LidoAdapter extends BaseContract {
 
     frxETHMinter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getAPR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getTokens(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     rETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    sellToken(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
 
     sfrxETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     stETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    withdraw(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
 
     wstETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };

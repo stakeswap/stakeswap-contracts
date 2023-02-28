@@ -15,7 +15,7 @@ import { RocketDepositPoolInterface } from '../lib/RocketDepositPoolInterface.so
 import { RocketDAOProtocolSettingsDepositInterface } from '../lib/RocketDAOProtocolSettingsDepositInterface.sol';
 import { RocketVaultInterface } from '../lib/RocketVaultInterface.sol';
 import { frxETHMinter as FrxETHMinter } from '../../lib/frxETH-public/src/frxETHMinter.sol';
-import { BalancerV2VaultInterface } from '../lib/balancer/BalancerV2VaultInterface.sol';
+import { BalancerV2VaultInterface } from '../lib/balancer-v2/interfaces/BalancerV2VaultInterface.sol';
 import { WETHInterface } from '../lib/WETHInterface.sol';
 
 // deposit: ETH -> rETH
@@ -27,16 +27,6 @@ contract RocketPoolAdapter is BaseAdapter {
     /// @dev return a name of adaptor
     function adaptorName() public pure override returns (string memory) {
         return 'rocketpool';
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////
-    // Getter - tokens
-    ////////////////////////////////////////////////////////////////////////////////////////////
-
-    function rETH() public view returns (R_ETH) {
-        if (block.chainid == 1) return R_ETH(payable(0xae78736Cd615f374D3085123A210448E74Fc6393));
-        if (block.chainid == 5) return R_ETH(payable(0xae78736Cd615f374D3085123A210448E74Fc6393));
-        revert('unknown chain id');
     }
 
     /// @dev get a list of tokens. returned `token0` must be yield-bearing token.
@@ -118,11 +108,6 @@ contract RocketPoolAdapter is BaseAdapter {
     ////////////////////////////////////////////////////////////////////////////////////////////
     // BUY-SELL
     ////////////////////////////////////////////////////////////////////////////////////////////
-
-    function BalancerV2Vault() public view returns (BalancerV2VaultInterface) {
-        if (block.chainid == 1) return BalancerV2VaultInterface(payable(0xBA12222222228d8Ba445958a75a0704d566BF2C8));
-        revert('unknown chain id');
-    }
 
     /// @dev use Balancer's WETH-rETH pool to buy rETH
     function _buyToken() internal override returns (uint256) {
