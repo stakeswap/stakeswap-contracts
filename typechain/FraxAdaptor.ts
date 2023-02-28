@@ -47,12 +47,13 @@ export interface FraxAdaptorInterface extends utils.Interface {
     "adaptorName()": FunctionFragment;
     "buyToken()": FunctionFragment;
     "canDeposit(uint256)": FunctionFragment;
-    "canWithdraw()": FunctionFragment;
+    "canWithdraw(uint256)": FunctionFragment;
     "deposit()": FunctionFragment;
     "frxETH()": FunctionFragment;
     "frxETHMinter()": FunctionFragment;
     "getAPR()": FunctionFragment;
     "getETHAmount(uint256)": FunctionFragment;
+    "getTokenAmount(uint256)": FunctionFragment;
     "getTokens()": FunctionFragment;
     "rETH()": FunctionFragment;
     "sellToken(uint256)": FunctionFragment;
@@ -87,6 +88,7 @@ export interface FraxAdaptorInterface extends utils.Interface {
       | "frxETHMinter"
       | "getAPR"
       | "getETHAmount"
+      | "getTokenAmount"
       | "getTokens"
       | "rETH"
       | "sellToken"
@@ -163,7 +165,7 @@ export interface FraxAdaptorInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "canWithdraw",
-    values?: undefined
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
   encodeFunctionData(functionFragment: "frxETH", values?: undefined): string;
@@ -174,6 +176,10 @@ export interface FraxAdaptorInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "getAPR", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getETHAmount",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTokenAmount",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "getTokens", values?: undefined): string;
@@ -256,6 +262,10 @@ export interface FraxAdaptorInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "getAPR", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getETHAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTokenAmount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getTokens", data: BytesLike): Result;
@@ -384,7 +394,10 @@ export interface FraxAdaptor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    canWithdraw(overrides?: CallOverrides): Promise<[boolean]>;
+    canWithdraw(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -398,6 +411,11 @@ export interface FraxAdaptor extends BaseContract {
 
     getETHAmount(
       tokenAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getTokenAmount(
+      ethAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -482,7 +500,10 @@ export interface FraxAdaptor extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  canWithdraw(overrides?: CallOverrides): Promise<boolean>;
+  canWithdraw(
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   deposit(
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -496,6 +517,11 @@ export interface FraxAdaptor extends BaseContract {
 
   getETHAmount(
     tokenAmount: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getTokenAmount(
+    ethAmount: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -578,7 +604,10 @@ export interface FraxAdaptor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    canWithdraw(overrides?: CallOverrides): Promise<boolean>;
+    canWithdraw(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     deposit(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -590,6 +619,11 @@ export interface FraxAdaptor extends BaseContract {
 
     getETHAmount(
       tokenAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTokenAmount(
+      ethAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -699,7 +733,10 @@ export interface FraxAdaptor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    canWithdraw(overrides?: CallOverrides): Promise<BigNumber>;
+    canWithdraw(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -713,6 +750,11 @@ export interface FraxAdaptor extends BaseContract {
 
     getETHAmount(
       tokenAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTokenAmount(
+      ethAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -804,7 +846,10 @@ export interface FraxAdaptor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    canWithdraw(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    canWithdraw(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -818,6 +863,11 @@ export interface FraxAdaptor extends BaseContract {
 
     getETHAmount(
       tokenAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getTokenAmount(
+      ethAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

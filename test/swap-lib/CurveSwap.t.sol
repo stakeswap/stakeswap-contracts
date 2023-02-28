@@ -41,7 +41,7 @@ contract CurveSwapTest is Constants, Test, MinorError {
         console.log('wstAmount:                           %s', stAmount);
 
         // there could be amount error within 10 wei.
-        require(allowMinorError(stETH().balanceOf(address(target)), stAmount), 'stETH amount mismatch');
+        require(withinMinorError(stETH().balanceOf(address(target)), stAmount), 'stETH amount mismatch');
 
         // stETH -> ETH
         uint256 ethAmount = target.Curve_swap(

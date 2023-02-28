@@ -41,54 +41,33 @@ export interface LSDAggregatorInterface extends utils.Interface {
     "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH()": FunctionFragment;
-    "DOMAIN_SEPARATOR()": FunctionFragment;
     "WETH()": FunctionFragment;
     "adaptors(uint256)": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
-    "asset()": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "convertToAssets(uint256)": FunctionFragment;
-    "convertToShares(uint256)": FunctionFragment;
     "decimals()": FunctionFragment;
-    "deposit(uint256,address)": FunctionFragment;
-    "depositWithETH(address)": FunctionFragment;
+    "decreaseAllowance(address,uint256)": FunctionFragment;
+    "deposit()": FunctionFragment;
     "frxETH()": FunctionFragment;
     "frxETHMinter()": FunctionFragment;
+    "increaseAllowance(address,uint256)": FunctionFragment;
     "isAdaptor(address)": FunctionFragment;
-    "lastRewardAmount()": FunctionFragment;
-    "lastSync()": FunctionFragment;
-    "maxDeposit(address)": FunctionFragment;
-    "maxMint(address)": FunctionFragment;
-    "maxRedeem(address)": FunctionFragment;
-    "maxWithdraw(address)": FunctionFragment;
-    "mint(uint256,address)": FunctionFragment;
     "name()": FunctionFragment;
-    "nonces(address)": FunctionFragment;
     "owner()": FunctionFragment;
-    "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
-    "previewDeposit(uint256)": FunctionFragment;
-    "previewMint(uint256)": FunctionFragment;
-    "previewRedeem(uint256)": FunctionFragment;
-    "previewWithdraw(uint256)": FunctionFragment;
     "rETH()": FunctionFragment;
-    "redeem(uint256,address,address)": FunctionFragment;
+    "redeem(uint256)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "rewardsCycleEnd()": FunctionFragment;
-    "rewardsCycleLength()": FunctionFragment;
     "setAdaptors(address[],uint256[])": FunctionFragment;
     "setWeights(address[],uint256[])": FunctionFragment;
     "sfrxETH()": FunctionFragment;
     "stETH()": FunctionFragment;
     "symbol()": FunctionFragment;
-    "syncRewards()": FunctionFragment;
-    "totalAssets()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "weights(address)": FunctionFragment;
-    "withdraw(uint256,address,address)": FunctionFragment;
     "wstETH()": FunctionFragment;
   };
 
@@ -105,54 +84,33 @@ export interface LSDAggregatorInterface extends utils.Interface {
       | "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH"
-      | "DOMAIN_SEPARATOR"
       | "WETH"
       | "adaptors"
       | "allowance"
       | "approve"
-      | "asset"
       | "balanceOf"
-      | "convertToAssets"
-      | "convertToShares"
       | "decimals"
+      | "decreaseAllowance"
       | "deposit"
-      | "depositWithETH"
       | "frxETH"
       | "frxETHMinter"
+      | "increaseAllowance"
       | "isAdaptor"
-      | "lastRewardAmount"
-      | "lastSync"
-      | "maxDeposit"
-      | "maxMint"
-      | "maxRedeem"
-      | "maxWithdraw"
-      | "mint"
       | "name"
-      | "nonces"
       | "owner"
-      | "permit"
-      | "previewDeposit"
-      | "previewMint"
-      | "previewRedeem"
-      | "previewWithdraw"
       | "rETH"
       | "redeem"
       | "renounceOwnership"
-      | "rewardsCycleEnd"
-      | "rewardsCycleLength"
       | "setAdaptors"
       | "setWeights"
       | "sfrxETH"
       | "stETH"
       | "symbol"
-      | "syncRewards"
-      | "totalAssets"
       | "totalSupply"
       | "transfer"
       | "transferFrom"
       | "transferOwnership"
       | "weights"
-      | "withdraw"
       | "wstETH"
   ): FunctionFragment;
 
@@ -200,10 +158,6 @@ export interface LSDAggregatorInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "DOMAIN_SEPARATOR",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "adaptors",
@@ -217,115 +171,38 @@ export interface LSDAggregatorInterface extends utils.Interface {
     functionFragment: "approve",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: "asset", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "balanceOf",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "convertToAssets",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "convertToShares",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "deposit",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+    functionFragment: "decreaseAllowance",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "depositWithETH",
-    values: [PromiseOrValue<string>]
-  ): string;
+  encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
   encodeFunctionData(functionFragment: "frxETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "frxETHMinter",
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "increaseAllowance",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "isAdaptor",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "lastRewardAmount",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "lastSync", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "maxDeposit",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "maxMint",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "maxRedeem",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "maxWithdraw",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "mint",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
-  ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "nonces",
-    values: [PromiseOrValue<string>]
-  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "permit",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<BytesLike>
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "previewDeposit",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "previewMint",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "previewRedeem",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "previewWithdraw",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
   encodeFunctionData(functionFragment: "rETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "redeem",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>
-    ]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "rewardsCycleEnd",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "rewardsCycleLength",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -339,14 +216,6 @@ export interface LSDAggregatorInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "sfrxETH", values?: undefined): string;
   encodeFunctionData(functionFragment: "stETH", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "syncRewards",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "totalAssets",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
@@ -370,14 +239,6 @@ export interface LSDAggregatorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "weights",
     values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "withdraw",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>
-    ]
   ): string;
   encodeFunctionData(functionFragment: "wstETH", values?: undefined): string;
 
@@ -425,81 +286,33 @@ export interface LSDAggregatorInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "DOMAIN_SEPARATOR",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "adaptors", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "asset", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "convertToAssets",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "convertToShares",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "depositWithETH",
+    functionFragment: "decreaseAllowance",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "frxETH", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "frxETHMinter",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "increaseAllowance",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "isAdaptor", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "lastRewardAmount",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "lastSync", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "maxDeposit", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "maxMint", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "maxRedeem", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "maxWithdraw",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "permit", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "previewDeposit",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "previewMint",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "previewRedeem",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "previewWithdraw",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "rETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "rewardsCycleEnd",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "rewardsCycleLength",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -510,14 +323,6 @@ export interface LSDAggregatorInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "sfrxETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "syncRewards",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "totalAssets",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
@@ -532,30 +337,23 @@ export interface LSDAggregatorInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "weights", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "wstETH", data: BytesLike): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
-    "Deposit(address,address,uint256,uint256)": EventFragment;
-    "NewRewardsCycle(uint32,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
-    "Withdraw(address,address,address,uint256,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "NewRewardsCycle"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
 }
 
 export interface ApprovalEventObject {
   owner: string;
   spender: string;
-  amount: BigNumber;
+  value: BigNumber;
 }
 export type ApprovalEvent = TypedEvent<
   [string, string, BigNumber],
@@ -563,30 +361,6 @@ export type ApprovalEvent = TypedEvent<
 >;
 
 export type ApprovalEventFilter = TypedEventFilter<ApprovalEvent>;
-
-export interface DepositEventObject {
-  caller: string;
-  owner: string;
-  assets: BigNumber;
-  shares: BigNumber;
-}
-export type DepositEvent = TypedEvent<
-  [string, string, BigNumber, BigNumber],
-  DepositEventObject
->;
-
-export type DepositEventFilter = TypedEventFilter<DepositEvent>;
-
-export interface NewRewardsCycleEventObject {
-  cycleEnd: number;
-  rewardAmount: BigNumber;
-}
-export type NewRewardsCycleEvent = TypedEvent<
-  [number, BigNumber],
-  NewRewardsCycleEventObject
->;
-
-export type NewRewardsCycleEventFilter = TypedEventFilter<NewRewardsCycleEvent>;
 
 export interface OwnershipTransferredEventObject {
   previousOwner: string;
@@ -603,7 +377,7 @@ export type OwnershipTransferredEventFilter =
 export interface TransferEventObject {
   from: string;
   to: string;
-  amount: BigNumber;
+  value: BigNumber;
 }
 export type TransferEvent = TypedEvent<
   [string, string, BigNumber],
@@ -611,20 +385,6 @@ export type TransferEvent = TypedEvent<
 >;
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
-
-export interface WithdrawEventObject {
-  caller: string;
-  receiver: string;
-  owner: string;
-  assets: BigNumber;
-  shares: BigNumber;
-}
-export type WithdrawEvent = TypedEvent<
-  [string, string, string, BigNumber, BigNumber],
-  WithdrawEventObject
->;
-
-export type WithdrawEventFilter = TypedEventFilter<WithdrawEvent>;
 
 export interface LSDAggregator extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -689,8 +449,6 @@ export interface LSDAggregator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
-
     WETH(overrides?: CallOverrides): Promise<[string]>;
 
     adaptors(
@@ -699,8 +457,8 @@ export interface LSDAggregator extends BaseContract {
     ): Promise<[string]>;
 
     allowance(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -710,33 +468,20 @@ export interface LSDAggregator extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    asset(overrides?: CallOverrides): Promise<[string]>;
-
     balanceOf(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    convertToAssets(
-      shares: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    convertToShares(
-      assets: PromiseOrValue<BigNumberish>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
-    deposit(
-      assets: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
+    decreaseAllowance(
+      spender: PromiseOrValue<string>,
+      subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    depositWithETH(
-      receiver: PromiseOrValue<string>,
+    deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -744,97 +489,31 @@ export interface LSDAggregator extends BaseContract {
 
     frxETHMinter(overrides?: CallOverrides): Promise<[string]>;
 
+    increaseAllowance(
+      spender: PromiseOrValue<string>,
+      addedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     isAdaptor(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    lastRewardAmount(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    lastSync(overrides?: CallOverrides): Promise<[number]>;
-
-    maxDeposit(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    maxMint(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    maxRedeem(
-      owner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    maxWithdraw(
-      owner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    mint(
-      shares: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     name(overrides?: CallOverrides): Promise<[string]>;
 
-    nonces(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     owner(overrides?: CallOverrides): Promise<[string]>;
-
-    permit(
-      owner: PromiseOrValue<string>,
-      spender: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
-      deadline: PromiseOrValue<BigNumberish>,
-      v: PromiseOrValue<BigNumberish>,
-      r: PromiseOrValue<BytesLike>,
-      s: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    previewDeposit(
-      assets: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    previewMint(
-      shares: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    previewRedeem(
-      shares: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    previewWithdraw(
-      assets: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
 
     rETH(overrides?: CallOverrides): Promise<[string]>;
 
     redeem(
       shares: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
-      owner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    rewardsCycleEnd(overrides?: CallOverrides): Promise<[number]>;
-
-    rewardsCycleLength(overrides?: CallOverrides): Promise<[number]>;
 
     setAdaptors(
       _adaptors: PromiseOrValue<string>[],
@@ -853,12 +532,6 @@ export interface LSDAggregator extends BaseContract {
     stETH(overrides?: CallOverrides): Promise<[string]>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
-
-    syncRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    totalAssets(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -884,13 +557,6 @@ export interface LSDAggregator extends BaseContract {
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
-
-    withdraw(
-      assets: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
-      owner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     wstETH(overrides?: CallOverrides): Promise<[string]>;
   };
@@ -929,8 +595,6 @@ export interface LSDAggregator extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
-
   WETH(overrides?: CallOverrides): Promise<string>;
 
   adaptors(
@@ -939,8 +603,8 @@ export interface LSDAggregator extends BaseContract {
   ): Promise<string>;
 
   allowance(
-    arg0: PromiseOrValue<string>,
-    arg1: PromiseOrValue<string>,
+    owner: PromiseOrValue<string>,
+    spender: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -950,33 +614,20 @@ export interface LSDAggregator extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  asset(overrides?: CallOverrides): Promise<string>;
-
   balanceOf(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  convertToAssets(
-    shares: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  convertToShares(
-    assets: PromiseOrValue<BigNumberish>,
+    account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   decimals(overrides?: CallOverrides): Promise<number>;
 
-  deposit(
-    assets: PromiseOrValue<BigNumberish>,
-    receiver: PromiseOrValue<string>,
+  decreaseAllowance(
+    spender: PromiseOrValue<string>,
+    subtractedValue: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  depositWithETH(
-    receiver: PromiseOrValue<string>,
+  deposit(
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -984,97 +635,31 @@ export interface LSDAggregator extends BaseContract {
 
   frxETHMinter(overrides?: CallOverrides): Promise<string>;
 
+  increaseAllowance(
+    spender: PromiseOrValue<string>,
+    addedValue: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   isAdaptor(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  lastRewardAmount(overrides?: CallOverrides): Promise<BigNumber>;
-
-  lastSync(overrides?: CallOverrides): Promise<number>;
-
-  maxDeposit(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  maxMint(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  maxRedeem(
-    owner: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  maxWithdraw(
-    owner: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  mint(
-    shares: PromiseOrValue<BigNumberish>,
-    receiver: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   name(overrides?: CallOverrides): Promise<string>;
 
-  nonces(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   owner(overrides?: CallOverrides): Promise<string>;
-
-  permit(
-    owner: PromiseOrValue<string>,
-    spender: PromiseOrValue<string>,
-    value: PromiseOrValue<BigNumberish>,
-    deadline: PromiseOrValue<BigNumberish>,
-    v: PromiseOrValue<BigNumberish>,
-    r: PromiseOrValue<BytesLike>,
-    s: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  previewDeposit(
-    assets: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  previewMint(
-    shares: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  previewRedeem(
-    shares: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  previewWithdraw(
-    assets: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
 
   rETH(overrides?: CallOverrides): Promise<string>;
 
   redeem(
     shares: PromiseOrValue<BigNumberish>,
-    receiver: PromiseOrValue<string>,
-    owner: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
-
-  rewardsCycleEnd(overrides?: CallOverrides): Promise<number>;
-
-  rewardsCycleLength(overrides?: CallOverrides): Promise<number>;
 
   setAdaptors(
     _adaptors: PromiseOrValue<string>[],
@@ -1093,12 +678,6 @@ export interface LSDAggregator extends BaseContract {
   stETH(overrides?: CallOverrides): Promise<string>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
-
-  syncRewards(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  totalAssets(overrides?: CallOverrides): Promise<BigNumber>;
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1124,13 +703,6 @@ export interface LSDAggregator extends BaseContract {
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
-
-  withdraw(
-    assets: PromiseOrValue<BigNumberish>,
-    receiver: PromiseOrValue<string>,
-    owner: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   wstETH(overrides?: CallOverrides): Promise<string>;
 
@@ -1169,8 +741,6 @@ export interface LSDAggregator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
-
     WETH(overrides?: CallOverrides): Promise<string>;
 
     adaptors(
@@ -1179,8 +749,8 @@ export interface LSDAggregator extends BaseContract {
     ): Promise<string>;
 
     allowance(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1190,129 +760,48 @@ export interface LSDAggregator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    asset(overrides?: CallOverrides): Promise<string>;
-
     balanceOf(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    convertToAssets(
-      shares: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    convertToShares(
-      assets: PromiseOrValue<BigNumberish>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
-    deposit(
-      assets: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
+    decreaseAllowance(
+      spender: PromiseOrValue<string>,
+      subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<boolean>;
 
-    depositWithETH(
-      receiver: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    deposit(overrides?: CallOverrides): Promise<BigNumber>;
 
     frxETH(overrides?: CallOverrides): Promise<string>;
 
     frxETHMinter(overrides?: CallOverrides): Promise<string>;
+
+    increaseAllowance(
+      spender: PromiseOrValue<string>,
+      addedValue: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     isAdaptor(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    lastRewardAmount(overrides?: CallOverrides): Promise<BigNumber>;
-
-    lastSync(overrides?: CallOverrides): Promise<number>;
-
-    maxDeposit(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    maxMint(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    maxRedeem(
-      owner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    maxWithdraw(
-      owner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    mint(
-      shares: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     name(overrides?: CallOverrides): Promise<string>;
 
-    nonces(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     owner(overrides?: CallOverrides): Promise<string>;
-
-    permit(
-      owner: PromiseOrValue<string>,
-      spender: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
-      deadline: PromiseOrValue<BigNumberish>,
-      v: PromiseOrValue<BigNumberish>,
-      r: PromiseOrValue<BytesLike>,
-      s: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    previewDeposit(
-      assets: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    previewMint(
-      shares: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    previewRedeem(
-      shares: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    previewWithdraw(
-      assets: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     rETH(overrides?: CallOverrides): Promise<string>;
 
     redeem(
       shares: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
-      owner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    rewardsCycleEnd(overrides?: CallOverrides): Promise<number>;
-
-    rewardsCycleLength(overrides?: CallOverrides): Promise<number>;
 
     setAdaptors(
       _adaptors: PromiseOrValue<string>[],
@@ -1331,10 +820,6 @@ export interface LSDAggregator extends BaseContract {
     stETH(overrides?: CallOverrides): Promise<string>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
-
-    syncRewards(overrides?: CallOverrides): Promise<void>;
-
-    totalAssets(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1361,13 +846,6 @@ export interface LSDAggregator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    withdraw(
-      assets: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
-      owner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     wstETH(overrides?: CallOverrides): Promise<string>;
   };
 
@@ -1375,35 +853,13 @@ export interface LSDAggregator extends BaseContract {
     "Approval(address,address,uint256)"(
       owner?: PromiseOrValue<string> | null,
       spender?: PromiseOrValue<string> | null,
-      amount?: null
+      value?: null
     ): ApprovalEventFilter;
     Approval(
       owner?: PromiseOrValue<string> | null,
       spender?: PromiseOrValue<string> | null,
-      amount?: null
+      value?: null
     ): ApprovalEventFilter;
-
-    "Deposit(address,address,uint256,uint256)"(
-      caller?: PromiseOrValue<string> | null,
-      owner?: PromiseOrValue<string> | null,
-      assets?: null,
-      shares?: null
-    ): DepositEventFilter;
-    Deposit(
-      caller?: PromiseOrValue<string> | null,
-      owner?: PromiseOrValue<string> | null,
-      assets?: null,
-      shares?: null
-    ): DepositEventFilter;
-
-    "NewRewardsCycle(uint32,uint256)"(
-      cycleEnd?: PromiseOrValue<BigNumberish> | null,
-      rewardAmount?: null
-    ): NewRewardsCycleEventFilter;
-    NewRewardsCycle(
-      cycleEnd?: PromiseOrValue<BigNumberish> | null,
-      rewardAmount?: null
-    ): NewRewardsCycleEventFilter;
 
     "OwnershipTransferred(address,address)"(
       previousOwner?: PromiseOrValue<string> | null,
@@ -1417,28 +873,13 @@ export interface LSDAggregator extends BaseContract {
     "Transfer(address,address,uint256)"(
       from?: PromiseOrValue<string> | null,
       to?: PromiseOrValue<string> | null,
-      amount?: null
+      value?: null
     ): TransferEventFilter;
     Transfer(
       from?: PromiseOrValue<string> | null,
       to?: PromiseOrValue<string> | null,
-      amount?: null
+      value?: null
     ): TransferEventFilter;
-
-    "Withdraw(address,address,address,uint256,uint256)"(
-      caller?: PromiseOrValue<string> | null,
-      receiver?: PromiseOrValue<string> | null,
-      owner?: PromiseOrValue<string> | null,
-      assets?: null,
-      shares?: null
-    ): WithdrawEventFilter;
-    Withdraw(
-      caller?: PromiseOrValue<string> | null,
-      receiver?: PromiseOrValue<string> | null,
-      owner?: PromiseOrValue<string> | null,
-      assets?: null,
-      shares?: null
-    ): WithdrawEventFilter;
   };
 
   estimateGas: {
@@ -1480,8 +921,6 @@ export interface LSDAggregator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
-
     WETH(overrides?: CallOverrides): Promise<BigNumber>;
 
     adaptors(
@@ -1490,8 +929,8 @@ export interface LSDAggregator extends BaseContract {
     ): Promise<BigNumber>;
 
     allowance(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1501,33 +940,20 @@ export interface LSDAggregator extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    asset(overrides?: CallOverrides): Promise<BigNumber>;
-
     balanceOf(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    convertToAssets(
-      shares: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    convertToShares(
-      assets: PromiseOrValue<BigNumberish>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
-    deposit(
-      assets: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
+    decreaseAllowance(
+      spender: PromiseOrValue<string>,
+      subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    depositWithETH(
-      receiver: PromiseOrValue<string>,
+    deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1535,97 +961,31 @@ export interface LSDAggregator extends BaseContract {
 
     frxETHMinter(overrides?: CallOverrides): Promise<BigNumber>;
 
+    increaseAllowance(
+      spender: PromiseOrValue<string>,
+      addedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     isAdaptor(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    lastRewardAmount(overrides?: CallOverrides): Promise<BigNumber>;
-
-    lastSync(overrides?: CallOverrides): Promise<BigNumber>;
-
-    maxDeposit(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    maxMint(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    maxRedeem(
-      owner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    maxWithdraw(
-      owner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    mint(
-      shares: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
-    nonces(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     owner(overrides?: CallOverrides): Promise<BigNumber>;
-
-    permit(
-      owner: PromiseOrValue<string>,
-      spender: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
-      deadline: PromiseOrValue<BigNumberish>,
-      v: PromiseOrValue<BigNumberish>,
-      r: PromiseOrValue<BytesLike>,
-      s: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    previewDeposit(
-      assets: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    previewMint(
-      shares: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    previewRedeem(
-      shares: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    previewWithdraw(
-      assets: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     rETH(overrides?: CallOverrides): Promise<BigNumber>;
 
     redeem(
       shares: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
-      owner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    rewardsCycleEnd(overrides?: CallOverrides): Promise<BigNumber>;
-
-    rewardsCycleLength(overrides?: CallOverrides): Promise<BigNumber>;
 
     setAdaptors(
       _adaptors: PromiseOrValue<string>[],
@@ -1644,12 +1004,6 @@ export interface LSDAggregator extends BaseContract {
     stETH(overrides?: CallOverrides): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
-
-    syncRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    totalAssets(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1674,13 +1028,6 @@ export interface LSDAggregator extends BaseContract {
     weights(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    withdraw(
-      assets: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
-      owner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     wstETH(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1729,8 +1076,6 @@ export interface LSDAggregator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     WETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     adaptors(
@@ -1739,8 +1084,8 @@ export interface LSDAggregator extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     allowance(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1750,33 +1095,20 @@ export interface LSDAggregator extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    asset(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     balanceOf(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    convertToAssets(
-      shares: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    convertToShares(
-      assets: PromiseOrValue<BigNumberish>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    deposit(
-      assets: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
+    decreaseAllowance(
+      spender: PromiseOrValue<string>,
+      subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    depositWithETH(
-      receiver: PromiseOrValue<string>,
+    deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1784,98 +1116,30 @@ export interface LSDAggregator extends BaseContract {
 
     frxETHMinter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    increaseAllowance(
+      spender: PromiseOrValue<string>,
+      addedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     isAdaptor(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    lastRewardAmount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    lastSync(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    maxDeposit(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    maxMint(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    maxRedeem(
-      owner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    maxWithdraw(
-      owner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    mint(
-      shares: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    nonces(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    permit(
-      owner: PromiseOrValue<string>,
-      spender: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
-      deadline: PromiseOrValue<BigNumberish>,
-      v: PromiseOrValue<BigNumberish>,
-      r: PromiseOrValue<BytesLike>,
-      s: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    previewDeposit(
-      assets: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    previewMint(
-      shares: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    previewRedeem(
-      shares: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    previewWithdraw(
-      assets: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     rETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     redeem(
       shares: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
-      owner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    rewardsCycleEnd(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    rewardsCycleLength(
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     setAdaptors(
@@ -1895,12 +1159,6 @@ export interface LSDAggregator extends BaseContract {
     stETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    syncRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    totalAssets(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1925,13 +1183,6 @@ export interface LSDAggregator extends BaseContract {
     weights(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    withdraw(
-      assets: PromiseOrValue<BigNumberish>,
-      receiver: PromiseOrValue<string>,
-      owner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     wstETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;

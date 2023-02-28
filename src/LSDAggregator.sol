@@ -2,89 +2,83 @@
 pragma solidity ^0.8.13;
 
 import 'forge-std/console.sol';
+import { IERC20 } from '../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
+import { ERC20 } from '../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol';
+import { SafeERC20 } from '../lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol';
 import { BaseAdaptor } from './adaptor/BaseAdaptor.sol';
 import { Ownable } from '../lib/openzeppelin-contracts/contracts/access/Ownable.sol';
 import { ReentrancyGuard } from '../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol';
 
-import { ERC20, ERC4626, xERC4626 } from '../lib/frxETH-public/lib/ERC4626/src/xERC4626.sol';
+import { IERC4626 } from '../lib/forge-std/src/interfaces/IERC4626.sol';
+import { FixedPointMathLib } from '../lib/frxETH-public/lib/solmate/src/utils/FixedPointMathLib.sol';
 
 import { Constants } from './lib/Constants.sol';
 
 /// @dev An aggregator for liquid staking derivatives such as lido, frax-ether, rocketpool.
-/// @dev when user deposits, queued ETH is not staked yet
-contract LSDAggregator is Constants, Ownable, ReentrancyGuard, xERC4626 {
+/// Note that we cannot use ERC4626 with supporting DEX as withdrawal strategy because dex doesn't provide 1-to-1 conversion rate.
+contract LSDAggregator is Constants, Ownable, ReentrancyGuard, ERC20 {
+    using FixedPointMathLib for uint256;
+
     uint256 constant TOTAL_WEIGHT = 10_000;
 
     BaseAdaptor[] public adaptors;
     mapping(BaseAdaptor => bool) public isAdaptor;
     mapping(BaseAdaptor => uint256) public weights; // NOTE: sum of weights must be 10,000
 
-    modifier andSync() {
-        if (block.timestamp >= rewardsCycleEnd) {
-            syncRewards();
-        }
-        _;
-    }
-
     receive() external payable {}
 
-    constructor(
-        BaseAdaptor[] memory _adaptors,
-        uint256[] memory _weights
-    ) ERC4626(ERC20(address(WETH())), 'Aggregated Staking ETH', 'asETH') xERC4626(1024 /* _rewardsCycleLength  */) {
+    constructor(BaseAdaptor[] memory _adaptors, uint256[] memory _weights) ERC20('Aggregated Staking ETH', 'aeETH') {
         _setAdaptors(_adaptors, _weights);
+        // approve max for depositWithETH
         WETH().approve(address(this), type(uint256).max);
     }
 
-    /* ========== ERC4626 ========== */
-    function depositWithETH(address receiver) external payable returns (uint256) {
-        // convert ETH to WETH
-        WETH().deposit{ value: msg.value }();
+    function deposit() public payable virtual returns (uint256 shares) {
+        require(msg.value > 0, 'ZERO_VALUE');
 
-        // call deposit function as external function because ERC4626 assumes underlying token is ERC20
-        return this.deposit(msg.value, receiver);
-    }
-
-    /**
-     * @dev override to stake ETH to each adaptors when deposit ETH to aggregator.
-     * @param assets Amount of WETH depositoed
-     * @param shares Amount of shares for asETH receiver
-     */
-    function afterDeposit(uint256 assets, uint256 shares) internal override {
-        super.afterDeposit(assets, shares);
-
-        // convert WETH to ETH
-        WETH().withdraw(assets);
-
-        // check adaptors support deposit
-        uint256 totalWeight = TOTAL_WEIGHT;
         for (uint256 i = 0; i < adaptors.length; i++) {
             BaseAdaptor a = adaptors[i];
             uint256 weight = weights[a];
-            uint256 value = (assets * weight) / TOTAL_WEIGHT;
-            if (!a.canDeposit(value)) {
-                totalWeight -= weight;
-            }
-        }
+            uint256 value = (msg.value * weight) / TOTAL_WEIGHT;
 
-        // buy LSDs according to vault strategy
-        for (uint256 i = 0; i < adaptors.length; i++) {
-            BaseAdaptor a = adaptors[i];
-            uint256 weight = weights[a];
-            uint256 value = (assets * weight) / totalWeight;
+            uint256 tokens;
 
-            // TODO: we may cache the result of a.canDeposit to array in memory.
             if (a.canDeposit(value)) {
-                a.deposit{ value: value }();
+                tokens = a.deposit{ value: value }();
+            } else {
+                tokens = a.buyToken{ value: value }();
             }
+            shares += a.getETHAmount(tokens);
         }
+
+        _mint(msg.sender, shares);
+
+        // emit Deposit(msg.sender, receiver, assets, shares);
     }
 
-    function beforeWithdraw(uint256 amount, uint256 shares) internal override {
-        super.beforeWithdraw(amount, shares);
+    function redeem(uint256 shares) public virtual returns (uint256 assets) {
+        require(shares > 0, 'ZERO_SHARE');
+        uint256 supply = totalSupply();
 
-        // TODO: we have to convert LSDs to ETH by selling to DEX or by requesting the withdrawal to liquid staking
-        // NOTE: we only support selling via DEX until Shanghai upgrade
+        for (uint256 i = 0; i < adaptors.length; i++) {
+            BaseAdaptor a = adaptors[i];
+            (, address token1) = a.getTokens();
+            uint256 value = (IERC20(token1).balanceOf(address(this)) * shares) / supply;
+
+            if (a.canWithdraw(value)) {
+                assets += (a.withdraw(value));
+            } else {
+                SafeERC20.safeApprove(IERC20(token1), address(a), value);
+                assets += (a.sellToken(value));
+            }
+        }
+
+        _burn(msg.sender, shares);
+
+        // TODO: safer way to transfer
+        payable(msg.sender).transfer(assets);
+
+        // emit Deposit(msg.sender, receiver, assets, shares);
     }
 
     /* ========== Adaptor ========== */

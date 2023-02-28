@@ -57,6 +57,43 @@ contract BalancerV2Swap is Constants {
         return uint256(res[1] < 0 ? -res[1] : res[1]);
     }
 
+    // function BalancerV2_quote(address fromToken, address toToken, uint256 fromTokenAmount, bytes32 poolId) public view returns (uint256) {
+    //     address poolId = address(uint160(uint256(poolId) >> 96));
+
+    //     BalancerV2VaultInterface vault = BalancerV2Vault();
+
+    //     BalancerV2VaultInterface.BatchSwapStep[] memory swaps = new BalancerV2VaultInterface.BatchSwapStep[](1);
+    //     swaps[0] = BalancerV2VaultInterface.BatchSwapStep({
+    //         poolId: poolId,
+    //         assetInIndex: 0, // fromToken index
+    //         assetOutIndex: 1, // toToken index
+    //         amount: fromTokenAmount,
+    //         userData: ''
+    //     });
+
+    //     address[] memory assets = new address[](2);
+    //     assets[0] = fromToken;
+    //     assets[1] = toToken;
+
+    //     int256[] memory limits = new int256[](2);
+    //     limits[0] = type(int256).max;
+    //     limits[1] = type(int256).max;
+
+    //     int256[] memory res = vault.queryBatchSwap(
+    //         BalancerV2VaultInterface.SwapKind.GIVEN_IN,
+    //         swaps,
+    //         assets,
+    //         BalancerV2VaultInterface.FundManagement({
+    //             sender: address(this), // use token0 held in `this` contract to swap
+    //             fromInternalBalance: false, // send ERC20 token directly, not updating deposit balance of the pool
+    //             recipient: payable(address(this)), // receive token1 to `this` contract during swap
+    //             toInternalBalance: false // receive ERC20 token directly, not updating deposit balance of the pool
+    //         })
+    //     );
+
+    //     return uint256(res[1] < 0 ? -res[1] : res[1]);
+    // }
+
     // TODO: add liquidity
 
     // TODO: remove liquidity

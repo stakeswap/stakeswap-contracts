@@ -169,12 +169,12 @@ export interface IERC20 extends BaseContract {
 
     approve(
       spender: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     balanceOf(
-      owner: PromiseOrValue<string>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -188,14 +188,14 @@ export interface IERC20 extends BaseContract {
 
     transfer(
       to: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     transferFrom(
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -208,12 +208,12 @@ export interface IERC20 extends BaseContract {
 
   approve(
     spender: PromiseOrValue<string>,
-    value: PromiseOrValue<BigNumberish>,
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   balanceOf(
-    owner: PromiseOrValue<string>,
+    account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -227,14 +227,14 @@ export interface IERC20 extends BaseContract {
 
   transfer(
     to: PromiseOrValue<string>,
-    value: PromiseOrValue<BigNumberish>,
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   transferFrom(
     from: PromiseOrValue<string>,
     to: PromiseOrValue<string>,
-    value: PromiseOrValue<BigNumberish>,
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -247,12 +247,12 @@ export interface IERC20 extends BaseContract {
 
     approve(
       spender: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     balanceOf(
-      owner: PromiseOrValue<string>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -266,14 +266,14 @@ export interface IERC20 extends BaseContract {
 
     transfer(
       to: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     transferFrom(
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -311,12 +311,12 @@ export interface IERC20 extends BaseContract {
 
     approve(
       spender: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     balanceOf(
-      owner: PromiseOrValue<string>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -330,14 +330,14 @@ export interface IERC20 extends BaseContract {
 
     transfer(
       to: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     transferFrom(
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -351,12 +351,12 @@ export interface IERC20 extends BaseContract {
 
     approve(
       spender: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     balanceOf(
-      owner: PromiseOrValue<string>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -370,14 +370,14 @@ export interface IERC20 extends BaseContract {
 
     transfer(
       to: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
-      value: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

@@ -29,6 +29,17 @@ contract CurveSwap is Constants {
         return CurveStableSwapInterface(pool).exchange{ value: swapValue }(fromTokenIndex, toTokenIndex, fromTokenAmount, 0);
     }
 
+    // function Curve_quote(
+    //     address fromToken,
+    //     uint256 fromTokenAmount,
+    //     address pool,
+    //     int128 fromTokenIndex,
+    //     int128 toTokenIndex
+    // ) public view returns (uint256) {
+    //     fromToken;
+    //     return CurveStableSwapInterface(pool).get_dy(fromTokenIndex, toTokenIndex, fromTokenAmount);
+    // }
+
     // TODO: add liquidity
 
     // TODO: remove liquidity

@@ -51,10 +51,15 @@ abstract contract BaseAdaptor is ReentrancyGuard, Constants {
     function _deposit() internal virtual returns (uint256);
 
     /// @dev return true if adaptor support direct conversion from yield-bearing token to ETH.
-    function canWithdraw() public view virtual returns (bool);
+    function canWithdraw(uint256 amount) public view virtual returns (bool);
 
     /// @dev return amount of ETH worth as the amout of yield-bearing token
     function getETHAmount(uint256 tokenAmount) public view virtual returns (uint256);
+
+    function getTokenAmount(uint256 ethAmount) public view returns (uint256) {
+        // TODO: consider rounding error
+        return ((ethAmount * 1e18) / getETHAmount(1 ether)) / 1e18;
+    }
 
     /// @dev external function to convert yield-bearing token directly to ETH via adaptor.
     ///      A derived contract must implement `_withdraw` function.
@@ -62,14 +67,14 @@ abstract contract BaseAdaptor is ReentrancyGuard, Constants {
     /// @return The amount of ETH transfered to msg.sender.
     function withdraw(uint256 amount) external nonReentrant returns (uint256) {
         require(amount > 0, 'ZERO AMOUNT');
-        require(canDeposit(amount), 'CANNOT DEPOSIT');
-        require(canWithdraw(), 'CANNOT WITHDRAW');
+        require(canWithdraw(amount), 'CANNOT WITHDRAW');
 
         (, address token) = getTokens();
         SafeERC20.safeTransferFrom(IERC20(token), msg.sender, address(this), amount);
 
         uint256 res = _withdraw(amount);
 
+        // TODO: safer way to transfer ETH
         payable(msg.sender).transfer(res);
 
         emit Withdrawn(msg.sender, res);
@@ -102,6 +107,7 @@ abstract contract BaseAdaptor is ReentrancyGuard, Constants {
 
         uint256 res = _sellToken(amount);
 
+        // TODO: safer way to transfer ETH
         // transfer ETH to msg.sender
         payable(msg.sender).transfer(res);
 

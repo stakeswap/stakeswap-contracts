@@ -46,7 +46,7 @@ export interface RocketPoolAdaptorInterface extends utils.Interface {
     "adaptorName()": FunctionFragment;
     "buyToken()": FunctionFragment;
     "canDeposit(uint256)": FunctionFragment;
-    "canWithdraw()": FunctionFragment;
+    "canWithdraw(uint256)": FunctionFragment;
     "deposit()": FunctionFragment;
     "frxETH()": FunctionFragment;
     "frxETHMinter()": FunctionFragment;
@@ -56,6 +56,7 @@ export interface RocketPoolAdaptorInterface extends utils.Interface {
     "getRocketDrocketDepositPool()": FunctionFragment;
     "getRocketPoolContractAddresst(string)": FunctionFragment;
     "getRocketVault()": FunctionFragment;
+    "getTokenAmount(uint256)": FunctionFragment;
     "getTokens()": FunctionFragment;
     "rETH()": FunctionFragment;
     "rocketPoolStorage()": FunctionFragment;
@@ -94,6 +95,7 @@ export interface RocketPoolAdaptorInterface extends utils.Interface {
       | "getRocketDrocketDepositPool"
       | "getRocketPoolContractAddresst"
       | "getRocketVault"
+      | "getTokenAmount"
       | "getTokens"
       | "rETH"
       | "rocketPoolStorage"
@@ -161,7 +163,7 @@ export interface RocketPoolAdaptorInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "canWithdraw",
-    values?: undefined
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
   encodeFunctionData(functionFragment: "frxETH", values?: undefined): string;
@@ -189,6 +191,10 @@ export interface RocketPoolAdaptorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getRocketVault",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTokenAmount",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "getTokens", values?: undefined): string;
   encodeFunctionData(functionFragment: "rETH", values?: undefined): string;
@@ -289,6 +295,10 @@ export interface RocketPoolAdaptorInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getRocketVault",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTokenAmount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getTokens", data: BytesLike): Result;
@@ -412,7 +422,10 @@ export interface RocketPoolAdaptor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    canWithdraw(overrides?: CallOverrides): Promise<[boolean]>;
+    canWithdraw(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -441,6 +454,11 @@ export interface RocketPoolAdaptor extends BaseContract {
     ): Promise<[string]>;
 
     getRocketVault(overrides?: CallOverrides): Promise<[string]>;
+
+    getTokenAmount(
+      ethAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     getTokens(
       overrides?: CallOverrides
@@ -516,7 +534,10 @@ export interface RocketPoolAdaptor extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  canWithdraw(overrides?: CallOverrides): Promise<boolean>;
+  canWithdraw(
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   deposit(
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -545,6 +566,11 @@ export interface RocketPoolAdaptor extends BaseContract {
   ): Promise<string>;
 
   getRocketVault(overrides?: CallOverrides): Promise<string>;
+
+  getTokenAmount(
+    ethAmount: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   getTokens(
     overrides?: CallOverrides
@@ -618,7 +644,10 @@ export interface RocketPoolAdaptor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    canWithdraw(overrides?: CallOverrides): Promise<boolean>;
+    canWithdraw(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     deposit(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -645,6 +674,11 @@ export interface RocketPoolAdaptor extends BaseContract {
     ): Promise<string>;
 
     getRocketVault(overrides?: CallOverrides): Promise<string>;
+
+    getTokenAmount(
+      ethAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getTokens(
       overrides?: CallOverrides
@@ -745,7 +779,10 @@ export interface RocketPoolAdaptor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    canWithdraw(overrides?: CallOverrides): Promise<BigNumber>;
+    canWithdraw(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -774,6 +811,11 @@ export interface RocketPoolAdaptor extends BaseContract {
     ): Promise<BigNumber>;
 
     getRocketVault(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getTokenAmount(
+      ethAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getTokens(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -856,7 +898,10 @@ export interface RocketPoolAdaptor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    canWithdraw(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    canWithdraw(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -887,6 +932,11 @@ export interface RocketPoolAdaptor extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getRocketVault(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getTokenAmount(
+      ethAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     getTokens(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

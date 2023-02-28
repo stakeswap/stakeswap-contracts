@@ -98,7 +98,7 @@ contract RocketPoolAdaptor is BaseAdaptor {
     // Withdraw
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    function canWithdraw() public pure override returns (bool) {
+    function canWithdraw(uint256 amount) public pure override returns (bool) {
         return false;
     }
 
