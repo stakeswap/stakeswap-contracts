@@ -8,6 +8,7 @@ import type {
   BytesLike,
   CallOverrides,
   ContractTransaction,
+  Overrides,
   PayableOverrides,
   PopulatedTransaction,
   Signer,
@@ -30,12 +31,12 @@ export interface LidoAdapterInterface extends utils.Interface {
     "accWithdraw()": FunctionFragment;
     "adaptorName()": FunctionFragment;
     "canDeposit(uint256)": FunctionFragment;
+    "canWithdraw()": FunctionFragment;
     "deposit()": FunctionFragment;
     "getAPR()": FunctionFragment;
     "getDepositAmount(uint256)": FunctionFragment;
     "getTokens()": FunctionFragment;
     "stETH()": FunctionFragment;
-    "supportWithdraw()": FunctionFragment;
     "withdraw(uint256)": FunctionFragment;
     "wstETH()": FunctionFragment;
   };
@@ -47,12 +48,12 @@ export interface LidoAdapterInterface extends utils.Interface {
       | "accWithdraw"
       | "adaptorName"
       | "canDeposit"
+      | "canWithdraw"
       | "deposit"
       | "getAPR"
       | "getDepositAmount"
       | "getTokens"
       | "stETH"
-      | "supportWithdraw"
       | "withdraw"
       | "wstETH"
   ): FunctionFragment;
@@ -74,6 +75,10 @@ export interface LidoAdapterInterface extends utils.Interface {
     functionFragment: "canDeposit",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "canWithdraw",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
   encodeFunctionData(functionFragment: "getAPR", values?: undefined): string;
   encodeFunctionData(
@@ -82,10 +87,6 @@ export interface LidoAdapterInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "getTokens", values?: undefined): string;
   encodeFunctionData(functionFragment: "stETH", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "supportWithdraw",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [PromiseOrValue<BigNumberish>]
@@ -103,6 +104,10 @@ export interface LidoAdapterInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "canDeposit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "canWithdraw",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getAPR", data: BytesLike): Result;
   decodeFunctionResult(
@@ -111,10 +116,6 @@ export interface LidoAdapterInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getTokens", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stETH", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "supportWithdraw",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "wstETH", data: BytesLike): Result;
 
@@ -161,6 +162,8 @@ export interface LidoAdapter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    canWithdraw(overrides?: CallOverrides): Promise<[boolean]>;
+
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -184,12 +187,10 @@ export interface LidoAdapter extends BaseContract {
 
     stETH(overrides?: CallOverrides): Promise<[string]>;
 
-    supportWithdraw(overrides?: CallOverrides): Promise<[boolean]>;
-
     withdraw(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     wstETH(overrides?: CallOverrides): Promise<[string]>;
   };
@@ -206,6 +207,8 @@ export interface LidoAdapter extends BaseContract {
     amount: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  canWithdraw(overrides?: CallOverrides): Promise<boolean>;
 
   deposit(
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -230,12 +233,10 @@ export interface LidoAdapter extends BaseContract {
 
   stETH(overrides?: CallOverrides): Promise<string>;
 
-  supportWithdraw(overrides?: CallOverrides): Promise<boolean>;
-
   withdraw(
-    arg0: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   wstETH(overrides?: CallOverrides): Promise<string>;
 
@@ -252,6 +253,8 @@ export interface LidoAdapter extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    canWithdraw(overrides?: CallOverrides): Promise<boolean>;
 
     deposit(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -274,10 +277,8 @@ export interface LidoAdapter extends BaseContract {
 
     stETH(overrides?: CallOverrides): Promise<string>;
 
-    supportWithdraw(overrides?: CallOverrides): Promise<boolean>;
-
     withdraw(
-      arg0: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -300,6 +301,8 @@ export interface LidoAdapter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    canWithdraw(overrides?: CallOverrides): Promise<BigNumber>;
+
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -315,11 +318,9 @@ export interface LidoAdapter extends BaseContract {
 
     stETH(overrides?: CallOverrides): Promise<BigNumber>;
 
-    supportWithdraw(overrides?: CallOverrides): Promise<BigNumber>;
-
     withdraw(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     wstETH(overrides?: CallOverrides): Promise<BigNumber>;
@@ -339,6 +340,8 @@ export interface LidoAdapter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    canWithdraw(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -354,11 +357,9 @@ export interface LidoAdapter extends BaseContract {
 
     stETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    supportWithdraw(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     withdraw(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     wstETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;

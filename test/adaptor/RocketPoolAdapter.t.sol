@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "forge-std/console.sol";
-import "forge-std/Test.sol";
-import "../../src/adaptor/RocketPoolAdapter.sol";
-import {IERC20} from "../../lib/forge-std/src/interfaces/IERC20.sol";
+import 'forge-std/console.sol';
+import 'forge-std/Test.sol';
+import '../../src/adaptor/RocketPoolAdapter.sol';
+import { IERC20 } from '../../lib/forge-std/src/interfaces/IERC20.sol';
 
 // https://github.com/foundry-rs/forge-std/blob/master/src/Vm.sol
 
@@ -13,8 +13,8 @@ contract RocketPoolAdapterTest is Test {
     uint256 mainnetFork;
     uint256 goerliFork;
 
-    string MAINNET_RPC_URL = vm.envString("MAINNET_RPC_URL");
-    string GOERLI_RPC_URL = vm.envString("GOERLI_RPC_URL");
+    string MAINNET_RPC_URL = vm.envString('MAINNET_RPC_URL');
+    string GOERLI_RPC_URL = vm.envString('GOERLI_RPC_URL');
 
     RocketPoolAdapter public adapter;
 
@@ -30,7 +30,7 @@ contract RocketPoolAdapterTest is Test {
 
     function testCanDeposit() public {
         vm.selectFork(mainnetFork);
-        require(adapter.canDeposit(1 ether) == true, "cannot deposit");
+        require(adapter.canDeposit(1 ether) == true, 'cannot deposit');
     }
 
     function testMaxAmount() public {
@@ -39,8 +39,8 @@ contract RocketPoolAdapterTest is Test {
         uint256 minDeposit = adapter.getRocketDAOProtocolSettingsDeposit().getMinimumDeposit();
         uint256 maximumDepositPoolSize = adapter.getRocketDAOProtocolSettingsDeposit().getMaximumDepositPoolSize();
 
-        console.log("minDeposit:              %s", minDeposit);
-        console.log("maximumDepositPoolSize:  %s", maximumDepositPoolSize);
+        console.log('minDeposit:              %s', minDeposit);
+        console.log('maximumDepositPoolSize:  %s', maximumDepositPoolSize);
     }
 
     function testStETHTotalSupply() public {
@@ -48,7 +48,7 @@ contract RocketPoolAdapterTest is Test {
             // mainnet-fork
             vm.selectFork(mainnetFork);
 
-            require(adapter.rETH().totalSupply() > 0, "invalid total supply of rETH");
+            require(adapter.rETH().totalSupply() > 0, 'invalid total supply of rETH');
         }
 
         // {
@@ -99,15 +99,15 @@ contract RocketPoolAdapterTest is Test {
     }
 
     function _testDeposit(uint256 amount) internal {
-        amount = adapter.deposit{value: amount}();
-        require(amount > 0, "zero-amount");
+        amount = adapter.deposit{ value: amount }();
+        require(amount > 0, 'zero-amount');
 
-        require(adapter.rETH().balanceOf(address(this)) == amount, "deposit misiatch");
+        require(adapter.rETH().balanceOf(address(this)) == amount, 'deposit misiatch');
     }
 
     function testAPR() public {
         vm.selectFork(mainnetFork);
-        console.log("adapter.getAPR(): %s", adapter.getAPR());
-        require(adapter.getAPR() > 0, "invalid APR");
+        console.log('adapter.getAPR(): %s', adapter.getAPR());
+        require(adapter.getAPR() > 0, 'invalid APR');
     }
 }

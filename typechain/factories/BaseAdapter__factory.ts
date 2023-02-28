@@ -80,6 +80,19 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "canWithdraw",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "deposit",
     outputs: [
       {
@@ -147,19 +160,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "supportWithdraw",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "uint256",
@@ -175,7 +175,7 @@ const _abi = [
         type: "uint256",
       },
     ],
-    stateMutability: "view",
+    stateMutability: "nonpayable",
     type: "function",
   },
 ] as const;

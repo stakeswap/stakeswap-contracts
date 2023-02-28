@@ -3,7 +3,7 @@ build: src/**/*
 	yarn generate-typechain
 
 test: test/**/* src/**/*
-	forge test -vvvv
+	forge test -v
 
 clean:
 	rm -rf cache

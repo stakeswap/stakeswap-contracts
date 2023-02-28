@@ -8,6 +8,7 @@ import type {
   BytesLike,
   CallOverrides,
   ContractTransaction,
+  Overrides,
   PayableOverrides,
   PopulatedTransaction,
   Signer,
@@ -30,6 +31,7 @@ export interface FraxAdapterInterface extends utils.Interface {
     "accWithdraw()": FunctionFragment;
     "adaptorName()": FunctionFragment;
     "canDeposit(uint256)": FunctionFragment;
+    "canWithdraw()": FunctionFragment;
     "deposit()": FunctionFragment;
     "frxETH()": FunctionFragment;
     "frxETHMinter()": FunctionFragment;
@@ -37,7 +39,6 @@ export interface FraxAdapterInterface extends utils.Interface {
     "getDepositAmount(uint256)": FunctionFragment;
     "getTokens()": FunctionFragment;
     "sfrxETH()": FunctionFragment;
-    "supportWithdraw()": FunctionFragment;
     "withdraw(uint256)": FunctionFragment;
   };
 
@@ -48,6 +49,7 @@ export interface FraxAdapterInterface extends utils.Interface {
       | "accWithdraw"
       | "adaptorName"
       | "canDeposit"
+      | "canWithdraw"
       | "deposit"
       | "frxETH"
       | "frxETHMinter"
@@ -55,7 +57,6 @@ export interface FraxAdapterInterface extends utils.Interface {
       | "getDepositAmount"
       | "getTokens"
       | "sfrxETH"
-      | "supportWithdraw"
       | "withdraw"
   ): FunctionFragment;
 
@@ -76,6 +77,10 @@ export interface FraxAdapterInterface extends utils.Interface {
     functionFragment: "canDeposit",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "canWithdraw",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
   encodeFunctionData(functionFragment: "frxETH", values?: undefined): string;
   encodeFunctionData(
@@ -89,10 +94,6 @@ export interface FraxAdapterInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "getTokens", values?: undefined): string;
   encodeFunctionData(functionFragment: "sfrxETH", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "supportWithdraw",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [PromiseOrValue<BigNumberish>]
@@ -109,6 +110,10 @@ export interface FraxAdapterInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "canDeposit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "canWithdraw",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "frxETH", data: BytesLike): Result;
   decodeFunctionResult(
@@ -122,10 +127,6 @@ export interface FraxAdapterInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getTokens", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "sfrxETH", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "supportWithdraw",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {};
@@ -171,6 +172,8 @@ export interface FraxAdapter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    canWithdraw(overrides?: CallOverrides): Promise<[boolean]>;
+
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -198,12 +201,10 @@ export interface FraxAdapter extends BaseContract {
 
     sfrxETH(overrides?: CallOverrides): Promise<[string]>;
 
-    supportWithdraw(overrides?: CallOverrides): Promise<[boolean]>;
-
     withdraw(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
@@ -218,6 +219,8 @@ export interface FraxAdapter extends BaseContract {
     amount: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  canWithdraw(overrides?: CallOverrides): Promise<boolean>;
 
   deposit(
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -246,12 +249,10 @@ export interface FraxAdapter extends BaseContract {
 
   sfrxETH(overrides?: CallOverrides): Promise<string>;
 
-  supportWithdraw(overrides?: CallOverrides): Promise<boolean>;
-
   withdraw(
-    arg0: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   callStatic: {
     PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
@@ -266,6 +267,8 @@ export interface FraxAdapter extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    canWithdraw(overrides?: CallOverrides): Promise<boolean>;
 
     deposit(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -292,10 +295,8 @@ export interface FraxAdapter extends BaseContract {
 
     sfrxETH(overrides?: CallOverrides): Promise<string>;
 
-    supportWithdraw(overrides?: CallOverrides): Promise<boolean>;
-
     withdraw(
-      arg0: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
@@ -316,6 +317,8 @@ export interface FraxAdapter extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    canWithdraw(overrides?: CallOverrides): Promise<BigNumber>;
+
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -335,11 +338,9 @@ export interface FraxAdapter extends BaseContract {
 
     sfrxETH(overrides?: CallOverrides): Promise<BigNumber>;
 
-    supportWithdraw(overrides?: CallOverrides): Promise<BigNumber>;
-
     withdraw(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -356,6 +357,8 @@ export interface FraxAdapter extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    canWithdraw(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -376,11 +379,9 @@ export interface FraxAdapter extends BaseContract {
 
     sfrxETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    supportWithdraw(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     withdraw(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

@@ -6,10 +6,15 @@
   "author": "4000D <dkdkajej@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "generate-typechain": "node scripts-js/generate-typechain.js"
+    "generate-typechain": "node script-js/generate-typechain.js",
+    "format:sol": "prettier --write 'src/**/*.sol' 'script/**/*.sol' 'test/**/*.sol'",
+    "format:ts": "prettier --write 'script-js/**/*.js'",
+    "format": "yarn format:sol && yarn format:ts"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^10.2.0",
+    "prettier": "^2.8.3",
+    "prettier-plugin-solidity": "^1.1.1",
     "typechain": "^8.1.1"
   },
   "dependencies": {
