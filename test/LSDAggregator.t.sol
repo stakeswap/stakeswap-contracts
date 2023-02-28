@@ -19,7 +19,7 @@ contract LSDAggregatorTest is Constants, Test, MinorError {
 
     string MAINNET_RPC_URL = vm.envString('MAINNET_RPC_URL');
 
-    LSDAggregator public target;
+    LSDAggregator public aggregator;
     BaseAdaptor[] public adaptors;
 
     LidoAdaptor lidoAdaptor;
@@ -34,9 +34,10 @@ contract LSDAggregatorTest is Constants, Test, MinorError {
 
     function setUp() public {
         mainnetFork = vm.createFork(MAINNET_RPC_URL);
-
-        //  deploy test contract to mainnet-fork
         vm.selectFork(mainnetFork);
+
+        vm.deal(user0, 10000 ether);
+        vm.deal(user1, 10000 ether);
 
         adaptors.push(lidoAdaptor = new LidoAdaptor());
         adaptors.push(rocketPoolAdaptor = new RocketPoolAdaptor());
@@ -54,8 +55,8 @@ contract LSDAggregatorTest is Constants, Test, MinorError {
         vm.deal(user0, 10000 ether);
         vm.deal(user1, 10000 ether);
 
-        target = new LSDAggregator(adaptors, depositWeights, buyWeights);
-        vm.makePersistent(address(target));
+        aggregator = new LSDAggregator(adaptors, depositWeights, buyWeights);
+        vm.makePersistent(address(aggregator));
     }
 
     // test simple deposit and withdraw without staking reward
@@ -65,47 +66,47 @@ contract LSDAggregatorTest is Constants, Test, MinorError {
 
         // 1. user0 and user1 deposits
         vm.startPrank(user0, user0);
-        target.deposit{ value: amount }();
+        aggregator.deposit{ value: amount }();
         vm.stopPrank();
 
         vm.startPrank(user1, user1);
-        target.deposit{ value: amount }();
+        aggregator.deposit{ value: amount }();
         vm.stopPrank();
 
         console.log('user0        ', user0);
         console.log('user1        ', user1);
-        console.log('target       ', address(target));
+        console.log('aggregator       ', address(aggregator));
         console.log('test runner  ', address(this));
 
         console.log('eth balance of user0', user0.balance);
         console.log('eth balance of user1', user1.balance);
-        console.log('vault share of user0', target.balanceOf(user0));
-        console.log('vault share of user1', target.balanceOf(user1));
-        console.log('vault share of user0 in ETH', target.previewRedeem(target.balanceOf(user0)));
-        console.log('vault share of user1 in ETH', target.previewRedeem(target.balanceOf(user1)));
+        console.log('vault share of user0', aggregator.balanceOf(user0));
+        console.log('vault share of user1', aggregator.balanceOf(user1));
+        console.log('vault share of user0 in ETH', aggregator.previewRedeem(aggregator.balanceOf(user0)));
+        console.log('vault share of user1 in ETH', aggregator.previewRedeem(aggregator.balanceOf(user1)));
 
-        uint256 shares0 = target.balanceOf(user0);
+        uint256 shares0 = aggregator.balanceOf(user0);
 
         console.log('[user0] stETH  ~', (lidoAdaptor.getETHAmount(shares0) * 3_000) / 10_000);
         console.log('[user0] rETH   ~', (rocketPoolAdaptor.getETHAmount(shares0) * 2_000) / 10_000);
         console.log('[user0] frxETH ~', (fraxAdaptor.getETHAmount(shares0) * 5_000) / 10_000);
 
-        require(target.balanceOf(user0) > 0, 'invalid shares of user0');
-        require(target.balanceOf(user1) > 0, 'invalid shares of user1');
+        require(aggregator.balanceOf(user0) > 0, 'invalid shares of user0');
+        require(aggregator.balanceOf(user1) > 0, 'invalid shares of user1');
         // NOTE: shares could be different if buy tokens from dex
-        // require(target.balanceOf(user0) == target.balanceOf(user1), 'shares mismatch');
+        // require(aggregator.balanceOf(user0) == aggregator.balanceOf(user1), 'shares mismatch');
 
-        require(address(target).balance < 10, 'unused ETH');
-        require(WETH().balanceOf(address(target)) < 10, 'unused WETH');
+        require(address(aggregator).balance < 10, 'unused ETH');
+        require(WETH().balanceOf(address(aggregator)) < 10, 'unused WETH');
 
-        require(wstETH().balanceOf(address(target)) > 0, 'wstETH == 0');
-        require(rETH().balanceOf(address(target)) > 0, 'rETH == 0');
-        require(sfrxETH().balanceOf(address(target)) > 0, 'sfrxETH == 0');
+        require(wstETH().balanceOf(address(aggregator)) > 0, 'wstETH == 0');
+        require(rETH().balanceOf(address(aggregator)) > 0, 'rETH == 0');
+        require(sfrxETH().balanceOf(address(aggregator)) > 0, 'sfrxETH == 0');
 
         // 2.1 user0 try to withdraw all shares
         uint256 user0BeforeETHBalance = address(user0).balance;
         vm.startPrank(user0, user0); // vm.prank doesn't work here...
-        uint256 user0WithdrawalAmount = target.redeem(target.balanceOf(user0));
+        uint256 user0WithdrawalAmount = aggregator.redeem(aggregator.balanceOf(user0));
         vm.stopPrank();
         uint256 user0AfterETHBalance = address(user0).balance;
 
@@ -119,7 +120,7 @@ contract LSDAggregatorTest is Constants, Test, MinorError {
         // 2.2 user1 try to withdraw
         uint256 user1BeforeETHBalance = address(user1).balance;
         vm.startPrank(user1, user1); // vm.prank doesn't work here...
-        uint256 user1WithdrawalAmount = target.redeem(target.balanceOf(user1));
+        uint256 user1WithdrawalAmount = aggregator.redeem(aggregator.balanceOf(user1));
         vm.stopPrank();
         uint256 user1AfterETHBalance = address(user1).balance;
 
@@ -130,10 +131,10 @@ contract LSDAggregatorTest is Constants, Test, MinorError {
 
         require(user1WithdrawalAmount == user1AfterETHBalance - user1BeforeETHBalance, 'redeem error');
 
-        require(wstETH().balanceOf(address(target)) == 0, 'wstETH != 0');
-        require(rETH().balanceOf(address(target)) == 0, 'rETH != 0');
-        require(sfrxETH().balanceOf(address(target)) == 0, 'sfrxETH != 0');
-        require(target.totalSupply() == 0, 'total supply != 0');
+        require(wstETH().balanceOf(address(aggregator)) == 0, 'wstETH != 0');
+        require(rETH().balanceOf(address(aggregator)) == 0, 'rETH != 0');
+        require(sfrxETH().balanceOf(address(aggregator)) == 0, 'sfrxETH != 0');
+        require(aggregator.totalSupply() == 0, 'total supply != 0');
 
         console.log('eth balance of user0', user0.balance);
         console.log('eth balance of user1', user1.balance);
