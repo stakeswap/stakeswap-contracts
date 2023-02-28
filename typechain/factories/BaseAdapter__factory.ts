@@ -60,6 +60,19 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "BalancerV2_rETH_ETH_POOL_ID",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "BalancerV2_wstETH_WETH_POOL_ID",
     outputs: [
       {
@@ -92,6 +105,32 @@ const _abi = [
         internalType: "address",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
+    outputs: [
+      {
+        internalType: "int128",
+        name: "",
+        type: "int128",
       },
     ],
     stateMutability: "view",

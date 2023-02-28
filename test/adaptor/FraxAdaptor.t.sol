@@ -3,12 +3,13 @@ pragma solidity ^0.8.13;
 
 import 'forge-std/console.sol';
 import 'forge-std/Test.sol';
-import '../../src/adaptor/LidoAdapter.sol';
+import '../../src/adaptor/FraxAdaptor.sol';
 import { IERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
+import { Constants } from '../../src/lib/Constants.sol';
 
 // https://github.com/foundry-rs/forge-std/blob/master/src/Vm.sol
 
-contract LidoAdaptorTest is Test {
+contract FraxAdaptorTest is Test, Constants {
     // the identifiers of the forks
     uint256 mainnetFork;
     uint256 goerliFork;
@@ -16,7 +17,9 @@ contract LidoAdaptorTest is Test {
     string MAINNET_RPC_URL = vm.envString('MAINNET_RPC_URL');
     string GOERLI_RPC_URL = vm.envString('GOERLI_RPC_URL');
 
-    LidoAdapter public adapter;
+    FraxAdaptor public adaptor;
+
+    receive() external payable {}
 
     function setUp() public {
         console.log('MAINNET_RPC_URL: %s', MAINNET_RPC_URL);
@@ -27,28 +30,28 @@ contract LidoAdaptorTest is Test {
 
         //  deploy test contract to mainnet-fork
         vm.selectFork(mainnetFork);
-        adapter = new LidoAdapter();
-        vm.makePersistent(address(adapter));
+        adaptor = new FraxAdaptor();
+        vm.makePersistent(address(adaptor));
     }
 
     function testCanDeposit() public {
         vm.selectFork(mainnetFork);
-        require(adapter.canDeposit(1 ether) == true, 'cannot deposit');
+        require(adaptor.canDeposit(1 ether) == true, 'cannot deposit');
     }
 
-    function testStETHTotalSupply() public {
+    function testFrxETHTotalSupply() public {
         {
             // mainnet-fork
             vm.selectFork(mainnetFork);
-
-            require(adapter.stETH().totalSupply() > 0, 'invalid total supply of stETH');
+            IERC20 frxETH = adaptor.frxETH();
+            require(frxETH.totalSupply() > 0, 'invalid total supply of frxETH');
         }
 
         // {
         //     // goerli-fork
         //     vm.selectFork(goerliFork);
-        //     IERC20 stETH = fraxAdapter.stETH();
-        //     require(stETH.totalSupply() > 0, "invalid total supply of stETH");
+        //     IERC20 frxETH = adaptor.frxETH();
+        //     require(frxETH.totalSupply() > 0, "invalid total supply of frxETH");
         // }
     }
 
@@ -92,15 +95,32 @@ contract LidoAdaptorTest is Test {
     }
 
     function _testDeposit(uint256 amount) internal {
-        amount = adapter.deposit{ value: amount }();
+        amount = adaptor.deposit{ value: amount }();
         require(amount > 0, 'zero-amount');
 
-        require(adapter.wstETH().balanceOf(address(this)) == amount, 'deposit misiatch');
+        require(adaptor.sfrxETH().balanceOf(address(this)) == amount, 'deposit misiatch');
+    }
+
+    function testBuySellFuzz(uint96 amount) public {
+        vm.assume(amount > 0.00001 ether && amount < 100 ether);
+        vm.selectFork(mainnetFork);
+
+        // buy
+        uint256 sfrxETHAmount = adaptor.buyToken{ value: amount }();
+        require(sfrxETHAmount == sfrxETH().balanceOf(address(this)), 'sfrxETH buy amount mismatch');
+
+        // sell
+        uint256 beforeETHBalance = address(this).balance;
+        sfrxETH().approve(address(adaptor), sfrxETHAmount);
+        uint256 ETHAmount = adaptor.sellToken(sfrxETHAmount);
+        uint256 afterETHBalance = address(this).balance;
+
+        require(afterETHBalance - beforeETHBalance == ETHAmount, 'sfrxETH sell amount mismatch');
     }
 
     function testAPR() public {
         vm.selectFork(mainnetFork);
-        console.log('adapter.getAPR(): %s', adapter.getAPR());
-        require(adapter.getAPR() > 0, 'invalid APR');
+        console.log('adaptor.getAPR(): %s', adaptor.getAPR());
+        require(adaptor.getAPR() > 0, 'invalid APR');
     }
 }

@@ -2,15 +2,18 @@
 pragma solidity ^0.8.13;
 
 import 'forge-std/console.sol';
-import { BaseAdapter } from './BaseAdapter.sol';
+import { BaseAdaptor } from './BaseAdaptor.sol';
 import { ILido as ST_ETH } from '../lib/ILido.sol';
 import { IWstETH as WST_ETH } from '../lib/IWstETH.sol';
+import { CurveSwap } from '../lib/curve/CurveSwap.sol';
 
 // deposit: ETH -> wstETH
 //
-contract LidoAdapter is BaseAdapter {
+contract LidoAdaptor is BaseAdaptor, CurveSwap {
     uint256 private constant _serviceStartedAt = 1608242396; // stETH contract created at 1608242396 (block number = 11473216)
     uint256 private immutable _adaptorDeployed = block.timestamp;
+
+    receive() external payable override(BaseAdaptor, CurveSwap) {}
 
     /// @dev return a name of adaptor
     function adaptorName() public pure override returns (string memory) {
@@ -18,10 +21,13 @@ contract LidoAdapter is BaseAdapter {
     }
 
     /// @dev get a list of tokens. returned `token0` must be yield-bearing token.
-    function getTokens() public view override returns (address token0, address token1, address token2) {
-        token0 = address(wstETH());
-        token1 = address(stETH());
-        token2 = address(0);
+    function getTokens() public view override returns (address token0, address token1) {
+        token0 = address(0);
+        token1 = address(wstETH());
+    }
+
+    function getETHAmount(uint256 tokenAmount) public view override returns (uint256) {
+        return wstETH().getStETHByWstETH(tokenAmount);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,9 +66,9 @@ contract LidoAdapter is BaseAdapter {
     function _deposit() internal override returns (uint256) {
         // ETH -> stETH
         uint256 shares = stETH().submit{ value: msg.value }(address(0));
-        stETH().approve(address(wstETH()), shares);
 
         // stETH -> wstETH
+        stETH().approve(address(wstETH()), shares);
         uint256 wstETHAmount = wstETH().wrap(shares);
         return wstETHAmount;
     }
@@ -75,21 +81,48 @@ contract LidoAdapter is BaseAdapter {
         return false;
     }
 
+    // direct converting stETH to ETH in lido system is not supported yet.
+    // instead, use Curve's stETH-ETH pool
     function _withdraw(uint256) internal pure override returns (uint256) {
-        // direct converting stETH to ETH in lido system is not supported.
-        // instead, use Curve's stETH-ETH pool
-        return 0;
+        revert('NOT_IMPLEMENTD');
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////
     // BUY-SELL
     ////////////////////////////////////////////////////////////////////////////////////////////
+
+    // swap ETH for wstETH
+    //  1. buy stETH with ETH from Curve
+    //  2. wrap stETH to wstETH
     function _buyToken() internal override returns (uint256) {
-        revert('NOT_IMPLEMENTD');
+        uint256 stETHAmount = Curve_swap(
+            address(0), // ETH
+            msg.value,
+            Curve_stETH_ETH_POOL_ADDRESS(),
+            Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH(),
+            Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH()
+        );
+
+        stETH().approve(address(wstETH()), stETHAmount);
+        uint256 wstETHAmount = wstETH().wrap(stETHAmount);
+        return wstETHAmount;
     }
 
-    function _sellToken(uint256 amount) internal override returns (uint256) {
-        revert('NOT_IMPLEMENTD');
+    // swap wstETH for ETH
+    //  1. unwrap wstETH to stETH
+    //  2. buy ETH with stETH from Curve
+    function _sellToken(uint256 wstETHAmount) internal override returns (uint256) {
+        uint256 stETHAmount = wstETH().unwrap(wstETHAmount);
+
+        uint256 ETHAmount = Curve_swap(
+            address(stETH()), // stETH
+            stETHAmount,
+            Curve_stETH_ETH_POOL_ADDRESS(),
+            Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(),
+            Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH()
+        );
+
+        return ETHAmount;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////

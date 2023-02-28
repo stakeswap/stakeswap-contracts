@@ -116,4 +116,26 @@ contract Constants {
         if (block.chainid == 1) return 0x06325440D014e39736583c165C2963BA99fAf14E;
         revert('unknown chain id');
     }
+
+    function Curve_frxETH_ETH_POOL_ADDRESS() public view returns (address) {
+        if (block.chainid == 1) return 0xa1F8A6807c402E4A15ef4EBa36528A3FED24E577;
+        revert('unknown chain id');
+    }
+
+    // coins[0] = ETH
+    // coins[1] = frxETH
+    function Curve_frxETH_ETH_POOL_TOKEN_INDEX_ETH() public view returns (int128) {
+        if (block.chainid == 1) return 0;
+        revert('unknown chain id');
+    }
+
+    function Curve_frxETH_ETH_POOL_TOKEN_INDEX_frxETH() public view returns (int128) {
+        if (block.chainid == 1) return 1;
+        revert('unknown chain id');
+    }
+
+    function Curve_frxETH_ETH_POOL_LP_TOKEN_ADDRESS() public view returns (address) {
+        if (block.chainid == 1) return 0xf43211935C781D5ca1a41d2041F397B8A7366C7A;
+        revert('unknown chain id');
+    }
 }

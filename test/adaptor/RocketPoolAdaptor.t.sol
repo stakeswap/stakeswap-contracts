@@ -3,12 +3,13 @@ pragma solidity ^0.8.13;
 
 import 'forge-std/console.sol';
 import 'forge-std/Test.sol';
-import '../../src/adaptor/RocketPoolAdapter.sol';
+import '../../src/adaptor/RocketPoolAdaptor.sol';
 import { IERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
+import { Constants } from '../../src/lib/Constants.sol';
 
 // https://github.com/foundry-rs/forge-std/blob/master/src/Vm.sol
 
-contract RocketPoolAdapterTest is Test {
+contract RocketPoolAdaptorTest is Test, Constants {
     // the identifiers of the forks
     uint256 mainnetFork;
     uint256 goerliFork;
@@ -16,7 +17,9 @@ contract RocketPoolAdapterTest is Test {
     string MAINNET_RPC_URL = vm.envString('MAINNET_RPC_URL');
     string GOERLI_RPC_URL = vm.envString('GOERLI_RPC_URL');
 
-    RocketPoolAdapter public adapter;
+    RocketPoolAdaptor public adaptor;
+
+    receive() external payable {}
 
     function setUp() public {
         mainnetFork = vm.createFork(MAINNET_RPC_URL);
@@ -24,20 +27,20 @@ contract RocketPoolAdapterTest is Test {
 
         //  deploy test contract to mainnet-fork
         vm.selectFork(mainnetFork);
-        adapter = new RocketPoolAdapter();
-        vm.makePersistent(address(adapter));
+        adaptor = new RocketPoolAdaptor();
+        vm.makePersistent(address(adaptor));
     }
 
     function testCanDeposit() public {
         vm.selectFork(mainnetFork);
-        require(adapter.canDeposit(1 ether) == true, 'cannot deposit');
+        require(adaptor.canDeposit(1 ether) == true, 'cannot deposit');
     }
 
     function testMaxAmount() public {
         // mainnet-fork
         vm.selectFork(mainnetFork);
-        uint256 minDeposit = adapter.getRocketDAOProtocolSettingsDeposit().getMinimumDeposit();
-        uint256 maximumDepositPoolSize = adapter.getRocketDAOProtocolSettingsDeposit().getMaximumDepositPoolSize();
+        uint256 minDeposit = adaptor.getRocketDAOProtocolSettingsDeposit().getMinimumDeposit();
+        uint256 maximumDepositPoolSize = adaptor.getRocketDAOProtocolSettingsDeposit().getMaximumDepositPoolSize();
 
         console.log('minDeposit:              %s', minDeposit);
         console.log('maximumDepositPoolSize:  %s', maximumDepositPoolSize);
@@ -48,13 +51,13 @@ contract RocketPoolAdapterTest is Test {
             // mainnet-fork
             vm.selectFork(mainnetFork);
 
-            require(adapter.rETH().totalSupply() > 0, 'invalid total supply of rETH');
+            require(adaptor.rETH().totalSupply() > 0, 'invalid total supply of rETH');
         }
 
         // {
         //     // goerli-fork
         //     vm.selectFork(goerliFork);
-        //     IERC20 rETH = fraxAdapter.rETH();
+        //     IERC20 rETH = fraxAdaptor.rETH();
         //     require(rETH.totalSupply() > 0, "invalid total supply of rETH");
         // }
     }
@@ -102,49 +105,32 @@ contract RocketPoolAdapterTest is Test {
     // }
 
     function _testDeposit(uint256 amount) internal {
-        amount = adapter.deposit{ value: amount }();
+        amount = adaptor.deposit{ value: amount }();
         require(amount > 0, 'zero-amount');
 
-        require(adapter.rETH().balanceOf(address(this)) == amount, 'deposit misiatch');
+        require(adaptor.rETH().balanceOf(address(this)) == amount, 'deposit misiatch');
     }
 
     function testAPR() public {
         vm.selectFork(mainnetFork);
-        console.log('adapter.getAPR(): %s', adapter.getAPR());
-        require(adapter.getAPR() > 0, 'invalid APR');
+        console.log('adaptor.getAPR(): %s', adaptor.getAPR());
+        require(adaptor.getAPR() > 0, 'invalid APR');
     }
 
-    function testBuyAndSell(uint96 _amount) public {
-        vm.assume(_amount > 0.00001 ether && _amount < 100 ether);
+    function testBuySellFuzz(uint96 amount) public {
+        vm.assume(amount > 0.00001 ether && amount < 100 ether);
         vm.selectFork(mainnetFork);
 
-        uint256 amount = _amount;
-        uint256 rETHAmount; // amount of rETH when buy with ETH
-        uint256 ethAmount; // amount of ETH when sell with rETH
+        // buy
+        uint256 rETHAmount = adaptor.buyToken{ value: amount }();
+        require(rETHAmount == rETH().balanceOf(address(this)), 'rETH buy amount mismatch');
 
-        // 1. buy rETH
-        {
-            rETHAmount = adapter.buyToken{ value: amount }();
+        // sell
+        uint256 beforeETHBalance = address(this).balance;
+        rETH().approve(address(adaptor), rETHAmount);
+        uint256 ETHAmount = adaptor.sellToken(rETHAmount);
+        uint256 afterETHBalance = address(this).balance;
 
-            console.log('amount          : %s', amount);
-            console.log('rETHAmount      : %s', rETHAmount);
-            console.log('diff            : %s', amount - rETHAmount);
-            console.log('diff (bps)      : %s', ((amount - rETHAmount) * 10000) / amount);
-
-            require(rETHAmount > 0, 'failed to buy');
-        }
-
-        // 1. sell rETH
-        {
-            adapter.rETH().approve(address(adapter), rETHAmount);
-            ethAmount = adapter.sellToken(rETHAmount);
-
-            console.log('rETHAmount      : %s', rETHAmount);
-            console.log('ethAmount       : %s', ethAmount);
-            console.log('diff            : %s', ethAmount - rETHAmount);
-            console.log('diff (bps)      : %s', ((ethAmount - rETHAmount) * 10000) / ethAmount);
-
-            require(rETHAmount > 0, 'failed to buy');
-        }
+        require(afterETHBalance - beforeETHBalance == ETHAmount, 'rETH sell amount mismatch');
     }
 }

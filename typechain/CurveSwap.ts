@@ -4,8 +4,11 @@
 import type {
   BaseContract,
   BigNumber,
+  BigNumberish,
   BytesLike,
   CallOverrides,
+  ContractTransaction,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -23,9 +26,17 @@ import type {
 export interface CurveSwapInterface extends utils.Interface {
   functions: {
     "BalancerV2Vault()": FunctionFragment;
+    "BalancerV2_rETH_ETH_POOL_ID()": FunctionFragment;
     "BalancerV2_wstETH_WETH_POOL_ID()": FunctionFragment;
+    "Curve_frxETH_ETH_POOL_ADDRESS()": FunctionFragment;
+    "Curve_frxETH_ETH_POOL_LP_TOKEN_ADDRESS()": FunctionFragment;
+    "Curve_frxETH_ETH_POOL_TOKEN_INDEX_ETH()": FunctionFragment;
+    "Curve_frxETH_ETH_POOL_TOKEN_INDEX_frxETH()": FunctionFragment;
     "Curve_stETH_ETH_POOL_ADDRESS()": FunctionFragment;
     "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS()": FunctionFragment;
+    "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH()": FunctionFragment;
+    "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH()": FunctionFragment;
+    "Curve_swap(address,uint256,address,int128,int128)": FunctionFragment;
     "WETH()": FunctionFragment;
     "frxETH()": FunctionFragment;
     "frxETHMinter()": FunctionFragment;
@@ -38,9 +49,17 @@ export interface CurveSwapInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "BalancerV2Vault"
+      | "BalancerV2_rETH_ETH_POOL_ID"
       | "BalancerV2_wstETH_WETH_POOL_ID"
+      | "Curve_frxETH_ETH_POOL_ADDRESS"
+      | "Curve_frxETH_ETH_POOL_LP_TOKEN_ADDRESS"
+      | "Curve_frxETH_ETH_POOL_TOKEN_INDEX_ETH"
+      | "Curve_frxETH_ETH_POOL_TOKEN_INDEX_frxETH"
       | "Curve_stETH_ETH_POOL_ADDRESS"
       | "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS"
+      | "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH"
+      | "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH"
+      | "Curve_swap"
       | "WETH"
       | "frxETH"
       | "frxETHMinter"
@@ -55,7 +74,27 @@ export interface CurveSwapInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "BalancerV2_rETH_ETH_POOL_ID",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "BalancerV2_wstETH_WETH_POOL_ID",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Curve_frxETH_ETH_POOL_ADDRESS",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Curve_frxETH_ETH_POOL_LP_TOKEN_ADDRESS",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Curve_frxETH_ETH_POOL_TOKEN_INDEX_ETH",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Curve_frxETH_ETH_POOL_TOKEN_INDEX_frxETH",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -65,6 +104,24 @@ export interface CurveSwapInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Curve_swap",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
   encodeFunctionData(functionFragment: "frxETH", values?: undefined): string;
@@ -82,7 +139,27 @@ export interface CurveSwapInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "BalancerV2_rETH_ETH_POOL_ID",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "BalancerV2_wstETH_WETH_POOL_ID",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "Curve_frxETH_ETH_POOL_ADDRESS",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "Curve_frxETH_ETH_POOL_LP_TOKEN_ADDRESS",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "Curve_frxETH_ETH_POOL_TOKEN_INDEX_ETH",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "Curve_frxETH_ETH_POOL_TOKEN_INDEX_frxETH",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -93,6 +170,15 @@ export interface CurveSwapInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "Curve_swap", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "frxETH", data: BytesLike): Result;
   decodeFunctionResult(
@@ -136,15 +222,48 @@ export interface CurveSwap extends BaseContract {
   functions: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<[string]>;
 
+    BalancerV2_rETH_ETH_POOL_ID(overrides?: CallOverrides): Promise<[string]>;
+
     BalancerV2_wstETH_WETH_POOL_ID(
       overrides?: CallOverrides
     ): Promise<[string]>;
+
+    Curve_frxETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<[string]>;
+
+    Curve_frxETH_ETH_POOL_LP_TOKEN_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    Curve_frxETH_ETH_POOL_TOKEN_INDEX_ETH(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    Curve_frxETH_ETH_POOL_TOKEN_INDEX_frxETH(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     Curve_stETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<[string]>;
 
     Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
       overrides?: CallOverrides
     ): Promise<[string]>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    Curve_swap(
+      fromToken: PromiseOrValue<string>,
+      fromTokenAmount: PromiseOrValue<BigNumberish>,
+      pool: PromiseOrValue<string>,
+      fromTokenIndex: PromiseOrValue<BigNumberish>,
+      toTokenIndex: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     WETH(overrides?: CallOverrides): Promise<[string]>;
 
@@ -163,13 +282,46 @@ export interface CurveSwap extends BaseContract {
 
   BalancerV2Vault(overrides?: CallOverrides): Promise<string>;
 
+  BalancerV2_rETH_ETH_POOL_ID(overrides?: CallOverrides): Promise<string>;
+
   BalancerV2_wstETH_WETH_POOL_ID(overrides?: CallOverrides): Promise<string>;
+
+  Curve_frxETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<string>;
+
+  Curve_frxETH_ETH_POOL_LP_TOKEN_ADDRESS(
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  Curve_frxETH_ETH_POOL_TOKEN_INDEX_ETH(
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  Curve_frxETH_ETH_POOL_TOKEN_INDEX_frxETH(
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   Curve_stETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<string>;
 
   Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
     overrides?: CallOverrides
   ): Promise<string>;
+
+  Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH(
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  Curve_swap(
+    fromToken: PromiseOrValue<string>,
+    fromTokenAmount: PromiseOrValue<BigNumberish>,
+    pool: PromiseOrValue<string>,
+    fromTokenIndex: PromiseOrValue<BigNumberish>,
+    toTokenIndex: PromiseOrValue<BigNumberish>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   WETH(overrides?: CallOverrides): Promise<string>;
 
@@ -188,13 +340,46 @@ export interface CurveSwap extends BaseContract {
   callStatic: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<string>;
 
+    BalancerV2_rETH_ETH_POOL_ID(overrides?: CallOverrides): Promise<string>;
+
     BalancerV2_wstETH_WETH_POOL_ID(overrides?: CallOverrides): Promise<string>;
+
+    Curve_frxETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<string>;
+
+    Curve_frxETH_ETH_POOL_LP_TOKEN_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    Curve_frxETH_ETH_POOL_TOKEN_INDEX_ETH(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_frxETH_ETH_POOL_TOKEN_INDEX_frxETH(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     Curve_stETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<string>;
 
     Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
       overrides?: CallOverrides
     ): Promise<string>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_swap(
+      fromToken: PromiseOrValue<string>,
+      fromTokenAmount: PromiseOrValue<BigNumberish>,
+      pool: PromiseOrValue<string>,
+      fromTokenIndex: PromiseOrValue<BigNumberish>,
+      toTokenIndex: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     WETH(overrides?: CallOverrides): Promise<string>;
 
@@ -216,7 +401,25 @@ export interface CurveSwap extends BaseContract {
   estimateGas: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<BigNumber>;
 
+    BalancerV2_rETH_ETH_POOL_ID(overrides?: CallOverrides): Promise<BigNumber>;
+
     BalancerV2_wstETH_WETH_POOL_ID(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_frxETH_ETH_POOL_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_frxETH_ETH_POOL_LP_TOKEN_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_frxETH_ETH_POOL_TOKEN_INDEX_ETH(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_frxETH_ETH_POOL_TOKEN_INDEX_frxETH(
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -224,6 +427,23 @@ export interface CurveSwap extends BaseContract {
 
     Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_swap(
+      fromToken: PromiseOrValue<string>,
+      fromTokenAmount: PromiseOrValue<BigNumberish>,
+      pool: PromiseOrValue<string>,
+      fromTokenIndex: PromiseOrValue<BigNumberish>,
+      toTokenIndex: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     WETH(overrides?: CallOverrides): Promise<BigNumber>;
@@ -244,7 +464,27 @@ export interface CurveSwap extends BaseContract {
   populateTransaction: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    BalancerV2_rETH_ETH_POOL_ID(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     BalancerV2_wstETH_WETH_POOL_ID(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Curve_frxETH_ETH_POOL_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Curve_frxETH_ETH_POOL_LP_TOKEN_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Curve_frxETH_ETH_POOL_TOKEN_INDEX_ETH(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Curve_frxETH_ETH_POOL_TOKEN_INDEX_frxETH(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -254,6 +494,23 @@ export interface CurveSwap extends BaseContract {
 
     Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Curve_swap(
+      fromToken: PromiseOrValue<string>,
+      fromTokenAmount: PromiseOrValue<BigNumberish>,
+      pool: PromiseOrValue<string>,
+      fromTokenIndex: PromiseOrValue<BigNumberish>,
+      toTokenIndex: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     WETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;

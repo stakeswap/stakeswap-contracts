@@ -8,7 +8,7 @@ import { SafeERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC2
 import { ILido as ST_ETH } from '../lib/ILido.sol';
 import { IWstETH as WST_ETH } from '../lib/IWstETH.sol';
 
-import { BaseAdapter } from './BaseAdapter.sol';
+import { BaseAdaptor } from './BaseAdaptor.sol';
 import { IrETH as R_ETH } from '../lib/IrETH.sol';
 import { RocketStorageInterface } from '../lib/RocketStorageInterface.sol';
 import { RocketDepositPoolInterface } from '../lib/RocketDepositPoolInterface.sol';
@@ -20,7 +20,7 @@ import { WETHInterface } from '../lib/WETHInterface.sol';
 
 // deposit: ETH -> rETH
 //
-contract RocketPoolAdapter is BaseAdapter {
+contract RocketPoolAdaptor is BaseAdaptor {
     uint256 private constant _serviceStartedAt = 1632980091; // rETH contract created at 1632980091 (block number = 13325250)
     uint256 private immutable _adaptorDeployed = block.timestamp;
 
@@ -30,10 +30,13 @@ contract RocketPoolAdapter is BaseAdapter {
     }
 
     /// @dev get a list of tokens. returned `token0` must be yield-bearing token.
-    function getTokens() public view override returns (address token0, address token1, address token2) {
-        token0 = address(rETH());
-        token1; // = address(0);
-        token2; // = address(0);
+    function getTokens() public view override returns (address token0, address token1) {
+        token0 = address(0);
+        token1 = address(rETH());
+    }
+
+    function getETHAmount(uint256 tokenAmount) public view override returns (uint256) {
+        return rETH().getEthValue(tokenAmount);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////

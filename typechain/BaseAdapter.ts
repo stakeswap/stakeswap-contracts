@@ -31,9 +31,12 @@ import type {
 export interface BaseAdapterInterface extends utils.Interface {
   functions: {
     "BalancerV2Vault()": FunctionFragment;
+    "BalancerV2_rETH_ETH_POOL_ID()": FunctionFragment;
     "BalancerV2_wstETH_WETH_POOL_ID()": FunctionFragment;
     "Curve_stETH_ETH_POOL_ADDRESS()": FunctionFragment;
     "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS()": FunctionFragment;
+    "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH()": FunctionFragment;
+    "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH()": FunctionFragment;
     "PRECISION()": FunctionFragment;
     "WETH()": FunctionFragment;
     "adaptorName()": FunctionFragment;
@@ -56,9 +59,12 @@ export interface BaseAdapterInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "BalancerV2Vault"
+      | "BalancerV2_rETH_ETH_POOL_ID"
       | "BalancerV2_wstETH_WETH_POOL_ID"
       | "Curve_stETH_ETH_POOL_ADDRESS"
       | "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS"
+      | "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH"
+      | "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH"
       | "PRECISION"
       | "WETH"
       | "adaptorName"
@@ -83,6 +89,10 @@ export interface BaseAdapterInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "BalancerV2_rETH_ETH_POOL_ID",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "BalancerV2_wstETH_WETH_POOL_ID",
     values?: undefined
   ): string;
@@ -92,6 +102,14 @@ export interface BaseAdapterInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "PRECISION", values?: undefined): string;
@@ -135,6 +153,10 @@ export interface BaseAdapterInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "BalancerV2_rETH_ETH_POOL_ID",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "BalancerV2_wstETH_WETH_POOL_ID",
     data: BytesLike
   ): Result;
@@ -144,6 +166,14 @@ export interface BaseAdapterInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "PRECISION", data: BytesLike): Result;
@@ -233,6 +263,8 @@ export interface BaseAdapter extends BaseContract {
   functions: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<[string]>;
 
+    BalancerV2_rETH_ETH_POOL_ID(overrides?: CallOverrides): Promise<[string]>;
+
     BalancerV2_wstETH_WETH_POOL_ID(
       overrides?: CallOverrides
     ): Promise<[string]>;
@@ -242,6 +274,14 @@ export interface BaseAdapter extends BaseContract {
     Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
       overrides?: CallOverrides
     ): Promise<[string]>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     PRECISION(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -301,6 +341,8 @@ export interface BaseAdapter extends BaseContract {
 
   BalancerV2Vault(overrides?: CallOverrides): Promise<string>;
 
+  BalancerV2_rETH_ETH_POOL_ID(overrides?: CallOverrides): Promise<string>;
+
   BalancerV2_wstETH_WETH_POOL_ID(overrides?: CallOverrides): Promise<string>;
 
   Curve_stETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<string>;
@@ -308,6 +350,14 @@ export interface BaseAdapter extends BaseContract {
   Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
     overrides?: CallOverrides
   ): Promise<string>;
+
+  Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH(
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -367,6 +417,8 @@ export interface BaseAdapter extends BaseContract {
   callStatic: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<string>;
 
+    BalancerV2_rETH_ETH_POOL_ID(overrides?: CallOverrides): Promise<string>;
+
     BalancerV2_wstETH_WETH_POOL_ID(overrides?: CallOverrides): Promise<string>;
 
     Curve_stETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<string>;
@@ -374,6 +426,14 @@ export interface BaseAdapter extends BaseContract {
     Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
       overrides?: CallOverrides
     ): Promise<string>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -450,6 +510,8 @@ export interface BaseAdapter extends BaseContract {
   estimateGas: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<BigNumber>;
 
+    BalancerV2_rETH_ETH_POOL_ID(overrides?: CallOverrides): Promise<BigNumber>;
+
     BalancerV2_wstETH_WETH_POOL_ID(
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -457,6 +519,14 @@ export interface BaseAdapter extends BaseContract {
     Curve_stETH_ETH_POOL_ADDRESS(overrides?: CallOverrides): Promise<BigNumber>;
 
     Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -511,6 +581,10 @@ export interface BaseAdapter extends BaseContract {
   populateTransaction: {
     BalancerV2Vault(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    BalancerV2_rETH_ETH_POOL_ID(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     BalancerV2_wstETH_WETH_POOL_ID(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -520,6 +594,14 @@ export interface BaseAdapter extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
