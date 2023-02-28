@@ -9,3 +9,7 @@
 [submodule "lib/frxETH-public"]
 	path = lib/frxETH-public
 	url = https://github.com/FraxFinance/frxETH-public
+[submodule "lib/rocketpool"]
+	path = lib/rocketpool
+	url = https://github.com/rocket-pool/rocketpool
+	branch = v1.0.0
