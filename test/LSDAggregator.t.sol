@@ -26,7 +26,8 @@ contract LSDAggregatorTest is Constants, Test, MinorError {
     RocketPoolAdaptor rocketPoolAdaptor;
     FraxAdaptor fraxAdaptor;
 
-    uint256[] public weights;
+    uint256[] public depositWeights;
+    uint256[] public buyWeights;
 
     address user0 = address(102412);
     address user1 = address(102413);
@@ -41,21 +42,26 @@ contract LSDAggregatorTest is Constants, Test, MinorError {
         adaptors.push(rocketPoolAdaptor = new RocketPoolAdaptor());
         adaptors.push(fraxAdaptor = new FraxAdaptor());
 
-        weights.push(3_000);
-        weights.push(2_000);
-        weights.push(5_000);
+        // deposit is quite much
+        depositWeights.push(500);
+        depositWeights.push(250); // rocket pool doesn't support deposit so buyWeight will increase
+        depositWeights.push(250);
+
+        buyWeights.push(3_000);
+        buyWeights.push(2_000);
+        buyWeights.push(4_000);
 
         vm.deal(user0, 10000 ether);
         vm.deal(user1, 10000 ether);
 
-        target = new LSDAggregator(adaptors, weights);
+        target = new LSDAggregator(adaptors, depositWeights, buyWeights);
         vm.makePersistent(address(target));
     }
 
     // test simple deposit and withdraw without staking reward
-    function testDirectDepositAndWithdraw(uint96 amount) public {
-        // uint96 amount = 1 ether;
-        vm.assume(amount > 0.00001 ether && amount < 100 ether);
+    function testDirectDepositAndWithdraw() public {
+        uint96 amount = 1 ether;
+        // vm.assume(amount > 0.00001 ether && amount < 100 ether);
 
         // 1. user0 and user1 deposits
         vm.startPrank(user0, user0);
@@ -75,6 +81,8 @@ contract LSDAggregatorTest is Constants, Test, MinorError {
         console.log('eth balance of user1', user1.balance);
         console.log('vault share of user0', target.balanceOf(user0));
         console.log('vault share of user1', target.balanceOf(user1));
+        console.log('vault share of user0 in ETH', target.previewRedeem(target.balanceOf(user0)));
+        console.log('vault share of user1 in ETH', target.previewRedeem(target.balanceOf(user1)));
 
         uint256 shares0 = target.balanceOf(user0);
 

@@ -9,7 +9,9 @@ interface LSDAggregatorInterface is IERC20 {
 
     function isAdaptor(BaseAdaptor a) external view returns (bool);
 
-    function weights(BaseAdaptor a) external view returns (uint256);
+    function depositWeights(BaseAdaptor a) external view returns (uint256);
+
+    function buyWeights(BaseAdaptor a) external view returns (uint256);
 
     // receive() external payable;
 

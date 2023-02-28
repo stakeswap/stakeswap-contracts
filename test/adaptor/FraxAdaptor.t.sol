@@ -110,6 +110,9 @@ contract FraxAdaptorTest is Test, Constants, MinorError {
         uint256 sfrxETHAmount = adaptor.buyToken{ value: amount }();
         require(sfrxETHAmount == sfrxETH().balanceOf(address(this)), 'sfrxETH buy amount mismatch');
 
+        // check getETHAmount -- error less than 0.5%
+        require(withinError(amount, adaptor.getETHAmount(sfrxETHAmount), (amount * 5) / 1000), 'getETHAmount diff too big');
+
         // sell
         uint256 beforeETHBalance = address(this).balance;
         sfrxETH().approve(address(adaptor), sfrxETHAmount);

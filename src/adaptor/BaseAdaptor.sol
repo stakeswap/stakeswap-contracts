@@ -58,7 +58,7 @@ abstract contract BaseAdaptor is ReentrancyGuard, Constants {
 
     function getTokenAmount(uint256 ethAmount) public view returns (uint256) {
         // TODO: consider rounding error
-        return ((ethAmount * 1e18) / getETHAmount(1 ether)) / 1e18;
+        return ((ethAmount * 1e18) / getETHAmount(1 ether));
     }
 
     /// @dev external function to convert yield-bearing token directly to ETH via adaptor.

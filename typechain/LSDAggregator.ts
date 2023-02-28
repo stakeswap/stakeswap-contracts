@@ -46,9 +46,11 @@ export interface LSDAggregatorInterface extends utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "buyWeights(address)": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "deposit()": FunctionFragment;
+    "depositWeights(address)": FunctionFragment;
     "frxETH()": FunctionFragment;
     "frxETHMinter()": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
@@ -59,8 +61,8 @@ export interface LSDAggregatorInterface extends utils.Interface {
     "rETH()": FunctionFragment;
     "redeem(uint256)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "setAdaptors(address[],uint256[])": FunctionFragment;
-    "setWeights(address[],uint256[])": FunctionFragment;
+    "setAdaptors(address[],uint256[],uint256[])": FunctionFragment;
+    "setWeights(address[],uint256[],uint256[])": FunctionFragment;
     "sfrxETH()": FunctionFragment;
     "stETH()": FunctionFragment;
     "symbol()": FunctionFragment;
@@ -68,7 +70,6 @@ export interface LSDAggregatorInterface extends utils.Interface {
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "weights(address)": FunctionFragment;
     "wstETH()": FunctionFragment;
   };
 
@@ -90,9 +91,11 @@ export interface LSDAggregatorInterface extends utils.Interface {
       | "allowance"
       | "approve"
       | "balanceOf"
+      | "buyWeights"
       | "decimals"
       | "decreaseAllowance"
       | "deposit"
+      | "depositWeights"
       | "frxETH"
       | "frxETHMinter"
       | "increaseAllowance"
@@ -112,7 +115,6 @@ export interface LSDAggregatorInterface extends utils.Interface {
       | "transfer"
       | "transferFrom"
       | "transferOwnership"
-      | "weights"
       | "wstETH"
   ): FunctionFragment;
 
@@ -177,12 +179,20 @@ export interface LSDAggregatorInterface extends utils.Interface {
     functionFragment: "balanceOf",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "buyWeights",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "depositWeights",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "frxETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "frxETHMinter",
@@ -213,11 +223,19 @@ export interface LSDAggregatorInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setAdaptors",
-    values: [PromiseOrValue<string>[], PromiseOrValue<BigNumberish>[]]
+    values: [
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>[],
+      PromiseOrValue<BigNumberish>[]
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "setWeights",
-    values: [PromiseOrValue<string>[], PromiseOrValue<BigNumberish>[]]
+    values: [
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>[],
+      PromiseOrValue<BigNumberish>[]
+    ]
   ): string;
   encodeFunctionData(functionFragment: "sfrxETH", values?: undefined): string;
   encodeFunctionData(functionFragment: "stETH", values?: undefined): string;
@@ -240,10 +258,6 @@ export interface LSDAggregatorInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "weights",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "wstETH", values?: undefined): string;
@@ -297,12 +311,17 @@ export interface LSDAggregatorInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "buyWeights", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "decreaseAllowance",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "depositWeights",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "frxETH", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "frxETHMinter",
@@ -346,7 +365,6 @@ export interface LSDAggregatorInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "weights", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "wstETH", data: BytesLike): Result;
 
   events: {
@@ -483,6 +501,11 @@ export interface LSDAggregator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    buyWeights(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
     decreaseAllowance(
@@ -494,6 +517,11 @@ export interface LSDAggregator extends BaseContract {
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    depositWeights(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     frxETH(overrides?: CallOverrides): Promise<[string]>;
 
@@ -532,13 +560,15 @@ export interface LSDAggregator extends BaseContract {
 
     setAdaptors(
       _adaptors: PromiseOrValue<string>[],
-      _weights: PromiseOrValue<BigNumberish>[],
+      _depositWeights: PromiseOrValue<BigNumberish>[],
+      _buyWeights: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setWeights(
       _adaptors: PromiseOrValue<string>[],
-      _weights: PromiseOrValue<BigNumberish>[],
+      _depositWeights: PromiseOrValue<BigNumberish>[],
+      _buyWeights: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -567,11 +597,6 @@ export interface LSDAggregator extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    weights(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
 
     wstETH(overrides?: CallOverrides): Promise<[string]>;
   };
@@ -634,6 +659,11 @@ export interface LSDAggregator extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  buyWeights(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   decimals(overrides?: CallOverrides): Promise<number>;
 
   decreaseAllowance(
@@ -645,6 +675,11 @@ export interface LSDAggregator extends BaseContract {
   deposit(
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  depositWeights(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   frxETH(overrides?: CallOverrides): Promise<string>;
 
@@ -683,13 +718,15 @@ export interface LSDAggregator extends BaseContract {
 
   setAdaptors(
     _adaptors: PromiseOrValue<string>[],
-    _weights: PromiseOrValue<BigNumberish>[],
+    _depositWeights: PromiseOrValue<BigNumberish>[],
+    _buyWeights: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setWeights(
     _adaptors: PromiseOrValue<string>[],
-    _weights: PromiseOrValue<BigNumberish>[],
+    _depositWeights: PromiseOrValue<BigNumberish>[],
+    _buyWeights: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -718,11 +755,6 @@ export interface LSDAggregator extends BaseContract {
     newOwner: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
-
-  weights(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
 
   wstETH(overrides?: CallOverrides): Promise<string>;
 
@@ -785,6 +817,11 @@ export interface LSDAggregator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    buyWeights(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<number>;
 
     decreaseAllowance(
@@ -794,6 +831,11 @@ export interface LSDAggregator extends BaseContract {
     ): Promise<boolean>;
 
     deposit(overrides?: CallOverrides): Promise<BigNumber>;
+
+    depositWeights(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     frxETH(overrides?: CallOverrides): Promise<string>;
 
@@ -830,13 +872,15 @@ export interface LSDAggregator extends BaseContract {
 
     setAdaptors(
       _adaptors: PromiseOrValue<string>[],
-      _weights: PromiseOrValue<BigNumberish>[],
+      _depositWeights: PromiseOrValue<BigNumberish>[],
+      _buyWeights: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
     setWeights(
       _adaptors: PromiseOrValue<string>[],
-      _weights: PromiseOrValue<BigNumberish>[],
+      _depositWeights: PromiseOrValue<BigNumberish>[],
+      _buyWeights: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -865,11 +909,6 @@ export interface LSDAggregator extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    weights(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     wstETH(overrides?: CallOverrides): Promise<string>;
   };
@@ -970,6 +1009,11 @@ export interface LSDAggregator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    buyWeights(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     decreaseAllowance(
@@ -980,6 +1024,11 @@ export interface LSDAggregator extends BaseContract {
 
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    depositWeights(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     frxETH(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1019,13 +1068,15 @@ export interface LSDAggregator extends BaseContract {
 
     setAdaptors(
       _adaptors: PromiseOrValue<string>[],
-      _weights: PromiseOrValue<BigNumberish>[],
+      _depositWeights: PromiseOrValue<BigNumberish>[],
+      _buyWeights: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setWeights(
       _adaptors: PromiseOrValue<string>[],
-      _weights: PromiseOrValue<BigNumberish>[],
+      _depositWeights: PromiseOrValue<BigNumberish>[],
+      _buyWeights: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1053,11 +1104,6 @@ export interface LSDAggregator extends BaseContract {
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    weights(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     wstETH(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1130,6 +1176,11 @@ export interface LSDAggregator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    buyWeights(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseAllowance(
@@ -1140,6 +1191,11 @@ export interface LSDAggregator extends BaseContract {
 
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    depositWeights(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     frxETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1179,13 +1235,15 @@ export interface LSDAggregator extends BaseContract {
 
     setAdaptors(
       _adaptors: PromiseOrValue<string>[],
-      _weights: PromiseOrValue<BigNumberish>[],
+      _depositWeights: PromiseOrValue<BigNumberish>[],
+      _buyWeights: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setWeights(
       _adaptors: PromiseOrValue<string>[],
-      _weights: PromiseOrValue<BigNumberish>[],
+      _depositWeights: PromiseOrValue<BigNumberish>[],
+      _buyWeights: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1213,11 +1271,6 @@ export interface LSDAggregator extends BaseContract {
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    weights(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     wstETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;

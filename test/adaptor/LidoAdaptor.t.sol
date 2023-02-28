@@ -110,6 +110,9 @@ contract LidoAdaptorTest is Test, Constants, MinorError {
         uint256 wstETHAmount = adaptor.buyToken{ value: amount }();
         require(wstETHAmount == wstETH().balanceOf(address(this)), 'wstETH buy amount mismatch');
 
+        // check getETHAmount -- error less than 0.5%
+        require(withinError(amount, adaptor.getETHAmount(wstETHAmount), (amount * 5) / 1000), 'getETHAmount diff too big');
+
         // sell
         uint256 beforeETHBalance = address(this).balance;
         wstETH().approve(address(adaptor), wstETHAmount);

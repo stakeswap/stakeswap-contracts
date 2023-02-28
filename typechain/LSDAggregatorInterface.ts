@@ -34,14 +34,15 @@ export interface LSDAggregatorInterfaceInterface extends utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "buyWeights(address)": FunctionFragment;
     "deposit()": FunctionFragment;
+    "depositWeights(address)": FunctionFragment;
     "isAdaptor(address)": FunctionFragment;
     "previewRedeem(uint256)": FunctionFragment;
     "redeem(uint256)": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
-    "weights(address)": FunctionFragment;
   };
 
   getFunction(
@@ -50,14 +51,15 @@ export interface LSDAggregatorInterfaceInterface extends utils.Interface {
       | "allowance"
       | "approve"
       | "balanceOf"
+      | "buyWeights"
       | "deposit"
+      | "depositWeights"
       | "isAdaptor"
       | "previewRedeem"
       | "redeem"
       | "totalSupply"
       | "transfer"
       | "transferFrom"
-      | "weights"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -76,7 +78,15 @@ export interface LSDAggregatorInterfaceInterface extends utils.Interface {
     functionFragment: "balanceOf",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "buyWeights",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "depositWeights",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "isAdaptor",
     values: [PromiseOrValue<string>]
@@ -105,16 +115,17 @@ export interface LSDAggregatorInterfaceInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>
     ]
   ): string;
-  encodeFunctionData(
-    functionFragment: "weights",
-    values: [PromiseOrValue<string>]
-  ): string;
 
   decodeFunctionResult(functionFragment: "adaptors", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "buyWeights", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "depositWeights",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "isAdaptor", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "previewRedeem",
@@ -130,7 +141,6 @@ export interface LSDAggregatorInterfaceInterface extends utils.Interface {
     functionFragment: "transferFrom",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "weights", data: BytesLike): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
@@ -214,9 +224,19 @@ export interface LSDAggregatorInterface extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    buyWeights(
+      a: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    depositWeights(
+      a: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     isAdaptor(
       a: PromiseOrValue<string>,
@@ -247,11 +267,6 @@ export interface LSDAggregatorInterface extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    weights(
-      a: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
   };
 
   adaptors(
@@ -276,9 +291,19 @@ export interface LSDAggregatorInterface extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  buyWeights(
+    a: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   deposit(
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  depositWeights(
+    a: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   isAdaptor(
     a: PromiseOrValue<string>,
@@ -310,11 +335,6 @@ export interface LSDAggregatorInterface extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  weights(
-    a: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   callStatic: {
     adaptors(
       index: PromiseOrValue<BigNumberish>,
@@ -338,7 +358,17 @@ export interface LSDAggregatorInterface extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    buyWeights(
+      a: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     deposit(overrides?: CallOverrides): Promise<BigNumber>;
+
+    depositWeights(
+      a: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     isAdaptor(
       a: PromiseOrValue<string>,
@@ -369,11 +399,6 @@ export interface LSDAggregatorInterface extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
-
-    weights(
-      a: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
   };
 
   filters: {
@@ -423,8 +448,18 @@ export interface LSDAggregatorInterface extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    buyWeights(
+      a: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    depositWeights(
+      a: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     isAdaptor(
@@ -456,11 +491,6 @@ export interface LSDAggregatorInterface extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    weights(
-      a: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -486,8 +516,18 @@ export interface LSDAggregatorInterface extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    buyWeights(
+      a: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     deposit(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    depositWeights(
+      a: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     isAdaptor(
@@ -518,11 +558,6 @@ export interface LSDAggregatorInterface extends BaseContract {
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    weights(
-      a: PromiseOrValue<string>,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

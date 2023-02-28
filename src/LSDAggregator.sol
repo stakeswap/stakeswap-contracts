@@ -25,12 +25,20 @@ contract LSDAggregator is LSDAggregatorInterface, Constants, Ownable, Reentrancy
 
     BaseAdaptor[] public adaptors;
     mapping(BaseAdaptor => bool) public isAdaptor;
-    mapping(BaseAdaptor => uint256) public weights; // NOTE: sum of weights must be 10,000
+
+    // NOTE: sum of depositWeights and buyWeights must be equal to TOTAL_WEIGHT
+    // NOTE: We have separate weights because DEX offers a better price than direct deposit to LSD.
+    mapping(BaseAdaptor => uint256) public depositWeights;
+    mapping(BaseAdaptor => uint256) public buyWeights;
 
     receive() external payable {}
 
-    constructor(BaseAdaptor[] memory _adaptors, uint256[] memory _weights) ERC20('Aggregated Staking ETH', 'aeETH') {
-        _setAdaptors(_adaptors, _weights);
+    constructor(
+        BaseAdaptor[] memory _adaptors,
+        uint256[] memory _depositWeights,
+        uint256[] memory _buyWeights
+    ) ERC20('Aggregated Staking ETH', 'aeETH') {
+        _setAdaptors(_adaptors, _depositWeights, _buyWeights);
         // approve max for depositWithETH
         WETH().approve(address(this), type(uint256).max);
     }
@@ -40,16 +48,20 @@ contract LSDAggregator is LSDAggregatorInterface, Constants, Ownable, Reentrancy
 
         for (uint256 i = 0; i < adaptors.length; i++) {
             BaseAdaptor a = adaptors[i];
-            uint256 weight = weights[a];
-            uint256 value = (msg.value * weight) / TOTAL_WEIGHT;
+            uint256 depositValue = (msg.value * depositWeights[a]) / TOTAL_WEIGHT;
+            uint256 buyValue = (msg.value * buyWeights[a]) / TOTAL_WEIGHT;
+
+            // if adaptor doesn't support deposit, buy all token from DEX
+            if (!a.canDeposit(depositValue)) {
+                buyValue += depositValue;
+                depositValue = 0;
+            }
 
             uint256 tokens;
+            // NOTE: We can deposit directly to LSD, but not because the price is much better in DEX.
+            if (depositValue > 0) tokens += a.deposit{ value: depositValue }();
+            if (buyValue > 0) tokens += a.buyToken{ value: buyValue }();
 
-            if (a.canDeposit(value)) {
-                tokens = a.deposit{ value: value }();
-            } else {
-                tokens = a.buyToken{ value: value }();
-            }
             shares += a.getETHAmount(tokens);
         }
 
@@ -103,26 +115,39 @@ contract LSDAggregator is LSDAggregatorInterface, Constants, Ownable, Reentrancy
         _;
     }
 
-    function setWeights(BaseAdaptor[] calldata _adaptors, uint256[] calldata _weights) external onlyOwner {
+    function setWeights(
+        BaseAdaptor[] calldata _adaptors,
+        uint256[] calldata _depositWeights,
+        uint256[] calldata _buyWeights
+    ) external onlyOwner {
         require(_adaptors.length == adaptors.length, 'LENGTH_MISMATCH');
+        require(_adaptors.length == _depositWeights.length, 'LENGTH_MISMATCH');
+        require(_adaptors.length == _buyWeights.length, 'LENGTH_MISMATCH');
+
         uint256 accWeight;
         for (uint256 i = 0; i < _adaptors.length; i++) {
             BaseAdaptor a = _adaptors[i];
             require(isAdaptor[a], 'NOT_ADAPTOR');
-            weights[a] = _weights[i];
-            accWeight += _weights[i];
+            depositWeights[a] = _depositWeights[i];
+            buyWeights[a] = _buyWeights[i];
+            accWeight += _depositWeights[i] + _buyWeights[i];
         }
         require(accWeight == TOTAL_WEIGHT, 'INVALID_DENOMINATOR');
     }
 
-    function setAdaptors(BaseAdaptor[] calldata _adaptors, uint256[] calldata _weights) external onlyOwner {
-        return _setAdaptors(_adaptors, _weights);
+    function setAdaptors(
+        BaseAdaptor[] calldata _adaptors,
+        uint256[] calldata _depositWeights,
+        uint256[] calldata _buyWeights
+    ) external onlyOwner {
+        return _setAdaptors(_adaptors, _depositWeights, _buyWeights);
     }
 
     // NOTE: Before remove adaptors, we have to liquidate tokens that adaptors support.
     //       But we do not implement it for simplicity.
-    function _setAdaptors(BaseAdaptor[] memory _adaptors, uint256[] memory _weights) private {
-        require(_adaptors.length == _weights.length, 'Invalid Length');
+    function _setAdaptors(BaseAdaptor[] memory _adaptors, uint256[] memory _depositWeights, uint256[] memory _buyWeights) private {
+        require(_adaptors.length == _depositWeights.length, 'LENGTH_MISMATCH');
+        require(_adaptors.length == _buyWeights.length, 'LENGTH_MISMATCH');
 
         // TODO: optimize unset-set process (e.g., approve 0 then approve max, SSTORE 0 then SSTORE 1)
         // TODO: redeem yield-bearing token to ETH if adaptor is permanently removed (those ETH must be re-allocated)
@@ -130,7 +155,8 @@ contract LSDAggregator is LSDAggregatorInterface, Constants, Ownable, Reentrancy
         for (uint256 i = 0; i < adaptors.length; i++) {
             BaseAdaptor a = adaptors[i];
             isAdaptor[a] = false;
-            weights[a] = 0;
+            depositWeights[a] = 0;
+            buyWeights[a] = 0;
             WETH().approve(address(a), 0);
         }
 
@@ -140,8 +166,9 @@ contract LSDAggregator is LSDAggregatorInterface, Constants, Ownable, Reentrancy
         for (uint256 i = 0; i < _adaptors.length; i++) {
             BaseAdaptor a = _adaptors[i];
             isAdaptor[a] = true;
-            weights[a] = _weights[i];
-            accWeight += _weights[i];
+            depositWeights[a] = _depositWeights[i];
+            buyWeights[a] = _buyWeights[i];
+            accWeight += _depositWeights[i] + _buyWeights[i];
             WETH().approve(address(a), type(uint256).max);
         }
         require(accWeight == TOTAL_WEIGHT, 'INVALID_DENOMINATOR');

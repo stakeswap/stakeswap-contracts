@@ -126,6 +126,9 @@ contract RocketPoolAdaptorTest is Test, Constants, MinorError {
         uint256 rETHAmount = adaptor.buyToken{ value: amount }();
         require(rETHAmount == rETH().balanceOf(address(this)), 'rETH buy amount mismatch');
 
+        // check getETHAmount -- error less than 1%
+        require(withinError(amount, adaptor.getETHAmount(rETHAmount), (amount * 10) / 1000), 'getETHAmount diff too big');
+
         // sell
         uint256 beforeETHBalance = address(this).balance;
         rETH().approve(address(adaptor), rETHAmount);

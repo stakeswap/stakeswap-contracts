@@ -147,6 +147,25 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "contract BaseAdaptor",
+        name: "a",
+        type: "address",
+      },
+    ],
+    name: "buyWeights",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "deposit",
     outputs: [
@@ -157,6 +176,25 @@ const _abi = [
       },
     ],
     stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract BaseAdaptor",
+        name: "a",
+        type: "address",
+      },
+    ],
+    name: "depositWeights",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -280,25 +318,6 @@ const _abi = [
       },
     ],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract BaseAdaptor",
-        name: "a",
-        type: "address",
-      },
-    ],
-    name: "weights",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
 ] as const;
