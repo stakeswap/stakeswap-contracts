@@ -6,10 +6,11 @@ import 'forge-std/Test.sol';
 import '../../src/adaptor/FraxAdaptor.sol';
 import { IERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
 import { Constants } from '../../src/lib/Constants.sol';
+import { MinorError } from '../lib/MinorError.sol';
 
 // https://github.com/foundry-rs/forge-std/blob/master/src/Vm.sol
 
-contract FraxAdaptorTest is Test, Constants {
+contract FraxAdaptorTest is Test, Constants, MinorError {
     // the identifiers of the forks
     uint256 mainnetFork;
     uint256 goerliFork;
@@ -116,6 +117,7 @@ contract FraxAdaptorTest is Test, Constants {
         uint256 afterETHBalance = address(this).balance;
 
         require(afterETHBalance - beforeETHBalance == ETHAmount, 'sfrxETH sell amount mismatch');
+        require(withinError(amount, ETHAmount, (amount * 1) / 100), 'price impact too big');
     }
 
     function testAPR() public {

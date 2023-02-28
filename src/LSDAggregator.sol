@@ -14,9 +14,11 @@ import { FixedPointMathLib } from '../lib/frxETH-public/lib/solmate/src/utils/Fi
 
 import { Constants } from './lib/Constants.sol';
 
+import { LSDAggregatorInterface } from './LSDAggregatorInterface.sol';
+
 /// @dev An aggregator for liquid staking derivatives such as lido, frax-ether, rocketpool.
 /// Note that we cannot use ERC4626 with supporting DEX as withdrawal strategy because dex doesn't provide 1-to-1 conversion rate.
-contract LSDAggregator is Constants, Ownable, ReentrancyGuard, ERC20 {
+contract LSDAggregator is LSDAggregatorInterface, Constants, Ownable, ReentrancyGuard, ERC20 {
     using FixedPointMathLib for uint256;
 
     uint256 constant TOTAL_WEIGHT = 10_000;
@@ -79,6 +81,19 @@ contract LSDAggregator is Constants, Ownable, ReentrancyGuard, ERC20 {
         payable(msg.sender).transfer(assets);
 
         // emit Deposit(msg.sender, receiver, assets, shares);
+    }
+
+    function previewRedeem(uint256 shares) public view returns (uint256 assets) {
+        if (shares == 0) return 0;
+        uint256 supply = totalSupply();
+
+        for (uint256 i = 0; i < adaptors.length; i++) {
+            BaseAdaptor a = adaptors[i];
+            (, address token1) = a.getTokens();
+            uint256 value = (IERC20(token1).balanceOf(address(this)) * shares) / supply;
+
+            assets += a.getETHAmount(value);
+        }
     }
 
     /* ========== Adaptor ========== */

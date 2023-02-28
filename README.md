@@ -27,3 +27,17 @@ Liquid staking aggregator contracts
    ```bash
    make test
    ```
+
+## AMM
+
+### Users
+
+1. Trader: 거래
+2. Liquidity Provider: 유동성 제공
+3. Staker: 유동성 제공 후 LP토큰 스태이킹
+
+### Process
+
+stake할 때
+
+- 50%
