@@ -21,3 +21,7 @@
 	path = lib/lido-dao
 	url = https://github.com/lidofinance/lido-dao
 	branch = v1.2.0
+[submodule "lib/v2-core"]
+	path = lib/v2-core
+	url = https://github.com/Uniswap/v2-core
+	branch = v1.0.1
