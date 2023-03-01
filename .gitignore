@@ -108,3 +108,7 @@ cache
 
 # foundry build outputs
 out
+
+artifacts
+
+cache*

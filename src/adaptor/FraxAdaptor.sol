@@ -3,10 +3,10 @@ pragma solidity ^0.8.13;
 
 import 'forge-std/console.sol';
 import { BaseAdaptor } from './BaseAdaptor.sol';
-import { frxETHMinter as FrxETHMinter } from '../../lib/frxETH-public/src/frxETHMinter.sol';
-import { IERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
-import { sfrxETH as SFRX_ETH } from '../../lib/frxETH-public/src/sfrxETH.sol';
-import { xERC4626 } from '../../lib/frxETH-public/lib/ERC4626/src/xERC4626.sol';
+import { frxETHMinter as FrxETHMinter } from 'frxETH-public/src/frxETHMinter.sol';
+import { IERC20 } from 'openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
+import { sfrxETH as SFRX_ETH } from 'frxETH-public/src/sfrxETH.sol';
+import { xERC4626 } from 'frxETH-public/lib/ERC4626/src/xERC4626.sol';
 import { CurveSwap } from '../lib/curve/CurveSwap.sol';
 
 // ETH -> frxETH -- deposit (for validator node)

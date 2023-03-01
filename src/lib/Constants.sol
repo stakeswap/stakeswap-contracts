@@ -6,9 +6,9 @@ import { WETHInterface } from './WETHInterface.sol';
 import { ILido as ST_ETH } from './ILido.sol';
 import { IWstETH as WST_ETH } from './IWstETH.sol';
 
-import { frxETHMinter as FrxETHMinter } from '../../lib/frxETH-public/src/frxETHMinter.sol';
-import { IERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
-import { sfrxETH as SFRX_ETH } from '../../lib/frxETH-public/src/sfrxETH.sol';
+import { frxETHMinter as FrxETHMinter } from 'frxETH-public/src/frxETHMinter.sol';
+import { IERC20 } from 'openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
+import { sfrxETH as SFRX_ETH } from 'frxETH-public/src/sfrxETH.sol';
 
 import { IrETH as R_ETH } from './IrETH.sol';
 

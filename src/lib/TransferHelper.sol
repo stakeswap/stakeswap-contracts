@@ -2,7 +2,7 @@
 // taken from https://github.com/Uniswap/v3-periphery/blob/main/contracts/libraries/TransferHelper.sol
 pragma solidity >=0.6.0;
 
-import '../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
+import 'openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
 
 library TransferHelper {
     /// @notice Transfers tokens from the targeted address to the given destination

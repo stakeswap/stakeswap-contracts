@@ -2,15 +2,15 @@
 pragma solidity ^0.8.13;
 
 import 'forge-std/console.sol';
-import { IERC20 } from '../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
-import { ERC20 } from '../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol';
-import { SafeERC20 } from '../lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol';
+import { IERC20 } from 'openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
+import { ERC20 } from 'openzeppelin-contracts/contracts/token/ERC20/ERC20.sol';
+import { SafeERC20 } from 'openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol';
 import { BaseAdaptor } from './adaptor/BaseAdaptor.sol';
-import { Ownable } from '../lib/openzeppelin-contracts/contracts/access/Ownable.sol';
-import { ReentrancyGuard } from '../lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol';
+import { Ownable } from 'openzeppelin-contracts/contracts/access/Ownable.sol';
+import { ReentrancyGuard } from 'openzeppelin-contracts/contracts/security/ReentrancyGuard.sol';
 
-import { IERC4626 } from '../lib/forge-std/src/interfaces/IERC4626.sol';
-import { FixedPointMathLib } from '../lib/frxETH-public/lib/solmate/src/utils/FixedPointMathLib.sol';
+import { IERC4626 } from 'forge-std/interfaces/IERC4626.sol';
+import { FixedPointMathLib } from 'frxETH-public/lib/solmate/src/utils/FixedPointMathLib.sol';
 
 import { Constants } from './lib/Constants.sol';
 

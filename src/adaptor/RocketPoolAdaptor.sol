@@ -3,8 +3,8 @@ pragma solidity ^0.8.13;
 
 import 'forge-std/console.sol';
 
-import { IERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
-import { SafeERC20 } from '../../lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol';
+import { IERC20 } from 'openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
+import { SafeERC20 } from 'openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol';
 import { ILido as ST_ETH } from '../lib/ILido.sol';
 import { IWstETH as WST_ETH } from '../lib/IWstETH.sol';
 
@@ -14,7 +14,7 @@ import { RocketStorageInterface } from '../lib/RocketStorageInterface.sol';
 import { RocketDepositPoolInterface } from '../lib/RocketDepositPoolInterface.sol';
 import { RocketDAOProtocolSettingsDepositInterface } from '../lib/RocketDAOProtocolSettingsDepositInterface.sol';
 import { RocketVaultInterface } from '../lib/RocketVaultInterface.sol';
-import { frxETHMinter as FrxETHMinter } from '../../lib/frxETH-public/src/frxETHMinter.sol';
+import { frxETHMinter as FrxETHMinter } from 'frxETH-public/src/frxETHMinter.sol';
 import { BalancerV2VaultInterface } from '../lib/balancer-v2/interfaces/BalancerV2VaultInterface.sol';
 import { WETHInterface } from '../lib/WETHInterface.sol';
 
