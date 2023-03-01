@@ -40,6 +40,8 @@ export interface FactoryInterface extends utils.Interface {
     "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH()": FunctionFragment;
+    "DAI()": FunctionFragment;
+    "USDC()": FunctionFragment;
     "WETH()": FunctionFragment;
     "aggregator()": FunctionFragment;
     "allPairs(uint256)": FunctionFragment;
@@ -72,6 +74,8 @@ export interface FactoryInterface extends utils.Interface {
       | "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH"
+      | "DAI"
+      | "USDC"
       | "WETH"
       | "aggregator"
       | "allPairs"
@@ -135,6 +139,8 @@ export interface FactoryInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "DAI", values?: undefined): string;
+  encodeFunctionData(functionFragment: "USDC", values?: undefined): string;
   encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "aggregator",
@@ -227,6 +233,8 @@ export interface FactoryInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "DAI", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "USDC", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "aggregator", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allPairs", data: BytesLike): Result;
@@ -340,6 +348,10 @@ export interface Factory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    DAI(overrides?: CallOverrides): Promise<[string]>;
+
+    USDC(overrides?: CallOverrides): Promise<[string]>;
+
     WETH(overrides?: CallOverrides): Promise<[string]>;
 
     aggregator(overrides?: CallOverrides): Promise<[string]>;
@@ -430,6 +442,10 @@ export interface Factory extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  DAI(overrides?: CallOverrides): Promise<string>;
+
+  USDC(overrides?: CallOverrides): Promise<string>;
+
   WETH(overrides?: CallOverrides): Promise<string>;
 
   aggregator(overrides?: CallOverrides): Promise<string>;
@@ -519,6 +535,10 @@ export interface Factory extends BaseContract {
     Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    DAI(overrides?: CallOverrides): Promise<string>;
+
+    USDC(overrides?: CallOverrides): Promise<string>;
 
     WETH(overrides?: CallOverrides): Promise<string>;
 
@@ -630,6 +650,10 @@ export interface Factory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    DAI(overrides?: CallOverrides): Promise<BigNumber>;
+
+    USDC(overrides?: CallOverrides): Promise<BigNumber>;
+
     WETH(overrides?: CallOverrides): Promise<BigNumber>;
 
     aggregator(overrides?: CallOverrides): Promise<BigNumber>;
@@ -728,6 +752,10 @@ export interface Factory extends BaseContract {
     Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    DAI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    USDC(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     WETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

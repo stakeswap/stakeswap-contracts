@@ -40,9 +40,11 @@ export interface PairInterface extends utils.Interface {
     "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH()": FunctionFragment;
+    "DAI()": FunctionFragment;
     "DOMAIN_SEPARATOR()": FunctionFragment;
     "MINIMUM_LIQUIDITY()": FunctionFragment;
     "PERMIT_TYPEHASH()": FunctionFragment;
+    "USDC()": FunctionFragment;
     "WETH()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
@@ -93,9 +95,11 @@ export interface PairInterface extends utils.Interface {
       | "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH"
+      | "DAI"
       | "DOMAIN_SEPARATOR"
       | "MINIMUM_LIQUIDITY"
       | "PERMIT_TYPEHASH"
+      | "USDC"
       | "WETH"
       | "allowance"
       | "approve"
@@ -177,6 +181,7 @@ export interface PairInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "DAI", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "DOMAIN_SEPARATOR",
     values?: undefined
@@ -189,6 +194,7 @@ export interface PairInterface extends utils.Interface {
     functionFragment: "PERMIT_TYPEHASH",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "USDC", values?: undefined): string;
   encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "allowance",
@@ -350,6 +356,7 @@ export interface PairInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "DAI", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "DOMAIN_SEPARATOR",
     data: BytesLike
@@ -362,6 +369,7 @@ export interface PairInterface extends utils.Interface {
     functionFragment: "PERMIT_TYPEHASH",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "USDC", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
@@ -571,11 +579,15 @@ export interface Pair extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    DAI(overrides?: CallOverrides): Promise<[string]>;
+
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
 
     MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     PERMIT_TYPEHASH(overrides?: CallOverrides): Promise<[string]>;
+
+    USDC(overrides?: CallOverrides): Promise<[string]>;
 
     WETH(overrides?: CallOverrides): Promise<[string]>;
 
@@ -750,11 +762,15 @@ export interface Pair extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  DAI(overrides?: CallOverrides): Promise<string>;
+
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
   MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
 
   PERMIT_TYPEHASH(overrides?: CallOverrides): Promise<string>;
+
+  USDC(overrides?: CallOverrides): Promise<string>;
 
   WETH(overrides?: CallOverrides): Promise<string>;
 
@@ -929,11 +945,15 @@ export interface Pair extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    DAI(overrides?: CallOverrides): Promise<string>;
+
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
     MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
 
     PERMIT_TYPEHASH(overrides?: CallOverrides): Promise<string>;
+
+    USDC(overrides?: CallOverrides): Promise<string>;
 
     WETH(overrides?: CallOverrides): Promise<string>;
 
@@ -1178,11 +1198,15 @@ export interface Pair extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    DAI(overrides?: CallOverrides): Promise<BigNumber>;
+
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
 
     MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<BigNumber>;
 
     PERMIT_TYPEHASH(overrides?: CallOverrides): Promise<BigNumber>;
+
+    USDC(overrides?: CallOverrides): Promise<BigNumber>;
 
     WETH(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1358,11 +1382,15 @@ export interface Pair extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    DAI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     MINIMUM_LIQUIDITY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     PERMIT_TYPEHASH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    USDC(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     WETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

@@ -37,6 +37,8 @@ export interface CurveSwapInterface extends utils.Interface {
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH()": FunctionFragment;
     "Curve_swap(address,uint256,address,int128,int128)": FunctionFragment;
+    "DAI()": FunctionFragment;
+    "USDC()": FunctionFragment;
     "WETH()": FunctionFragment;
     "frxETH()": FunctionFragment;
     "frxETHMinter()": FunctionFragment;
@@ -60,6 +62,8 @@ export interface CurveSwapInterface extends utils.Interface {
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH"
       | "Curve_swap"
+      | "DAI"
+      | "USDC"
       | "WETH"
       | "frxETH"
       | "frxETHMinter"
@@ -123,6 +127,8 @@ export interface CurveSwapInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>
     ]
   ): string;
+  encodeFunctionData(functionFragment: "DAI", values?: undefined): string;
+  encodeFunctionData(functionFragment: "USDC", values?: undefined): string;
   encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
   encodeFunctionData(functionFragment: "frxETH", values?: undefined): string;
   encodeFunctionData(
@@ -179,6 +185,8 @@ export interface CurveSwapInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "Curve_swap", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "DAI", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "USDC", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "frxETH", data: BytesLike): Result;
   decodeFunctionResult(
@@ -265,6 +273,10 @@ export interface CurveSwap extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    DAI(overrides?: CallOverrides): Promise<[string]>;
+
+    USDC(overrides?: CallOverrides): Promise<[string]>;
+
     WETH(overrides?: CallOverrides): Promise<[string]>;
 
     frxETH(overrides?: CallOverrides): Promise<[string]>;
@@ -323,6 +335,10 @@ export interface CurveSwap extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  DAI(overrides?: CallOverrides): Promise<string>;
+
+  USDC(overrides?: CallOverrides): Promise<string>;
+
   WETH(overrides?: CallOverrides): Promise<string>;
 
   frxETH(overrides?: CallOverrides): Promise<string>;
@@ -380,6 +396,10 @@ export interface CurveSwap extends BaseContract {
       toTokenIndex: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    DAI(overrides?: CallOverrides): Promise<string>;
+
+    USDC(overrides?: CallOverrides): Promise<string>;
 
     WETH(overrides?: CallOverrides): Promise<string>;
 
@@ -445,6 +465,10 @@ export interface CurveSwap extends BaseContract {
       toTokenIndex: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    DAI(overrides?: CallOverrides): Promise<BigNumber>;
+
+    USDC(overrides?: CallOverrides): Promise<BigNumber>;
 
     WETH(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -512,6 +536,10 @@ export interface CurveSwap extends BaseContract {
       toTokenIndex: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    DAI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    USDC(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     WETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

@@ -62,6 +62,7 @@ contract FraxAdaptor is BaseAdaptor, CurveSwap {
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     function canWithdraw(uint256 amount) public pure override returns (bool) {
+        amount;
         return false;
     }
 

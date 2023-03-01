@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as erc20 from "./ERC20";
+export * as iRouterSol from "./IRouter.sol";
 export * as token from "./token";
 export { BalancerV2MetaStablePoolInterface__factory } from "./BalancerV2MetaStablePoolInterface__factory";
 export { BalancerV2Swap__factory } from "./BalancerV2Swap__factory";
@@ -32,5 +33,6 @@ export { RocketDepositPoolInterface__factory } from "./RocketDepositPoolInterfac
 export { RocketPoolAdaptor__factory } from "./RocketPoolAdaptor__factory";
 export { RocketStorageInterface__factory } from "./RocketStorageInterface__factory";
 export { RocketVaultInterface__factory } from "./RocketVaultInterface__factory";
+export { Router__factory } from "./Router__factory";
 export { Staking__factory } from "./Staking__factory";
 export { WETHInterface__factory } from "./WETHInterface__factory";

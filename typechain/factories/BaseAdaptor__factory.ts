@@ -190,12 +190,38 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "DAI",
+    outputs: [
+      {
+        internalType: "contract IERC20",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "PRECISION",
     outputs: [
       {
         internalType: "uint256",
         name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "USDC",
+    outputs: [
+      {
+        internalType: "contract IERC20",
+        name: "",
+        type: "address",
       },
     ],
     stateMutability: "view",

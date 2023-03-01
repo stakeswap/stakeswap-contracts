@@ -37,6 +37,8 @@ export interface BalancerV2SwapInterface extends utils.Interface {
     "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH()": FunctionFragment;
+    "DAI()": FunctionFragment;
+    "USDC()": FunctionFragment;
     "WETH()": FunctionFragment;
     "frxETH()": FunctionFragment;
     "frxETHMinter()": FunctionFragment;
@@ -60,6 +62,8 @@ export interface BalancerV2SwapInterface extends utils.Interface {
       | "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH"
+      | "DAI"
+      | "USDC"
       | "WETH"
       | "frxETH"
       | "frxETHMinter"
@@ -122,6 +126,8 @@ export interface BalancerV2SwapInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "DAI", values?: undefined): string;
+  encodeFunctionData(functionFragment: "USDC", values?: undefined): string;
   encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
   encodeFunctionData(functionFragment: "frxETH", values?: undefined): string;
   encodeFunctionData(
@@ -181,6 +187,8 @@ export interface BalancerV2SwapInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "DAI", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "USDC", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "frxETH", data: BytesLike): Result;
   decodeFunctionResult(
@@ -266,6 +274,10 @@ export interface BalancerV2Swap extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    DAI(overrides?: CallOverrides): Promise<[string]>;
+
+    USDC(overrides?: CallOverrides): Promise<[string]>;
+
     WETH(overrides?: CallOverrides): Promise<[string]>;
 
     frxETH(overrides?: CallOverrides): Promise<[string]>;
@@ -323,6 +335,10 @@ export interface BalancerV2Swap extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  DAI(overrides?: CallOverrides): Promise<string>;
+
+  USDC(overrides?: CallOverrides): Promise<string>;
+
   WETH(overrides?: CallOverrides): Promise<string>;
 
   frxETH(overrides?: CallOverrides): Promise<string>;
@@ -379,6 +395,10 @@ export interface BalancerV2Swap extends BaseContract {
     Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    DAI(overrides?: CallOverrides): Promise<string>;
+
+    USDC(overrides?: CallOverrides): Promise<string>;
 
     WETH(overrides?: CallOverrides): Promise<string>;
 
@@ -443,6 +463,10 @@ export interface BalancerV2Swap extends BaseContract {
     Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    DAI(overrides?: CallOverrides): Promise<BigNumber>;
+
+    USDC(overrides?: CallOverrides): Promise<BigNumber>;
 
     WETH(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -509,6 +533,10 @@ export interface BalancerV2Swap extends BaseContract {
     Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    DAI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    USDC(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     WETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

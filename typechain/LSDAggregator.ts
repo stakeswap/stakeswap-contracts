@@ -41,6 +41,8 @@ export interface LSDAggregatorInterface extends utils.Interface {
     "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH()": FunctionFragment;
+    "DAI()": FunctionFragment;
+    "USDC()": FunctionFragment;
     "WETH()": FunctionFragment;
     "adaptors(uint256)": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
@@ -86,6 +88,8 @@ export interface LSDAggregatorInterface extends utils.Interface {
       | "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH"
+      | "DAI"
+      | "USDC"
       | "WETH"
       | "adaptors"
       | "allowance"
@@ -162,6 +166,8 @@ export interface LSDAggregatorInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "DAI", values?: undefined): string;
+  encodeFunctionData(functionFragment: "USDC", values?: undefined): string;
   encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "adaptors",
@@ -306,6 +312,8 @@ export interface LSDAggregatorInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "DAI", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "USDC", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "adaptors", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
@@ -477,6 +485,10 @@ export interface LSDAggregator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    DAI(overrides?: CallOverrides): Promise<[string]>;
+
+    USDC(overrides?: CallOverrides): Promise<[string]>;
+
     WETH(overrides?: CallOverrides): Promise<[string]>;
 
     adaptors(
@@ -635,6 +647,10 @@ export interface LSDAggregator extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  DAI(overrides?: CallOverrides): Promise<string>;
+
+  USDC(overrides?: CallOverrides): Promise<string>;
+
   WETH(overrides?: CallOverrides): Promise<string>;
 
   adaptors(
@@ -792,6 +808,10 @@ export interface LSDAggregator extends BaseContract {
     Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    DAI(overrides?: CallOverrides): Promise<string>;
+
+    USDC(overrides?: CallOverrides): Promise<string>;
 
     WETH(overrides?: CallOverrides): Promise<string>;
 
@@ -985,6 +1005,10 @@ export interface LSDAggregator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    DAI(overrides?: CallOverrides): Promise<BigNumber>;
+
+    USDC(overrides?: CallOverrides): Promise<BigNumber>;
+
     WETH(overrides?: CallOverrides): Promise<BigNumber>;
 
     adaptors(
@@ -1151,6 +1175,10 @@ export interface LSDAggregator extends BaseContract {
     Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    DAI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    USDC(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     WETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

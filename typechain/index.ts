@@ -3,6 +3,8 @@
 /* eslint-disable */
 import type * as erc20 from "./ERC20";
 export type { erc20 };
+import type * as iRouterSol from "./IRouter.sol";
+export type { iRouterSol };
 import type * as token from "./token";
 export type { token };
 export type { BalancerV2MetaStablePoolInterface } from "./BalancerV2MetaStablePoolInterface";
@@ -34,6 +36,7 @@ export type { RocketDepositPoolInterface } from "./RocketDepositPoolInterface";
 export type { RocketPoolAdaptor } from "./RocketPoolAdaptor";
 export type { RocketStorageInterface } from "./RocketStorageInterface";
 export type { RocketVaultInterface } from "./RocketVaultInterface";
+export type { Router } from "./Router";
 export type { Staking } from "./Staking";
 export type { WETHInterface } from "./WETHInterface";
 export * as factories from "./factories";
@@ -54,6 +57,10 @@ export { ILido__factory } from "./factories/ILido__factory";
 export { ILP__factory } from "./factories/ILP__factory";
 export { IPair__factory } from "./factories/IPair__factory";
 export { IrETH__factory } from "./factories/IrETH__factory";
+export type { IRouter } from "./IRouter.sol/IRouter";
+export { IRouter__factory } from "./factories/IRouter.sol/IRouter__factory";
+export type { IUniswapV2Router02 } from "./IRouter.sol/IUniswapV2Router02";
+export { IUniswapV2Router02__factory } from "./factories/IRouter.sol/IUniswapV2Router02__factory";
 export { IStaking__factory } from "./factories/IStaking__factory";
 export { IUniswapV2Callee__factory } from "./factories/IUniswapV2Callee__factory";
 export { IWstETH__factory } from "./factories/IWstETH__factory";
@@ -67,5 +74,6 @@ export { RocketDepositPoolInterface__factory } from "./factories/RocketDepositPo
 export { RocketPoolAdaptor__factory } from "./factories/RocketPoolAdaptor__factory";
 export { RocketStorageInterface__factory } from "./factories/RocketStorageInterface__factory";
 export { RocketVaultInterface__factory } from "./factories/RocketVaultInterface__factory";
+export { Router__factory } from "./factories/Router__factory";
 export { Staking__factory } from "./factories/Staking__factory";
 export { WETHInterface__factory } from "./factories/WETHInterface__factory";

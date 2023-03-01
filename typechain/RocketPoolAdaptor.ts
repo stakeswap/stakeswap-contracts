@@ -41,7 +41,9 @@ export interface RocketPoolAdaptorInterface extends utils.Interface {
     "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH()": FunctionFragment;
     "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH()": FunctionFragment;
+    "DAI()": FunctionFragment;
     "PRECISION()": FunctionFragment;
+    "USDC()": FunctionFragment;
     "WETH()": FunctionFragment;
     "adaptorName()": FunctionFragment;
     "buyToken()": FunctionFragment;
@@ -80,7 +82,9 @@ export interface RocketPoolAdaptorInterface extends utils.Interface {
       | "Curve_stETH_ETH_POOL_LP_TOKEN_ADDRESS"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_ETH"
       | "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH"
+      | "DAI"
       | "PRECISION"
+      | "USDC"
       | "WETH"
       | "adaptorName"
       | "buyToken"
@@ -150,7 +154,9 @@ export interface RocketPoolAdaptorInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "DAI", values?: undefined): string;
   encodeFunctionData(functionFragment: "PRECISION", values?: undefined): string;
+  encodeFunctionData(functionFragment: "USDC", values?: undefined): string;
   encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "adaptorName",
@@ -258,7 +264,9 @@ export interface RocketPoolAdaptorInterface extends utils.Interface {
     functionFragment: "Curve_stETH_ETH_POOL_TOKEN_INDEX_stETH",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "DAI", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "PRECISION", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "USDC", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "adaptorName",
@@ -407,7 +415,11 @@ export interface RocketPoolAdaptor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    DAI(overrides?: CallOverrides): Promise<[string]>;
+
     PRECISION(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    USDC(overrides?: CallOverrides): Promise<[string]>;
 
     WETH(overrides?: CallOverrides): Promise<[string]>;
 
@@ -519,7 +531,11 @@ export interface RocketPoolAdaptor extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  DAI(overrides?: CallOverrides): Promise<string>;
+
   PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
+
+  USDC(overrides?: CallOverrides): Promise<string>;
 
   WETH(overrides?: CallOverrides): Promise<string>;
 
@@ -631,7 +647,11 @@ export interface RocketPoolAdaptor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    DAI(overrides?: CallOverrides): Promise<string>;
+
     PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
+
+    USDC(overrides?: CallOverrides): Promise<string>;
 
     WETH(overrides?: CallOverrides): Promise<string>;
 
@@ -764,7 +784,11 @@ export interface RocketPoolAdaptor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    DAI(overrides?: CallOverrides): Promise<BigNumber>;
+
     PRECISION(overrides?: CallOverrides): Promise<BigNumber>;
+
+    USDC(overrides?: CallOverrides): Promise<BigNumber>;
 
     WETH(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -883,7 +907,11 @@ export interface RocketPoolAdaptor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    DAI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     PRECISION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    USDC(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     WETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
