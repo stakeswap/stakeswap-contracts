@@ -464,16 +464,10 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "poolETHAmount",
-        type: "uint256",
-      },
-    ],
+    inputs: [],
     name: "onUnstake",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {

@@ -53,8 +53,6 @@ export interface StakingInterface extends utils.Interface {
     "factory()": FunctionFragment;
     "frxETH()": FunctionFragment;
     "frxETHMinter()": FunctionFragment;
-    "getEffectiveETHAmount(uint256)": FunctionFragment;
-    "getTotalEffectiveETHAmount()": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
     "pair()": FunctionFragment;
@@ -63,11 +61,12 @@ export interface StakingInterface extends utils.Interface {
     "sfrxETH()": FunctionFragment;
     "stETH()": FunctionFragment;
     "stake(uint256)": FunctionFragment;
+    "stakedETH()": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
-    "unstake(uint256)": FunctionFragment;
+    "unstake(uint256,address)": FunctionFragment;
     "wstETH()": FunctionFragment;
   };
 
@@ -97,8 +96,6 @@ export interface StakingInterface extends utils.Interface {
       | "factory"
       | "frxETH"
       | "frxETHMinter"
-      | "getEffectiveETHAmount"
-      | "getTotalEffectiveETHAmount"
       | "name"
       | "nonces"
       | "pair"
@@ -107,6 +104,7 @@ export interface StakingInterface extends utils.Interface {
       | "sfrxETH"
       | "stETH"
       | "stake"
+      | "stakedETH"
       | "symbol"
       | "totalSupply"
       | "transfer"
@@ -193,14 +191,6 @@ export interface StakingInterface extends utils.Interface {
     functionFragment: "frxETHMinter",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "getEffectiveETHAmount",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getTotalEffectiveETHAmount",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "nonces",
@@ -226,6 +216,7 @@ export interface StakingInterface extends utils.Interface {
     functionFragment: "stake",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(functionFragment: "stakedETH", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -245,7 +236,7 @@ export interface StakingInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "unstake",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "wstETH", values?: undefined): string;
 
@@ -315,14 +306,6 @@ export interface StakingInterface extends utils.Interface {
     functionFragment: "frxETHMinter",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "getEffectiveETHAmount",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getTotalEffectiveETHAmount",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pair", data: BytesLike): Result;
@@ -331,6 +314,7 @@ export interface StakingInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "sfrxETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "stakedETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -477,15 +461,6 @@ export interface Staking extends BaseContract {
 
     frxETHMinter(overrides?: CallOverrides): Promise<[string]>;
 
-    getEffectiveETHAmount(
-      lp: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { ethAmount: BigNumber }>;
-
-    getTotalEffectiveETHAmount(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { ethAmount: BigNumber }>;
-
     name(overrides?: CallOverrides): Promise<[string]>;
 
     nonces(
@@ -517,6 +492,8 @@ export interface Staking extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    stakedETH(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -536,6 +513,7 @@ export interface Staking extends BaseContract {
 
     unstake(
       shares: PromiseOrValue<BigNumberish>,
+      staker: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -613,13 +591,6 @@ export interface Staking extends BaseContract {
 
   frxETHMinter(overrides?: CallOverrides): Promise<string>;
 
-  getEffectiveETHAmount(
-    lp: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getTotalEffectiveETHAmount(overrides?: CallOverrides): Promise<BigNumber>;
-
   name(overrides?: CallOverrides): Promise<string>;
 
   nonces(
@@ -651,6 +622,8 @@ export interface Staking extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  stakedETH(overrides?: CallOverrides): Promise<BigNumber>;
+
   symbol(overrides?: CallOverrides): Promise<string>;
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
@@ -670,6 +643,7 @@ export interface Staking extends BaseContract {
 
   unstake(
     shares: PromiseOrValue<BigNumberish>,
+    staker: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -747,13 +721,6 @@ export interface Staking extends BaseContract {
 
     frxETHMinter(overrides?: CallOverrides): Promise<string>;
 
-    getEffectiveETHAmount(
-      lp: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getTotalEffectiveETHAmount(overrides?: CallOverrides): Promise<BigNumber>;
-
     name(overrides?: CallOverrides): Promise<string>;
 
     nonces(
@@ -787,6 +754,8 @@ export interface Staking extends BaseContract {
       [BigNumber, BigNumber] & { shares: BigNumber; depositAmount: BigNumber }
     >;
 
+    stakedETH(overrides?: CallOverrides): Promise<BigNumber>;
+
     symbol(overrides?: CallOverrides): Promise<string>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
@@ -806,11 +775,12 @@ export interface Staking extends BaseContract {
 
     unstake(
       shares: PromiseOrValue<BigNumberish>,
+      staker: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber, BigNumber] & {
         lp: BigNumber;
-        ethAmount: BigNumber;
+        totalEthForShare: BigNumber;
         poolETHAmount: BigNumber;
         rewardToStaker: BigNumber;
       }
@@ -919,13 +889,6 @@ export interface Staking extends BaseContract {
 
     frxETHMinter(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getEffectiveETHAmount(
-      lp: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getTotalEffectiveETHAmount(overrides?: CallOverrides): Promise<BigNumber>;
-
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     nonces(
@@ -957,6 +920,8 @@ export interface Staking extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    stakedETH(overrides?: CallOverrides): Promise<BigNumber>;
+
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
@@ -976,6 +941,7 @@ export interface Staking extends BaseContract {
 
     unstake(
       shares: PromiseOrValue<BigNumberish>,
+      staker: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1062,15 +1028,6 @@ export interface Staking extends BaseContract {
 
     frxETHMinter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getEffectiveETHAmount(
-      lp: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getTotalEffectiveETHAmount(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     nonces(
@@ -1102,6 +1059,8 @@ export interface Staking extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    stakedETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1121,6 +1080,7 @@ export interface Staking extends BaseContract {
 
     unstake(
       shares: PromiseOrValue<BigNumberish>,
+      staker: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

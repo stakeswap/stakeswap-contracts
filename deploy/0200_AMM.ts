@@ -1,13 +1,15 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { DeployFunction } from 'hardhat-deploy/types'
 import { ethers } from 'hardhat'
-import { Factory } from '../typechain'
+import { Factory, Pair__factory } from '../typechain'
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre
   const { deploy, execute } = deployments
 
   const { deployer } = await getNamedAccounts()
+
+  console.log('Pair init code hash: %s', hre.ethers.utils.solidityKeccak256(['bytes'], [Pair__factory.bytecode]))
 
   const LSDAggregator = await deployments.get('LSDAggregator')
 

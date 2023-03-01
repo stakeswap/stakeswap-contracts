@@ -4,7 +4,6 @@
 import type {
   BaseContract,
   BigNumber,
-  BigNumberish,
   BytesLike,
   CallOverrides,
   ContractTransaction,
@@ -30,13 +29,11 @@ import type {
 export interface IFactoryInterface extends utils.Interface {
   functions: {
     "aggregator()": FunctionFragment;
-    "allPairs(uint256)": FunctionFragment;
-    "allPairsLength()": FunctionFragment;
     "createPair(address,address)": FunctionFragment;
     "feeTo()": FunctionFragment;
     "feeToSetter()": FunctionFragment;
     "getPair(address,address)": FunctionFragment;
-    "pairInitCodeHash()": FunctionFragment;
+    "getStaking(address,address)": FunctionFragment;
     "setFeeTo(address)": FunctionFragment;
     "setFeeToSetter(address)": FunctionFragment;
   };
@@ -44,27 +41,17 @@ export interface IFactoryInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "aggregator"
-      | "allPairs"
-      | "allPairsLength"
       | "createPair"
       | "feeTo"
       | "feeToSetter"
       | "getPair"
-      | "pairInitCodeHash"
+      | "getStaking"
       | "setFeeTo"
       | "setFeeToSetter"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "aggregator",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "allPairs",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "allPairsLength",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -81,8 +68,8 @@ export interface IFactoryInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "pairInitCodeHash",
-    values?: undefined
+    functionFragment: "getStaking",
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setFeeTo",
@@ -94,11 +81,6 @@ export interface IFactoryInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "aggregator", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "allPairs", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "allPairsLength",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "createPair", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "feeTo", data: BytesLike): Result;
   decodeFunctionResult(
@@ -106,10 +88,7 @@ export interface IFactoryInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getPair", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "pairInitCodeHash",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "getStaking", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setFeeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setFeeToSetter",
@@ -165,13 +144,6 @@ export interface IFactory extends BaseContract {
   functions: {
     aggregator(overrides?: CallOverrides): Promise<[string]>;
 
-    allPairs(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[string] & { pair: string }>;
-
-    allPairsLength(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     createPair(
       tokenA: PromiseOrValue<string>,
       tokenB: PromiseOrValue<string>,
@@ -188,9 +160,11 @@ export interface IFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string] & { pair: string }>;
 
-    pairInitCodeHash(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    getStaking(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string] & { pair: string }>;
 
     setFeeTo(
       arg0: PromiseOrValue<string>,
@@ -204,13 +178,6 @@ export interface IFactory extends BaseContract {
   };
 
   aggregator(overrides?: CallOverrides): Promise<string>;
-
-  allPairs(
-    arg0: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  allPairsLength(overrides?: CallOverrides): Promise<BigNumber>;
 
   createPair(
     tokenA: PromiseOrValue<string>,
@@ -228,9 +195,11 @@ export interface IFactory extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  pairInitCodeHash(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  getStaking(
+    tokenA: PromiseOrValue<string>,
+    tokenB: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   setFeeTo(
     arg0: PromiseOrValue<string>,
@@ -244,13 +213,6 @@ export interface IFactory extends BaseContract {
 
   callStatic: {
     aggregator(overrides?: CallOverrides): Promise<string>;
-
-    allPairs(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    allPairsLength(overrides?: CallOverrides): Promise<BigNumber>;
 
     createPair(
       tokenA: PromiseOrValue<string>,
@@ -268,7 +230,11 @@ export interface IFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    pairInitCodeHash(overrides?: CallOverrides): Promise<string>;
+    getStaking(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     setFeeTo(
       arg0: PromiseOrValue<string>,
@@ -299,13 +265,6 @@ export interface IFactory extends BaseContract {
   estimateGas: {
     aggregator(overrides?: CallOverrides): Promise<BigNumber>;
 
-    allPairs(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    allPairsLength(overrides?: CallOverrides): Promise<BigNumber>;
-
     createPair(
       tokenA: PromiseOrValue<string>,
       tokenB: PromiseOrValue<string>,
@@ -322,8 +281,10 @@ export interface IFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    pairInitCodeHash(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    getStaking(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     setFeeTo(
@@ -339,13 +300,6 @@ export interface IFactory extends BaseContract {
 
   populateTransaction: {
     aggregator(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    allPairs(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    allPairsLength(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     createPair(
       tokenA: PromiseOrValue<string>,
@@ -363,8 +317,10 @@ export interface IFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    pairInitCodeHash(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    getStaking(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     setFeeTo(

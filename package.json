@@ -6,6 +6,7 @@
   "author": "4000D <dkdkajej@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "dev": "hardhat node",
     "build": "hardhat compile && forge build",
     "test": "yarn hardhat:test && yarn foundry:test",
     "hardhat:test": "hardhat test",

@@ -57,38 +57,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    name: "allPairs",
-    outputs: [
-      {
-        internalType: "address",
-        name: "pair",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "allPairsLength",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "address",
         name: "tokenA",
         type: "address",
@@ -102,7 +70,7 @@ const _abi = [
     name: "createPair",
     outputs: [
       {
-        internalType: "address",
+        internalType: "address payable",
         name: "pair",
         type: "address",
       },
@@ -161,16 +129,27 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "pairInitCodeHash",
-    outputs: [
+    inputs: [
       {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
+        internalType: "address",
+        name: "tokenA",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "tokenB",
+        type: "address",
       },
     ],
-    stateMutability: "nonpayable",
+    name: "getStaking",
+    outputs: [
+      {
+        internalType: "address",
+        name: "pair",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {

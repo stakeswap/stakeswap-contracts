@@ -46,6 +46,8 @@ export interface FactoryInterface extends utils.Interface {
     "aggregator()": FunctionFragment;
     "allPairs(uint256)": FunctionFragment;
     "allPairsLength()": FunctionFragment;
+    "allStakings(uint256)": FunctionFragment;
+    "allStakingsLength()": FunctionFragment;
     "createPair(address,address)": FunctionFragment;
     "feeTo()": FunctionFragment;
     "feeToSetter()": FunctionFragment;
@@ -53,7 +55,6 @@ export interface FactoryInterface extends utils.Interface {
     "frxETHMinter()": FunctionFragment;
     "getPair(address,address)": FunctionFragment;
     "getStaking(address,address)": FunctionFragment;
-    "pairInitCodeHash()": FunctionFragment;
     "rETH()": FunctionFragment;
     "setFeeTo(address)": FunctionFragment;
     "setFeeToSetter(address)": FunctionFragment;
@@ -81,6 +82,8 @@ export interface FactoryInterface extends utils.Interface {
       | "aggregator"
       | "allPairs"
       | "allPairsLength"
+      | "allStakings"
+      | "allStakingsLength"
       | "createPair"
       | "feeTo"
       | "feeToSetter"
@@ -88,7 +91,6 @@ export interface FactoryInterface extends utils.Interface {
       | "frxETHMinter"
       | "getPair"
       | "getStaking"
-      | "pairInitCodeHash"
       | "rETH"
       | "setFeeTo"
       | "setFeeToSetter"
@@ -157,6 +159,14 @@ export interface FactoryInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "allStakings",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "allStakingsLength",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "createPair",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
@@ -177,10 +187,6 @@ export interface FactoryInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getStaking",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "pairInitCodeHash",
-    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "rETH", values?: undefined): string;
   encodeFunctionData(
@@ -248,6 +254,14 @@ export interface FactoryInterface extends utils.Interface {
     functionFragment: "allPairsLength",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "allStakings",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "allStakingsLength",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "createPair", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "feeTo", data: BytesLike): Result;
   decodeFunctionResult(
@@ -261,10 +275,6 @@ export interface FactoryInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getPair", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getStaking", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "pairInitCodeHash",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "rETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setFeeTo", data: BytesLike): Result;
   decodeFunctionResult(
@@ -373,6 +383,13 @@ export interface Factory extends BaseContract {
 
     allPairsLength(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    allStakings(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    allStakingsLength(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     createPair(
       tokenA: PromiseOrValue<string>,
       tokenB: PromiseOrValue<string>,
@@ -398,8 +415,6 @@ export interface Factory extends BaseContract {
       arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[string]>;
-
-    pairInitCodeHash(overrides?: CallOverrides): Promise<[string]>;
 
     rETH(overrides?: CallOverrides): Promise<[string]>;
 
@@ -469,6 +484,13 @@ export interface Factory extends BaseContract {
 
   allPairsLength(overrides?: CallOverrides): Promise<BigNumber>;
 
+  allStakings(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  allStakingsLength(overrides?: CallOverrides): Promise<BigNumber>;
+
   createPair(
     tokenA: PromiseOrValue<string>,
     tokenB: PromiseOrValue<string>,
@@ -494,8 +516,6 @@ export interface Factory extends BaseContract {
     arg1: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<string>;
-
-  pairInitCodeHash(overrides?: CallOverrides): Promise<string>;
 
   rETH(overrides?: CallOverrides): Promise<string>;
 
@@ -565,6 +585,13 @@ export interface Factory extends BaseContract {
 
     allPairsLength(overrides?: CallOverrides): Promise<BigNumber>;
 
+    allStakings(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    allStakingsLength(overrides?: CallOverrides): Promise<BigNumber>;
+
     createPair(
       tokenA: PromiseOrValue<string>,
       tokenB: PromiseOrValue<string>,
@@ -590,8 +617,6 @@ export interface Factory extends BaseContract {
       arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    pairInitCodeHash(overrides?: CallOverrides): Promise<string>;
 
     rETH(overrides?: CallOverrides): Promise<string>;
 
@@ -681,6 +706,13 @@ export interface Factory extends BaseContract {
 
     allPairsLength(overrides?: CallOverrides): Promise<BigNumber>;
 
+    allStakings(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    allStakingsLength(overrides?: CallOverrides): Promise<BigNumber>;
+
     createPair(
       tokenA: PromiseOrValue<string>,
       tokenB: PromiseOrValue<string>,
@@ -706,8 +738,6 @@ export interface Factory extends BaseContract {
       arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    pairInitCodeHash(overrides?: CallOverrides): Promise<BigNumber>;
 
     rETH(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -786,6 +816,13 @@ export interface Factory extends BaseContract {
 
     allPairsLength(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    allStakings(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    allStakingsLength(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     createPair(
       tokenA: PromiseOrValue<string>,
       tokenB: PromiseOrValue<string>,
@@ -811,8 +848,6 @@ export interface Factory extends BaseContract {
       arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    pairInitCodeHash(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     rETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

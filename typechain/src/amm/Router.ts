@@ -34,7 +34,6 @@ export interface RouterInterface extends utils.Interface {
     "getAmountOut(uint256,uint256,uint256)": FunctionFragment;
     "getAmountsIn(uint256,address[])": FunctionFragment;
     "getAmountsOut(uint256,address[])": FunctionFragment;
-    "pairInitCodeHash()": FunctionFragment;
     "quote(uint256,uint256,uint256)": FunctionFragment;
     "removeLiquidity(address,address,uint256,uint256,uint256,address,uint256)": FunctionFragment;
     "removeLiquidityETH(address,uint256,uint256,uint256,address,uint256)": FunctionFragment;
@@ -42,6 +41,7 @@ export interface RouterInterface extends utils.Interface {
     "removeLiquidityETHWithPermit(address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
     "removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
     "removeLiquidityWithPermit(address,address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
+    "stake(address,address,uint256,uint256)": FunctionFragment;
     "swapETHForExactTokens(uint256,address[],address,uint256)": FunctionFragment;
     "swapExactETHForTokens(uint256,address[],address,uint256)": FunctionFragment;
     "swapExactETHForTokensSupportingFeeOnTransferTokens(uint256,address[],address,uint256)": FunctionFragment;
@@ -51,6 +51,7 @@ export interface RouterInterface extends utils.Interface {
     "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,address[],address,uint256)": FunctionFragment;
     "swapTokensForExactETH(uint256,uint256,address[],address,uint256)": FunctionFragment;
     "swapTokensForExactTokens(uint256,uint256,address[],address,uint256)": FunctionFragment;
+    "unstake(address,address,uint256,uint256)": FunctionFragment;
   };
 
   getFunction(
@@ -63,7 +64,6 @@ export interface RouterInterface extends utils.Interface {
       | "getAmountOut"
       | "getAmountsIn"
       | "getAmountsOut"
-      | "pairInitCodeHash"
       | "quote"
       | "removeLiquidity"
       | "removeLiquidityETH"
@@ -71,6 +71,7 @@ export interface RouterInterface extends utils.Interface {
       | "removeLiquidityETHWithPermit"
       | "removeLiquidityETHWithPermitSupportingFeeOnTransferTokens"
       | "removeLiquidityWithPermit"
+      | "stake"
       | "swapETHForExactTokens"
       | "swapExactETHForTokens"
       | "swapExactETHForTokensSupportingFeeOnTransferTokens"
@@ -80,6 +81,7 @@ export interface RouterInterface extends utils.Interface {
       | "swapExactTokensForTokensSupportingFeeOnTransferTokens"
       | "swapTokensForExactETH"
       | "swapTokensForExactTokens"
+      | "unstake"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
@@ -131,10 +133,6 @@ export interface RouterInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getAmountsOut",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "pairInitCodeHash",
-    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "quote",
@@ -225,6 +223,15 @@ export interface RouterInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "stake",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "swapETHForExactTokens",
     values: [
       PromiseOrValue<BigNumberish>,
@@ -308,6 +315,15 @@ export interface RouterInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>[],
       PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "unstake",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
   ): string;
@@ -338,10 +354,6 @@ export interface RouterInterface extends utils.Interface {
     functionFragment: "getAmountsOut",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "pairInitCodeHash",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "quote", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidity",
@@ -367,6 +379,7 @@ export interface RouterInterface extends utils.Interface {
     functionFragment: "removeLiquidityWithPermit",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "swapETHForExactTokens",
     data: BytesLike
@@ -403,6 +416,7 @@ export interface RouterInterface extends utils.Interface {
     functionFragment: "swapTokensForExactTokens",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
 
   events: {};
 }
@@ -486,8 +500,6 @@ export interface Router extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber[]] & { amounts: BigNumber[] }>;
 
-    pairInitCodeHash(overrides?: CallOverrides): Promise<[string]>;
-
     quote(
       amountA: PromiseOrValue<BigNumberish>,
       reserveA: PromiseOrValue<BigNumberish>,
@@ -569,6 +581,14 @@ export interface Router extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    stake(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      lp: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     swapETHForExactTokens(
       amountOut: PromiseOrValue<BigNumberish>,
       path: PromiseOrValue<string>[],
@@ -646,6 +666,14 @@ export interface Router extends BaseContract {
       deadline: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    unstake(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      shares: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   WETH(overrides?: CallOverrides): Promise<string>;
@@ -699,8 +727,6 @@ export interface Router extends BaseContract {
     path: PromiseOrValue<string>[],
     overrides?: CallOverrides
   ): Promise<BigNumber[]>;
-
-  pairInitCodeHash(overrides?: CallOverrides): Promise<string>;
 
   quote(
     amountA: PromiseOrValue<BigNumberish>,
@@ -783,6 +809,14 @@ export interface Router extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  stake(
+    tokenA: PromiseOrValue<string>,
+    tokenB: PromiseOrValue<string>,
+    lp: PromiseOrValue<BigNumberish>,
+    deadline: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   swapETHForExactTokens(
     amountOut: PromiseOrValue<BigNumberish>,
     path: PromiseOrValue<string>[],
@@ -861,6 +895,14 @@ export interface Router extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  unstake(
+    tokenA: PromiseOrValue<string>,
+    tokenB: PromiseOrValue<string>,
+    shares: PromiseOrValue<BigNumberish>,
+    deadline: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     WETH(overrides?: CallOverrides): Promise<string>;
 
@@ -926,8 +968,6 @@ export interface Router extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber[]>;
 
-    pairInitCodeHash(overrides?: CallOverrides): Promise<string>;
-
     quote(
       amountA: PromiseOrValue<BigNumberish>,
       reserveA: PromiseOrValue<BigNumberish>,
@@ -1017,6 +1057,16 @@ export interface Router extends BaseContract {
       [BigNumber, BigNumber] & { amountA: BigNumber; amountB: BigNumber }
     >;
 
+    stake(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      lp: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber] & { shares: BigNumber; depositAmount: BigNumber }
+    >;
+
     swapETHForExactTokens(
       amountOut: PromiseOrValue<BigNumberish>,
       path: PromiseOrValue<string>[],
@@ -1094,6 +1144,21 @@ export interface Router extends BaseContract {
       deadline: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber[]>;
+
+    unstake(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      shares: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber] & {
+        lp: BigNumber;
+        ethAmount: BigNumber;
+        poolETHAmount: BigNumber;
+        rewardToStaker: BigNumber;
+      }
+    >;
   };
 
   filters: {};
@@ -1151,8 +1216,6 @@ export interface Router extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    pairInitCodeHash(overrides?: CallOverrides): Promise<BigNumber>;
-
     quote(
       amountA: PromiseOrValue<BigNumberish>,
       reserveA: PromiseOrValue<BigNumberish>,
@@ -1234,6 +1297,14 @@ export interface Router extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    stake(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      lp: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     swapETHForExactTokens(
       amountOut: PromiseOrValue<BigNumberish>,
       path: PromiseOrValue<string>[],
@@ -1308,6 +1379,14 @@ export interface Router extends BaseContract {
       amountInMax: PromiseOrValue<BigNumberish>,
       path: PromiseOrValue<string>[],
       to: PromiseOrValue<string>,
+      deadline: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    unstake(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      shares: PromiseOrValue<BigNumberish>,
       deadline: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -1366,8 +1445,6 @@ export interface Router extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    pairInitCodeHash(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     quote(
       amountA: PromiseOrValue<BigNumberish>,
       reserveA: PromiseOrValue<BigNumberish>,
@@ -1449,6 +1526,14 @@ export interface Router extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    stake(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      lp: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     swapETHForExactTokens(
       amountOut: PromiseOrValue<BigNumberish>,
       path: PromiseOrValue<string>[],
@@ -1523,6 +1608,14 @@ export interface Router extends BaseContract {
       amountInMax: PromiseOrValue<BigNumberish>,
       path: PromiseOrValue<string>[],
       to: PromiseOrValue<string>,
+      deadline: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    unstake(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      shares: PromiseOrValue<BigNumberish>,
       deadline: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;

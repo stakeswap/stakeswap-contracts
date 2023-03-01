@@ -9,7 +9,10 @@ interface IStaking is ILP {
 
     function pair() external view returns (address);
 
-    function getEffectiveETHAmount(uint256 lp) external view returns (uint256 ethAmount);
+    function stake(uint256 lp) external returns (uint256 shares, uint256 depositAmount);
 
-    function getTotalEffectiveETHAmount() external view returns (uint256 ethAmount);
+    function unstake(
+        uint256 shares,
+        address staker
+    ) external returns (uint256 lp, uint256 totalEthForShare, uint256 poolETHAmount, uint256 rewardToStaker);
 }

@@ -2,6 +2,8 @@
 // Pooled ETH is provided to Staking contract up to 50% of ETH
 pragma solidity ^0.8.13;
 
+import 'forge-std/console.sol';
+
 import './interfaces/IPair.sol';
 import './LP.sol';
 import './libraries/Math.sol';
@@ -50,6 +52,9 @@ contract Pair is IPair, LP, Constants {
         _;
     }
 
+    // to withdraw WETH
+    receive() external payable {}
+
     function onStake(uint256 lp) external onlyStaking returns (uint256 ethAmount) {
         bool token0IsWETH = token0 == address(WETH());
         bool token1IsWETH = token1 == address(WETH());
@@ -58,13 +63,14 @@ contract Pair is IPair, LP, Constants {
 
         uint256 wethBalance = IERC20(token0IsWETH ? token0 : token1).balanceOf(address(this));
         uint256 totalWETHBalance = wethBalance + stakedWETHAmount;
+
+        // a half of ETH for the liquidity will be staked
         ethAmount = (((totalWETHBalance * lp) / totalSupply) * 50) / 100;
 
-        require(
-            wethBalance > (ethAmount) && // check WETH balance is sufficient
-                (totalWETHBalance * 50) / 100 > wethBalance - ethAmount, // check staking ratio is up to 50%
-            'OVER_STAKED'
-        );
+        require(wethBalance > ethAmount, 'INSUFFICIENT_ETH_BALANCE');
+
+        // check staking ratio is up to 50%
+        require((totalWETHBalance * 50) / 100 < wethBalance - ethAmount, 'OVER_STAKED');
 
         stakedWETHAmount += ethAmount;
 
@@ -72,9 +78,10 @@ contract Pair is IPair, LP, Constants {
         payable(staking).transfer(ethAmount);
     }
 
-    function onUnstake(uint256 poolETHAmount) external onlyStaking {
-        stakedWETHAmount -= poolETHAmount;
-        WETH().deposit{ value: poolETHAmount }();
+    function onUnstake() external payable onlyStaking {
+        require(msg.value > 0, 'ZERO_VALUE');
+        stakedWETHAmount -= msg.value;
+        WETH().deposit{ value: msg.value }();
     }
 
     function getReserves() public view returns (uint112 _reserve0, uint112 _reserve1, uint32 _blockTimestampLast) {
@@ -101,10 +108,20 @@ contract Pair is IPair, LP, Constants {
     }
 
     // update reserves and, on the first call per block, price accumulators
-    function _update(uint balance0, uint balance1, uint112 _reserve0, uint112 _reserve1) private {
+    function _update(uint balance0, uint balance1, uint112 _reserve0, uint112 _reserve1, bool _alreadyWETHCounted) private {
+        if (!_alreadyWETHCounted) {
+            // count staked ETH amount
+            if (token0 == address(WETH())) balance0 += stakedWETHAmount;
+            if (token1 == address(WETH())) balance1 += stakedWETHAmount;
+        }
+
         require(balance0 <= type(uint112).max && balance1 <= type(uint112).max, 'UniswapV2: OVERFLOW');
         uint32 blockTimestamp = uint32(block.timestamp % 2 ** 32);
-        uint32 timeElapsed = blockTimestamp - blockTimestampLast; // overflow is desired
+        uint32 timeElapsed;
+        // overflow is desired
+        unchecked {
+            timeElapsed = blockTimestamp - blockTimestampLast;
+        }
         if (timeElapsed > 0 && _reserve0 != 0 && _reserve1 != 0) {
             // * never overflows, and + overflow is desired
             price0CumulativeLast += uint(UQ112x112.encode(_reserve1).uqdiv(_reserve0)) * timeElapsed;
@@ -156,7 +173,7 @@ contract Pair is IPair, LP, Constants {
         require(liquidity > 0, 'UniswapV2: INSUFFICIENT_LIQUIDITY_MINTED');
         _mint(to, liquidity);
 
-        _update(balance0, balance1, _reserve0, _reserve1);
+        _update(balance0, balance1, _reserve0, _reserve1, false);
         if (feeOn) kLast = uint(reserve0).mul(reserve1); // reserve0 and reserve1 are up-to-date
         emit Mint(msg.sender, amount0, amount1);
     }
@@ -181,7 +198,7 @@ contract Pair is IPair, LP, Constants {
         balance0 = IERC20(_token0).balanceOf(address(this));
         balance1 = IERC20(_token1).balanceOf(address(this));
 
-        _update(balance0, balance1, _reserve0, _reserve1);
+        _update(balance0, balance1, _reserve0, _reserve1, false);
         if (feeOn) kLast = uint(reserve0).mul(reserve1); // reserve0 and reserve1 are up-to-date
         emit Burn(msg.sender, amount0, amount1, to);
     }
@@ -204,6 +221,17 @@ contract Pair is IPair, LP, Constants {
             if (data.length > 0) IUniswapV2Callee(to).uniswapV2Call(msg.sender, amount0Out, amount1Out, data);
             balance0 = IERC20(_token0).balanceOf(address(this));
             balance1 = IERC20(_token1).balanceOf(address(this));
+
+            // count staked ETH amount
+            uint256 _stakedWETHAmount = stakedWETHAmount;
+            if (_token0 == address(WETH())) {
+                balance0 += _stakedWETHAmount;
+                // _reserve0 -= uint112(_stakedWETHAmount);
+            }
+            if (_token1 == address(WETH())) {
+                balance1 += _stakedWETHAmount;
+                // _reserve1 -= uint112(_stakedWETHAmount);
+            }
         }
         uint amount0In = balance0 > _reserve0 - amount0Out ? balance0 - (_reserve0 - amount0Out) : 0;
         uint amount1In = balance1 > _reserve1 - amount1Out ? balance1 - (_reserve1 - amount1Out) : 0;
@@ -215,7 +243,7 @@ contract Pair is IPair, LP, Constants {
             require(balance0Adjusted.mul(balance1Adjusted) >= uint(_reserve0).mul(_reserve1).mul(1000 ** 2), 'UniswapV2: K');
         }
 
-        _update(balance0, balance1, _reserve0, _reserve1);
+        _update(balance0, balance1, _reserve0, _reserve1, true);
         emit Swap(msg.sender, amount0In, amount1In, amount0Out, amount1Out, to);
     }
 
@@ -223,12 +251,20 @@ contract Pair is IPair, LP, Constants {
     function skim(address to) external lock {
         address _token0 = token0; // gas savings
         address _token1 = token1; // gas savings
-        _safeTransfer(_token0, to, IERC20(_token0).balanceOf(address(this)).sub(reserve0));
-        _safeTransfer(_token1, to, IERC20(_token1).balanceOf(address(this)).sub(reserve1));
+
+        uint256 balance0 = IERC20(_token0).balanceOf(address(this));
+        uint256 balance1 = IERC20(_token1).balanceOf(address(this));
+
+        // count staked ETH amount
+        if (_token0 == address(WETH())) balance0 += stakedWETHAmount;
+        if (_token1 == address(WETH())) balance1 += stakedWETHAmount;
+
+        _safeTransfer(_token0, to, balance0.sub(reserve0));
+        _safeTransfer(_token1, to, balance1.sub(reserve1));
     }
 
     // force reserves to match balances
     function sync() external lock {
-        _update(IERC20(token0).balanceOf(address(this)), IERC20(token1).balanceOf(address(this)), reserve0, reserve1);
+        _update(IERC20(token0).balanceOf(address(this)), IERC20(token1).balanceOf(address(this)), reserve0, reserve1, false);
     }
 }

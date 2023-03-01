@@ -4,6 +4,7 @@ import '@nomicfoundation/hardhat-toolbox'
 import { SolcUserConfig } from 'hardhat/types'
 import 'hardhat-deploy'
 import { config as dotenvConfig } from 'dotenv'
+import 'hardhat-gas-reporter'
 
 import { parseEther } from 'ethers/lib/utils'
 import invariant from 'invariant'
@@ -23,11 +24,10 @@ const MAINNET_MNEMONIC = process.env.MAINNET_MNEMONIC ?? DEFAULT_MNEMONIC
 const DEFAULT_COMPILER_SETTINGS: SolcUserConfig = {
   version: '0.8.17',
   settings: {
-    viaIR: true,
+    // viaIR: true,
     optimizer: {
       enabled: true,
       runs: 200
-      // runs: 99_999_999,
     },
     metadata: {
       bytecodeHash: 'none'
@@ -40,37 +40,37 @@ const config: HardhatUserConfig = {
     deployer: {
       default: 0
     },
-    gov: {
+    trader0: {
       default: 1
     },
-    dev: {
+    trader1: {
       default: 2
     },
-    trader0: {
+    trader2: {
       default: 3
     },
-    trader1: {
+    lps0: {
       default: 4
     },
-    trader2: {
+    lps1: {
       default: 5
     },
-    lps0: {
+    lps2: {
       default: 6
-    },
-    lps1: {
-      default: 7
     }
   },
   networks: {
     hardhat: {
+      // TODO: should be false after refactor contracts...
+      allowUnlimitedContractSize: true,
+
       chainId: 1, // always miannet
       forking: {
         url: MAINNET_RPC_URL
       },
       accounts: {
         mnemonic: DEFAULT_MNEMONIC,
-        accountsBalance: parseEther('1000000').toString()
+        accountsBalance: parseEther('10000000000').toString()
       }
     },
     localhost: {
@@ -93,6 +93,13 @@ const config: HardhatUserConfig = {
 
   typechain: {
     outDir: 'typechain'
+  },
+
+  gasReporter: {
+    enabled: true,
+    currency: 'USD',
+    // gasPrice: 21
+    src: 'src'
   }
 
   // mocha: {

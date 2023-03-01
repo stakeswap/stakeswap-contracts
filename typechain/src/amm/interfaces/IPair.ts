@@ -9,6 +9,7 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -45,7 +46,7 @@ export interface IPairInterface extends utils.Interface {
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
     "onStake(uint256)": FunctionFragment;
-    "onUnstake(uint256)": FunctionFragment;
+    "onUnstake()": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "price0CumulativeLast()": FunctionFragment;
     "price1CumulativeLast()": FunctionFragment;
@@ -151,10 +152,7 @@ export interface IPairInterface extends utils.Interface {
     functionFragment: "onStake",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "onUnstake",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  encodeFunctionData(functionFragment: "onUnstake", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "permit",
     values: [
@@ -450,8 +448,7 @@ export interface IPair extends BaseContract {
     ): Promise<ContractTransaction>;
 
     onUnstake(
-      poolETHAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     permit(
@@ -579,8 +576,7 @@ export interface IPair extends BaseContract {
   ): Promise<ContractTransaction>;
 
   onUnstake(
-    poolETHAmount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   permit(
@@ -709,10 +705,7 @@ export interface IPair extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    onUnstake(
-      poolETHAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    onUnstake(overrides?: CallOverrides): Promise<void>;
 
     permit(
       owner: PromiseOrValue<string>,
@@ -895,8 +888,7 @@ export interface IPair extends BaseContract {
     ): Promise<BigNumber>;
 
     onUnstake(
-      poolETHAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     permit(
@@ -1017,8 +1009,7 @@ export interface IPair extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     onUnstake(
-      poolETHAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     permit(

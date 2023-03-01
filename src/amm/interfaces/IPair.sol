@@ -40,5 +40,5 @@ interface IPair is ILP {
 
     function onStake(uint256 lp) external returns (uint256 ethAmount);
 
-    function onUnstake(uint256 poolETHAmount) external;
+    function onUnstake() external payable;
 }

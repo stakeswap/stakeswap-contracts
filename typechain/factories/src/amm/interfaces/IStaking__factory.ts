@@ -193,38 +193,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "lp",
-        type: "uint256",
-      },
-    ],
-    name: "getEffectiveETHAmount",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "ethAmount",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getTotalEffectiveETHAmount",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "ethAmount",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "name",
     outputs: [
@@ -313,6 +281,30 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "lp",
+        type: "uint256",
+      },
+    ],
+    name: "stake",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "shares",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "depositAmount",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "symbol",
     outputs: [
@@ -386,6 +378,45 @@ const _abi = [
         internalType: "bool",
         name: "",
         type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "shares",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "staker",
+        type: "address",
+      },
+    ],
+    name: "unstake",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "lp",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "totalEthForShare",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "poolETHAmount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "rewardToStaker",
+        type: "uint256",
       },
     ],
     stateMutability: "nonpayable",

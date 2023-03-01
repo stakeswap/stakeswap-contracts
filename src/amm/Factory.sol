@@ -13,26 +13,27 @@ contract Factory is IFactory, Constants {
     address public feeTo;
     address public feeToSetter;
 
-    address payable public immutable aggregator;
-
-    bytes32 public immutable pairInitCodeHash;
+    address payable public aggregator;
 
     mapping(address => mapping(address => address)) public getPair;
     mapping(address => mapping(address => address)) public getStaking;
     address[] public allPairs;
+    address[] public allStakings;
 
     constructor(address _feeToSetter, address payable _aggregator) {
         feeToSetter = _feeToSetter;
         aggregator = _aggregator;
-
-        pairInitCodeHash = keccak256(abi.encodePacked(type(Pair).creationCode));
     }
 
     function allPairsLength() external view returns (uint) {
         return allPairs.length;
     }
 
-    function createPair(address tokenA, address tokenB) external returns (address pair) {
+    function allStakingsLength() external view returns (uint) {
+        return allStakings.length;
+    }
+
+    function createPair(address tokenA, address tokenB) external returns (address payable pair) {
         require(tokenA != tokenB, 'UniswapV2: IDENTICAL_ADDRESSES');
         (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
         require(token0 != address(0), 'UniswapV2: ZERO_ADDRESS');
@@ -48,7 +49,10 @@ contract Factory is IFactory, Constants {
 
         getPair[token0][token1] = pair;
         getPair[token1][token0] = pair; // populate mapping in the reverse direction
+        getStaking[token0][token1] = address(staking);
+        getStaking[token1][token0] = address(staking);
         allPairs.push(pair);
+        allStakings.push(address(staking));
         emit PairCreated(token0, token1, pair, allPairs.length);
     }
 
