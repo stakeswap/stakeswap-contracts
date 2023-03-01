@@ -36,6 +36,7 @@ export interface IFactoryInterface extends utils.Interface {
     "feeTo()": FunctionFragment;
     "feeToSetter()": FunctionFragment;
     "getPair(address,address)": FunctionFragment;
+    "pairInitCodeHash()": FunctionFragment;
     "setFeeTo(address)": FunctionFragment;
     "setFeeToSetter(address)": FunctionFragment;
   };
@@ -49,6 +50,7 @@ export interface IFactoryInterface extends utils.Interface {
       | "feeTo"
       | "feeToSetter"
       | "getPair"
+      | "pairInitCodeHash"
       | "setFeeTo"
       | "setFeeToSetter"
   ): FunctionFragment;
@@ -79,6 +81,10 @@ export interface IFactoryInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "pairInitCodeHash",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "setFeeTo",
     values: [PromiseOrValue<string>]
   ): string;
@@ -100,6 +106,10 @@ export interface IFactoryInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getPair", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "pairInitCodeHash",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "setFeeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setFeeToSetter",
@@ -178,6 +188,10 @@ export interface IFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string] & { pair: string }>;
 
+    pairInitCodeHash(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     setFeeTo(
       arg0: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -214,6 +228,10 @@ export interface IFactory extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  pairInitCodeHash(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   setFeeTo(
     arg0: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -249,6 +267,8 @@ export interface IFactory extends BaseContract {
       tokenB: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    pairInitCodeHash(overrides?: CallOverrides): Promise<string>;
 
     setFeeTo(
       arg0: PromiseOrValue<string>,
@@ -302,6 +322,10 @@ export interface IFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    pairInitCodeHash(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     setFeeTo(
       arg0: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -337,6 +361,10 @@ export interface IFactory extends BaseContract {
       tokenA: PromiseOrValue<string>,
       tokenB: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    pairInitCodeHash(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setFeeTo(

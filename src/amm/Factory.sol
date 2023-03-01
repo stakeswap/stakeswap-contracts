@@ -15,6 +15,8 @@ contract Factory is IFactory, Constants {
 
     address payable public immutable aggregator;
 
+    bytes32 public immutable pairInitCodeHash;
+
     mapping(address => mapping(address => address)) public getPair;
     mapping(address => mapping(address => address)) public getStaking;
     address[] public allPairs;
@@ -22,6 +24,8 @@ contract Factory is IFactory, Constants {
     constructor(address _feeToSetter, address payable _aggregator) {
         feeToSetter = _feeToSetter;
         aggregator = _aggregator;
+
+        pairInitCodeHash = keccak256(abi.encodePacked(type(Pair).creationCode));
     }
 
     function allPairsLength() external view returns (uint) {

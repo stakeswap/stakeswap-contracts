@@ -3,6 +3,7 @@ src = 'src'
 out = 'out'
 libs = ['lib']
 solc = "0.8.17"
+via_ir = true
 
 [fuzz]
 # https://book.getfoundry.sh/reference/config/testing#fuzz

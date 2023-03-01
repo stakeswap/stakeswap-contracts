@@ -70,8 +70,6 @@ export type { IStaking } from "./src/amm/interfaces/IStaking";
 export { IStaking__factory } from "./factories/src/amm/interfaces/IStaking__factory";
 export type { IUniswapV2Callee } from "./src/amm/interfaces/IUniswapV2Callee";
 export { IUniswapV2Callee__factory } from "./factories/src/amm/interfaces/IUniswapV2Callee__factory";
-export type { UniswapV2Library } from "./src/amm/libraries/UniswapV2Library";
-export { UniswapV2Library__factory } from "./factories/src/amm/libraries/UniswapV2Library__factory";
 export type { LP } from "./src/amm/LP";
 export { LP__factory } from "./factories/src/amm/LP__factory";
 export type { Pair } from "./src/amm/Pair";

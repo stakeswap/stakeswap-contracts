@@ -20,4 +20,6 @@ interface IFactory {
     function setFeeTo(address) external;
 
     function setFeeToSetter(address) external;
+
+    function pairInitCodeHash() external returns (bytes32);
 }

@@ -34,6 +34,7 @@ export interface RouterInterface extends utils.Interface {
     "getAmountOut(uint256,uint256,uint256)": FunctionFragment;
     "getAmountsIn(uint256,address[])": FunctionFragment;
     "getAmountsOut(uint256,address[])": FunctionFragment;
+    "pairInitCodeHash()": FunctionFragment;
     "quote(uint256,uint256,uint256)": FunctionFragment;
     "removeLiquidity(address,address,uint256,uint256,uint256,address,uint256)": FunctionFragment;
     "removeLiquidityETH(address,uint256,uint256,uint256,address,uint256)": FunctionFragment;
@@ -62,6 +63,7 @@ export interface RouterInterface extends utils.Interface {
       | "getAmountOut"
       | "getAmountsIn"
       | "getAmountsOut"
+      | "pairInitCodeHash"
       | "quote"
       | "removeLiquidity"
       | "removeLiquidityETH"
@@ -129,6 +131,10 @@ export interface RouterInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getAmountsOut",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "pairInitCodeHash",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "quote",
@@ -332,6 +338,10 @@ export interface RouterInterface extends utils.Interface {
     functionFragment: "getAmountsOut",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "pairInitCodeHash",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "quote", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidity",
@@ -475,6 +485,8 @@ export interface Router extends BaseContract {
       path: PromiseOrValue<string>[],
       overrides?: CallOverrides
     ): Promise<[BigNumber[]] & { amounts: BigNumber[] }>;
+
+    pairInitCodeHash(overrides?: CallOverrides): Promise<[string]>;
 
     quote(
       amountA: PromiseOrValue<BigNumberish>,
@@ -687,6 +699,8 @@ export interface Router extends BaseContract {
     path: PromiseOrValue<string>[],
     overrides?: CallOverrides
   ): Promise<BigNumber[]>;
+
+  pairInitCodeHash(overrides?: CallOverrides): Promise<string>;
 
   quote(
     amountA: PromiseOrValue<BigNumberish>,
@@ -912,6 +926,8 @@ export interface Router extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber[]>;
 
+    pairInitCodeHash(overrides?: CallOverrides): Promise<string>;
+
     quote(
       amountA: PromiseOrValue<BigNumberish>,
       reserveA: PromiseOrValue<BigNumberish>,
@@ -1135,6 +1151,8 @@ export interface Router extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    pairInitCodeHash(overrides?: CallOverrides): Promise<BigNumber>;
+
     quote(
       amountA: PromiseOrValue<BigNumberish>,
       reserveA: PromiseOrValue<BigNumberish>,
@@ -1347,6 +1365,8 @@ export interface Router extends BaseContract {
       path: PromiseOrValue<string>[],
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    pairInitCodeHash(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     quote(
       amountA: PromiseOrValue<BigNumberish>,

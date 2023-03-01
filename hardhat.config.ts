@@ -23,6 +23,7 @@ const MAINNET_MNEMONIC = process.env.MAINNET_MNEMONIC ?? DEFAULT_MNEMONIC
 const DEFAULT_COMPILER_SETTINGS: SolcUserConfig = {
   version: '0.8.17',
   settings: {
+    viaIR: true,
     optimizer: {
       enabled: true,
       runs: 200
@@ -63,7 +64,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {
-      allowUnlimitedContractSize: true,
+      chainId: 1, // always miannet
       forking: {
         url: MAINNET_RPC_URL
       },

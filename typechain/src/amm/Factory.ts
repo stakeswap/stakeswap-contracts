@@ -53,6 +53,7 @@ export interface FactoryInterface extends utils.Interface {
     "frxETHMinter()": FunctionFragment;
     "getPair(address,address)": FunctionFragment;
     "getStaking(address,address)": FunctionFragment;
+    "pairInitCodeHash()": FunctionFragment;
     "rETH()": FunctionFragment;
     "setFeeTo(address)": FunctionFragment;
     "setFeeToSetter(address)": FunctionFragment;
@@ -87,6 +88,7 @@ export interface FactoryInterface extends utils.Interface {
       | "frxETHMinter"
       | "getPair"
       | "getStaking"
+      | "pairInitCodeHash"
       | "rETH"
       | "setFeeTo"
       | "setFeeToSetter"
@@ -176,6 +178,10 @@ export interface FactoryInterface extends utils.Interface {
     functionFragment: "getStaking",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "pairInitCodeHash",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "rETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "setFeeTo",
@@ -255,6 +261,10 @@ export interface FactoryInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getPair", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getStaking", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "pairInitCodeHash",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "rETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setFeeTo", data: BytesLike): Result;
   decodeFunctionResult(
@@ -389,6 +399,8 @@ export interface Factory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    pairInitCodeHash(overrides?: CallOverrides): Promise<[string]>;
+
     rETH(overrides?: CallOverrides): Promise<[string]>;
 
     setFeeTo(
@@ -483,6 +495,8 @@ export interface Factory extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  pairInitCodeHash(overrides?: CallOverrides): Promise<string>;
+
   rETH(overrides?: CallOverrides): Promise<string>;
 
   setFeeTo(
@@ -576,6 +590,8 @@ export interface Factory extends BaseContract {
       arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    pairInitCodeHash(overrides?: CallOverrides): Promise<string>;
 
     rETH(overrides?: CallOverrides): Promise<string>;
 
@@ -691,6 +707,8 @@ export interface Factory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    pairInitCodeHash(overrides?: CallOverrides): Promise<BigNumber>;
+
     rETH(overrides?: CallOverrides): Promise<BigNumber>;
 
     setFeeTo(
@@ -793,6 +811,8 @@ export interface Factory extends BaseContract {
       arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    pairInitCodeHash(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     rETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

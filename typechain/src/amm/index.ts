@@ -3,8 +3,6 @@
 /* eslint-disable */
 import type * as interfaces from "./interfaces";
 export type { interfaces };
-import type * as libraries from "./libraries";
-export type { libraries };
 export type { Factory } from "./Factory";
 export type { LP } from "./LP";
 export type { Pair } from "./Pair";
