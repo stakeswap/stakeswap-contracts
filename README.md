@@ -1,6 +1,6 @@
-# lsa-contracts
+# StakeSwap Contracts
 
-Liquid staking aggregator contracts
+StakeSwap smart contract implementation for 1) Liquid Staking Aggregator and 2) AMM forked from Uniswap V2.
 
 ## Development
 
@@ -22,7 +22,11 @@ Liquid staking aggregator contracts
    ```bash
    yarn build
    ```
-7. run unit test
+7. run mainnet-forked testnet
    ```bash
-   yarn test
+   yarn dev
+   ```
+8. (optional) manipulate the price of yield-beraing tokens (wstETH, rETH, sfrxETH)
+   ```bash
+   yarn dev:manipulate-price
    ```

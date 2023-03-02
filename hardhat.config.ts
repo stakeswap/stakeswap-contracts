@@ -62,7 +62,7 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       // TODO: should be false after refactor contracts...
-      allowUnlimitedContractSize: true,
+      // allowUnlimitedContractSize: true,
 
       chainId: 1, // always miannet
       forking: {
