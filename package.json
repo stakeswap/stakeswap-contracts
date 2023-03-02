@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "hardhat node",
+    "dev:manipulate-price": "hardhat manipulate-price --network localhost",
     "build": "hardhat compile && forge build",
     "test": "yarn hardhat:test && yarn foundry:test",
     "hardhat:test": "hardhat test",

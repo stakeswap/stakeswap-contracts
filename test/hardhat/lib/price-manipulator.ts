@@ -1,6 +1,6 @@
 import { parseEther } from 'ethers/lib/utils'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
-import { FraxAdaptor, LidoAdaptor, RocketPoolAdaptor } from '../../../typechain'
+// import { FraxAdaptor, LidoAdaptor, RocketPoolAdaptor } from '../../../typechain'
 
 export async function increaseAll_2p(hre: HardhatRuntimeEnvironment) {
   await increaseWstETH_2p(hre)
@@ -11,7 +11,7 @@ export async function increaseAll_2p(hre: HardhatRuntimeEnvironment) {
 export async function increaseWstETH_2p(hre: HardhatRuntimeEnvironment) {
   const [signer] = await hre.ethers.getSigners()
 
-  const la: LidoAdaptor = await hre.ethers.getContract('LidoAdaptor')
+  const la = await hre.ethers.getContract('LidoAdaptor')
 
   await la.connect(signer).buyToken({ value: parseEther('140000') })
 }
@@ -19,7 +19,7 @@ export async function increaseWstETH_2p(hre: HardhatRuntimeEnvironment) {
 export async function increaseRETHprice_2p(hre: HardhatRuntimeEnvironment) {
   const [signer] = await hre.ethers.getSigners()
 
-  const ra: RocketPoolAdaptor = await hre.ethers.getContract('RocketPoolAdaptor')
+  const ra = await hre.ethers.getContract('RocketPoolAdaptor')
 
   await ra.connect(signer).buyToken({ value: parseEther('6130') })
 }
@@ -27,7 +27,7 @@ export async function increaseRETHprice_2p(hre: HardhatRuntimeEnvironment) {
 export async function increaseSfrxETHprice_2p(hre: HardhatRuntimeEnvironment) {
   const [signer] = await hre.ethers.getSigners()
 
-  const fa: FraxAdaptor = await hre.ethers.getContract('FraxAdaptor')
+  const fa = await hre.ethers.getContract('FraxAdaptor')
 
   await fa.connect(signer).buyToken({ value: parseEther('23000') })
 }

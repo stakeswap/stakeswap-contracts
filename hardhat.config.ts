@@ -8,7 +8,7 @@ import 'hardhat-gas-reporter'
 
 import { parseEther } from 'ethers/lib/utils'
 import invariant from 'invariant'
-// import "./tasks";
+import './tasks'
 
 dotenvConfig()
 
