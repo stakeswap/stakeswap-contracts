@@ -8,7 +8,7 @@ Liquid staking aggregator contracts
 2. install [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
 3. clone this repository
    ```bash
-   git clone https://github.com/4000d/lsa-contracts.git
+   git clone https://github.com/stakeswap/stake-swap-contracts.git
    ```
 4. install foundry packages:
    ```bash
