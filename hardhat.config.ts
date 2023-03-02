@@ -12,7 +12,7 @@ import './tasks'
 
 dotenvConfig()
 
-const MAINNET_RPC_URL = process.env.MAINNET_RPC_URL
+const MAINNET_RPC_URL = process.env.MAINNET_RPC_URL ?? 'https://cloudflare-eth.com'
 invariant(MAINNET_RPC_URL, 'MAINNET_RPC_URL env var must be provided')
 
 // const BAIL = process.argv.includes("--bail") || process.argv.includes("-b");
