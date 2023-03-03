@@ -31,7 +31,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       ['uint256', 'uint256'],
       [holder, 9] // key, slot
     )
-    await setStorageAt(USDC.address, slot, parseUnits('10000', 6))
+    await setStorageAt(USDC.address, slot, parseUnits('1000000000', 6))
 
     const balance = await USDC.balanceOf(holder)
     invariant(balance.gt(0), 'balance not increased')

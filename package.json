@@ -6,7 +6,7 @@
   "author": "4000D <dkdkajej@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "hardhat node --port 1888",
+    "dev": "ENABLE_AUTO_MINE=true hardhat node --port 1888",
     "dev:manipulate-price": "hardhat manipulate-price --network localhost",
     "build": "hardhat compile && forge build",
     "test": "yarn hardhat:test && yarn foundry:test",

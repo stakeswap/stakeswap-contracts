@@ -15,6 +15,8 @@ dotenvConfig()
 const MAINNET_RPC_URL = process.env.MAINNET_RPC_URL ?? 'https://cloudflare-eth.com'
 invariant(MAINNET_RPC_URL, 'MAINNET_RPC_URL env var must be provided')
 
+const ENABLE_AUTO_MINE = process.env.ENABLE_AUTO_MINE === 'true'
+
 // const BAIL = process.argv.includes("--bail") || process.argv.includes("-b");
 
 // mnemonic phrases for each network
@@ -71,7 +73,14 @@ const config: HardhatUserConfig = {
       accounts: {
         mnemonic: DEFAULT_MNEMONIC,
         accountsBalance: parseEther('10000000000').toString()
-      }
+      },
+
+      ...(ENABLE_AUTO_MINE && {
+        mining: {
+          auto: true,
+          interval: 4000
+        }
+      })
     },
     localhost: {
       url: 'http://localhost:1888',
