@@ -45,7 +45,7 @@ contract RocketPoolAdaptor is BaseAdaptor {
 
     // get RocketStorage
     function rocketPoolStorage() public view returns (RocketStorageInterface) {
-        if (block.chainid == 1) return RocketStorageInterface((0x1d8f8f00cfa6758d7bE78336684788Fb0ee0Fa46));
+        if (block.chainid == 1 || block.chainid == 1888) return RocketStorageInterface((0x1d8f8f00cfa6758d7bE78336684788Fb0ee0Fa46));
         // if (block.chainid == 5) return RocketStorageInterface((0xae78736Cd615f374D3085123A210448E74Fc6393));
         revert('unknown chain id');
     }

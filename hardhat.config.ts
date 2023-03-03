@@ -64,7 +64,7 @@ const config: HardhatUserConfig = {
       // TODO: should be false after refactor contracts...
       // allowUnlimitedContractSize: true,
 
-      chainId: 1, // always miannet
+      chainId: 1888, // always miannet
       forking: {
         url: MAINNET_RPC_URL
       },
@@ -74,7 +74,7 @@ const config: HardhatUserConfig = {
       }
     },
     localhost: {
-      url: 'http://localhost:8545',
+      url: 'http://localhost:1888',
       accounts: {
         mnemonic: DEFAULT_MNEMONIC
       }

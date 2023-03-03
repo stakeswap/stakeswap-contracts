@@ -6,7 +6,7 @@
   "author": "4000D <dkdkajej@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "hardhat node",
+    "dev": "hardhat node --port 1888",
     "dev:manipulate-price": "hardhat manipulate-price --network localhost",
     "build": "hardhat compile && forge build",
     "test": "yarn hardhat:test && yarn foundry:test",
@@ -15,7 +15,10 @@
     "format:sol": "prettier --write 'src/**/*.sol' 'script/**/*.sol' 'test/**/*.sol'",
     "format:ts": "prettier --write 'script-js/**/*.js'",
     "format": "yarn format:sol && yarn format:ts",
-    "clean": "rimraf cache* artifacts"
+    "clean": "rimraf cache* artifacts",
+    "export-to-clinet": "yarn export-to-clinet:typechain && yarn export-to-clinet:deployment",
+    "export-to-clinet:typechain": "rm -rf ../stakeswap-client/src/typechain && cp -r ./typechain ../stakeswap-client/src/",
+    "export-to-clinet:deployment": "rm -rf ../stakeswap-client/src/contract-deployment.json && cp ./contract-deployment.json ../stakeswap-client/src/contract-deployment.json"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.5",

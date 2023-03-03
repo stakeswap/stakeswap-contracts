@@ -1,6 +1,6 @@
 {
   "hardhat": {
-    "chainId": 1,
+    "chainId": 1888,
     "namedAccounts": {
       "deployer": "0x695d5db8e279885C791d07f1a0CCA15C79451B3a",
       "trader0": "0x7326e37C54C508FaB89bb56F52Ae2a13ac75BBe6",
