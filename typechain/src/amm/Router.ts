@@ -42,6 +42,7 @@ export interface RouterInterface extends utils.Interface {
     "removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
     "removeLiquidityWithPermit(address,address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
     "stake(address,address,uint256,uint256)": FunctionFragment;
+    "stakeWithPermit(address,address,uint256,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
     "swapETHForExactTokens(uint256,address[],address,uint256)": FunctionFragment;
     "swapExactETHForTokens(uint256,address[],address,uint256)": FunctionFragment;
     "swapExactETHForTokensSupportingFeeOnTransferTokens(uint256,address[],address,uint256)": FunctionFragment;
@@ -52,6 +53,7 @@ export interface RouterInterface extends utils.Interface {
     "swapTokensForExactETH(uint256,uint256,address[],address,uint256)": FunctionFragment;
     "swapTokensForExactTokens(uint256,uint256,address[],address,uint256)": FunctionFragment;
     "unstake(address,address,uint256,uint256)": FunctionFragment;
+    "unstakeWithPermit(address,address,uint256,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
   };
 
   getFunction(
@@ -72,6 +74,7 @@ export interface RouterInterface extends utils.Interface {
       | "removeLiquidityETHWithPermitSupportingFeeOnTransferTokens"
       | "removeLiquidityWithPermit"
       | "stake"
+      | "stakeWithPermit"
       | "swapETHForExactTokens"
       | "swapExactETHForTokens"
       | "swapExactETHForTokensSupportingFeeOnTransferTokens"
@@ -82,6 +85,7 @@ export interface RouterInterface extends utils.Interface {
       | "swapTokensForExactETH"
       | "swapTokensForExactTokens"
       | "unstake"
+      | "unstakeWithPermit"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
@@ -232,6 +236,19 @@ export interface RouterInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "stakeWithPermit",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<boolean>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "swapETHForExactTokens",
     values: [
       PromiseOrValue<BigNumberish>,
@@ -327,6 +344,19 @@ export interface RouterInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "unstakeWithPermit",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<boolean>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
 
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(
@@ -381,6 +411,10 @@ export interface RouterInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "stakeWithPermit",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "swapETHForExactTokens",
     data: BytesLike
   ): Result;
@@ -417,6 +451,10 @@ export interface RouterInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "unstakeWithPermit",
+    data: BytesLike
+  ): Result;
 
   events: {};
 }
@@ -589,6 +627,18 @@ export interface Router extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    stakeWithPermit(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      lp: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      approveMax: PromiseOrValue<boolean>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     swapETHForExactTokens(
       amountOut: PromiseOrValue<BigNumberish>,
       path: PromiseOrValue<string>[],
@@ -672,6 +722,18 @@ export interface Router extends BaseContract {
       tokenB: PromiseOrValue<string>,
       shares: PromiseOrValue<BigNumberish>,
       deadline: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    unstakeWithPermit(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      shares: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      approveMax: PromiseOrValue<boolean>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -817,6 +879,18 @@ export interface Router extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  stakeWithPermit(
+    tokenA: PromiseOrValue<string>,
+    tokenB: PromiseOrValue<string>,
+    lp: PromiseOrValue<BigNumberish>,
+    deadline: PromiseOrValue<BigNumberish>,
+    approveMax: PromiseOrValue<boolean>,
+    v: PromiseOrValue<BigNumberish>,
+    r: PromiseOrValue<BytesLike>,
+    s: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   swapETHForExactTokens(
     amountOut: PromiseOrValue<BigNumberish>,
     path: PromiseOrValue<string>[],
@@ -900,6 +974,18 @@ export interface Router extends BaseContract {
     tokenB: PromiseOrValue<string>,
     shares: PromiseOrValue<BigNumberish>,
     deadline: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  unstakeWithPermit(
+    tokenA: PromiseOrValue<string>,
+    tokenB: PromiseOrValue<string>,
+    shares: PromiseOrValue<BigNumberish>,
+    deadline: PromiseOrValue<BigNumberish>,
+    approveMax: PromiseOrValue<boolean>,
+    v: PromiseOrValue<BigNumberish>,
+    r: PromiseOrValue<BytesLike>,
+    s: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -1067,6 +1153,20 @@ export interface Router extends BaseContract {
       [BigNumber, BigNumber] & { shares: BigNumber; depositAmount: BigNumber }
     >;
 
+    stakeWithPermit(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      lp: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      approveMax: PromiseOrValue<boolean>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber] & { shares: BigNumber; depositAmount: BigNumber }
+    >;
+
     swapETHForExactTokens(
       amountOut: PromiseOrValue<BigNumberish>,
       path: PromiseOrValue<string>[],
@@ -1150,6 +1250,25 @@ export interface Router extends BaseContract {
       tokenB: PromiseOrValue<string>,
       shares: PromiseOrValue<BigNumberish>,
       deadline: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber] & {
+        lp: BigNumber;
+        ethAmount: BigNumber;
+        poolETHAmount: BigNumber;
+        rewardToStaker: BigNumber;
+      }
+    >;
+
+    unstakeWithPermit(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      shares: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      approveMax: PromiseOrValue<boolean>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber, BigNumber] & {
@@ -1305,6 +1424,18 @@ export interface Router extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    stakeWithPermit(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      lp: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      approveMax: PromiseOrValue<boolean>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     swapETHForExactTokens(
       amountOut: PromiseOrValue<BigNumberish>,
       path: PromiseOrValue<string>[],
@@ -1388,6 +1519,18 @@ export interface Router extends BaseContract {
       tokenB: PromiseOrValue<string>,
       shares: PromiseOrValue<BigNumberish>,
       deadline: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    unstakeWithPermit(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      shares: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      approveMax: PromiseOrValue<boolean>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -1534,6 +1677,18 @@ export interface Router extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    stakeWithPermit(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      lp: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      approveMax: PromiseOrValue<boolean>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     swapETHForExactTokens(
       amountOut: PromiseOrValue<BigNumberish>,
       path: PromiseOrValue<string>[],
@@ -1617,6 +1772,18 @@ export interface Router extends BaseContract {
       tokenB: PromiseOrValue<string>,
       shares: PromiseOrValue<BigNumberish>,
       deadline: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    unstakeWithPermit(
+      tokenA: PromiseOrValue<string>,
+      tokenB: PromiseOrValue<string>,
+      shares: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      approveMax: PromiseOrValue<boolean>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

@@ -402,7 +402,7 @@ contract Router is IRouter {
         address tokenB,
         uint256 lp,
         uint deadline
-    ) external virtual ensure(deadline) returns (uint256 shares, uint256 depositAmount) {
+    ) public virtual ensure(deadline) returns (uint256 shares, uint256 depositAmount) {
         address pair = UniswapV2Library.pairFor(factory, tokenA, tokenB);
         TransferHelper.safeTransferFrom(pair, msg.sender, address(this), lp);
 
@@ -413,16 +413,48 @@ contract Router is IRouter {
         TransferHelper.safeTransfer(staking, msg.sender, shares);
     }
 
+    function stakeWithPermit(
+        address tokenA,
+        address tokenB,
+        uint256 lp,
+        uint deadline,
+        bool approveMax,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external returns (uint256 shares, uint256 depositAmount) {
+        address pair = UniswapV2Library.pairFor(factory, tokenA, tokenB);
+        IPair(pair).permit(msg.sender, address(this), approveMax ? type(uint256).max : lp, deadline, v, r, s);
+        return stake(tokenA, tokenB, lp, deadline);
+    }
+
     function unstake(
         address tokenA,
         address tokenB,
         uint256 shares,
         uint deadline
-    ) external virtual ensure(deadline) returns (uint256 lp, uint256 ethAmount, uint256 poolETHAmount, uint256 rewardToStaker) {
+    ) public virtual ensure(deadline) returns (uint256 lp, uint256 ethAmount, uint256 poolETHAmount, uint256 rewardToStaker) {
         address pair = UniswapV2Library.pairFor(factory, tokenA, tokenB);
         address staking = IPair(pair).staking();
 
         TransferHelper.safeTransferFrom(staking, msg.sender, address(this), shares);
         (lp, ethAmount, poolETHAmount, rewardToStaker) = IStaking(staking).unstake(shares, msg.sender);
+    }
+
+    function unstakeWithPermit(
+        address tokenA,
+        address tokenB,
+        uint256 shares,
+        uint deadline,
+        bool approveMax,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external virtual returns (uint256 lp, uint256 ethAmount, uint256 poolETHAmount, uint256 rewardToStaker) {
+        address pair = UniswapV2Library.pairFor(factory, tokenA, tokenB);
+        address staking = IPair(pair).staking();
+        IStaking(staking).permit(msg.sender, address(this), approveMax ? type(uint256).max : shares, deadline, v, r, s);
+
+        return unstake(tokenA, tokenB, shares, deadline);
     }
 }

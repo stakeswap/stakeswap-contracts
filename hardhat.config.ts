@@ -78,7 +78,7 @@ const config: HardhatUserConfig = {
       ...(ENABLE_AUTO_MINE && {
         mining: {
           auto: true,
-          interval: 4000
+          interval: 400
         }
       })
     },
