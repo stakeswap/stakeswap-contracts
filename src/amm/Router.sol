@@ -397,19 +397,33 @@ contract Router is IRouter {
 
     // **** STAKING FUNCTIONS ****
 
+    function addLiquidityAndStakeETHWithPermit(
+        address token,
+        uint amountTokenDesired,
+        uint amountTokenMin,
+        uint amountETHMin,
+        uint deadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external payable returns (uint amountToken, uint amountETH, uint lp, uint256 shares) {
+        address pair = UniswapV2Library.pairFor(factory, WETH, token);
+        IPair(pair).permit(msg.sender, address(this), type(uint256).max, deadline, v, r, s);
+        (amountToken, amountETH, lp, shares) = addLiquidityAndStakeETH(token, amountTokenDesired, amountTokenMin, amountETHMin, deadline);
+    }
+
     function addLiquidityAndStakeETH(
         address token,
         uint amountTokenDesired,
         uint amountTokenMin,
         uint amountETHMin,
-        address to,
         uint deadline
-    ) external payable returns (uint amountToken, uint amountETH, uint lp, uint256 shares, uint256 depositAmount) {
-        (amountToken, amountETH, lp) = addLiquidityETH(token, amountTokenDesired, amountTokenMin, amountETHMin, to, deadline);
-        (shares, depositAmount) = stake(WETH, token, lp, deadline);
+    ) public payable returns (uint amountToken, uint amountETH, uint lp, uint256 shares) {
+        (amountToken, amountETH, lp) = addLiquidityETH(token, amountTokenDesired, amountTokenMin, amountETHMin, msg.sender, deadline);
+        (shares, ) = stake(WETH, token, lp, deadline);
     }
 
-    function unstakeAndremoveLiquidityWithPermit(
+    function unstakeAndRemoveLiquidityWithPermit(
         address token,
         uint256 shares,
         uint deadline,
@@ -422,6 +436,19 @@ contract Router is IRouter {
         returns (uint256 lp, uint256 ethAmount, uint256 poolETHAmount, uint256 rewardToStaker, uint amountToken, uint amountETH)
     {
         (lp, ethAmount, poolETHAmount, rewardToStaker) = unstakeWithPermit(WETH, token, shares, deadline, true, v, r, s);
+        (amountToken, amountETH) = removeLiquidityETH(token, lp, 0, 0, msg.sender, deadline);
+    }
+
+    function unstakeAndRemoveLiquidity(
+        address token,
+        uint256 shares,
+        uint deadline
+    )
+        external
+        payable
+        returns (uint256 lp, uint256 ethAmount, uint256 poolETHAmount, uint256 rewardToStaker, uint amountToken, uint amountETH)
+    {
+        (lp, ethAmount, poolETHAmount, rewardToStaker) = unstake(WETH, token, shares, deadline);
         (amountToken, amountETH) = removeLiquidityETH(token, lp, 0, 0, msg.sender, deadline);
     }
 
