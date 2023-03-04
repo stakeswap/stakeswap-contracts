@@ -9,7 +9,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const { deployer } = await getNamedAccounts()
 
-  console.log('Pair init code hash: %s', hre.ethers.utils.solidityKeccak256(['bytes'], [Pair__factory.bytecode]))
+  const pairInitCodeHash = hre.ethers.utils.solidityKeccak256(['bytes'], [Pair__factory.bytecode])
+  console.log('Pair init code hash: %s', pairInitCodeHash.slice(2))
 
   const LSDAggregator = await deployments.get('LSDAggregator')
 

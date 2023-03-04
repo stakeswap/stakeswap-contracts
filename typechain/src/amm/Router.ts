@@ -28,6 +28,7 @@ export interface RouterInterface extends utils.Interface {
   functions: {
     "WETH()": FunctionFragment;
     "addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256)": FunctionFragment;
+    "addLiquidityAndStakeETH(address,uint256,uint256,uint256,address,uint256)": FunctionFragment;
     "addLiquidityETH(address,uint256,uint256,uint256,address,uint256)": FunctionFragment;
     "factory()": FunctionFragment;
     "getAmountIn(uint256,uint256,uint256)": FunctionFragment;
@@ -53,6 +54,7 @@ export interface RouterInterface extends utils.Interface {
     "swapTokensForExactETH(uint256,uint256,address[],address,uint256)": FunctionFragment;
     "swapTokensForExactTokens(uint256,uint256,address[],address,uint256)": FunctionFragment;
     "unstake(address,address,uint256,uint256)": FunctionFragment;
+    "unstakeAndremoveLiquidityWithPermit(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "unstakeWithPermit(address,address,uint256,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
   };
 
@@ -60,6 +62,7 @@ export interface RouterInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "WETH"
       | "addLiquidity"
+      | "addLiquidityAndStakeETH"
       | "addLiquidityETH"
       | "factory"
       | "getAmountIn"
@@ -85,6 +88,7 @@ export interface RouterInterface extends utils.Interface {
       | "swapTokensForExactETH"
       | "swapTokensForExactTokens"
       | "unstake"
+      | "unstakeAndremoveLiquidityWithPermit"
       | "unstakeWithPermit"
   ): FunctionFragment;
 
@@ -95,6 +99,17 @@ export interface RouterInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "addLiquidityAndStakeETH",
+    values: [
+      PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
@@ -345,6 +360,17 @@ export interface RouterInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "unstakeAndremoveLiquidityWithPermit",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "unstakeWithPermit",
     values: [
       PromiseOrValue<string>,
@@ -361,6 +387,10 @@ export interface RouterInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "addLiquidity",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "addLiquidityAndStakeETH",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -452,6 +482,10 @@ export interface RouterInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "unstakeAndremoveLiquidityWithPermit",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "unstakeWithPermit",
     data: BytesLike
   ): Result;
@@ -498,6 +532,16 @@ export interface Router extends BaseContract {
       to: PromiseOrValue<string>,
       deadline: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    addLiquidityAndStakeETH(
+      token: PromiseOrValue<string>,
+      amountTokenDesired: PromiseOrValue<BigNumberish>,
+      amountTokenMin: PromiseOrValue<BigNumberish>,
+      amountETHMin: PromiseOrValue<BigNumberish>,
+      to: PromiseOrValue<string>,
+      deadline: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     addLiquidityETH(
@@ -725,6 +769,16 @@ export interface Router extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    unstakeAndremoveLiquidityWithPermit(
+      token: PromiseOrValue<string>,
+      shares: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     unstakeWithPermit(
       tokenA: PromiseOrValue<string>,
       tokenB: PromiseOrValue<string>,
@@ -750,6 +804,16 @@ export interface Router extends BaseContract {
     to: PromiseOrValue<string>,
     deadline: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  addLiquidityAndStakeETH(
+    token: PromiseOrValue<string>,
+    amountTokenDesired: PromiseOrValue<BigNumberish>,
+    amountTokenMin: PromiseOrValue<BigNumberish>,
+    amountETHMin: PromiseOrValue<BigNumberish>,
+    to: PromiseOrValue<string>,
+    deadline: PromiseOrValue<BigNumberish>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   addLiquidityETH(
@@ -977,6 +1041,16 @@ export interface Router extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  unstakeAndremoveLiquidityWithPermit(
+    token: PromiseOrValue<string>,
+    shares: PromiseOrValue<BigNumberish>,
+    deadline: PromiseOrValue<BigNumberish>,
+    v: PromiseOrValue<BigNumberish>,
+    r: PromiseOrValue<BytesLike>,
+    s: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   unstakeWithPermit(
     tokenA: PromiseOrValue<string>,
     tokenB: PromiseOrValue<string>,
@@ -1007,6 +1081,24 @@ export interface Router extends BaseContract {
         amountA: BigNumber;
         amountB: BigNumber;
         liquidity: BigNumber;
+      }
+    >;
+
+    addLiquidityAndStakeETH(
+      token: PromiseOrValue<string>,
+      amountTokenDesired: PromiseOrValue<BigNumberish>,
+      amountTokenMin: PromiseOrValue<BigNumberish>,
+      amountETHMin: PromiseOrValue<BigNumberish>,
+      to: PromiseOrValue<string>,
+      deadline: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+        amountToken: BigNumber;
+        amountETH: BigNumber;
+        lp: BigNumber;
+        shares: BigNumber;
+        depositAmount: BigNumber;
       }
     >;
 
@@ -1260,6 +1352,25 @@ export interface Router extends BaseContract {
       }
     >;
 
+    unstakeAndremoveLiquidityWithPermit(
+      token: PromiseOrValue<string>,
+      shares: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+        lp: BigNumber;
+        ethAmount: BigNumber;
+        poolETHAmount: BigNumber;
+        rewardToStaker: BigNumber;
+        amountToken: BigNumber;
+        amountETH: BigNumber;
+      }
+    >;
+
     unstakeWithPermit(
       tokenA: PromiseOrValue<string>,
       tokenB: PromiseOrValue<string>,
@@ -1295,6 +1406,16 @@ export interface Router extends BaseContract {
       to: PromiseOrValue<string>,
       deadline: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    addLiquidityAndStakeETH(
+      token: PromiseOrValue<string>,
+      amountTokenDesired: PromiseOrValue<BigNumberish>,
+      amountTokenMin: PromiseOrValue<BigNumberish>,
+      amountETHMin: PromiseOrValue<BigNumberish>,
+      to: PromiseOrValue<string>,
+      deadline: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     addLiquidityETH(
@@ -1522,6 +1643,16 @@ export interface Router extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    unstakeAndremoveLiquidityWithPermit(
+      token: PromiseOrValue<string>,
+      shares: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     unstakeWithPermit(
       tokenA: PromiseOrValue<string>,
       tokenB: PromiseOrValue<string>,
@@ -1548,6 +1679,16 @@ export interface Router extends BaseContract {
       to: PromiseOrValue<string>,
       deadline: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    addLiquidityAndStakeETH(
+      token: PromiseOrValue<string>,
+      amountTokenDesired: PromiseOrValue<BigNumberish>,
+      amountTokenMin: PromiseOrValue<BigNumberish>,
+      amountETHMin: PromiseOrValue<BigNumberish>,
+      to: PromiseOrValue<string>,
+      deadline: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     addLiquidityETH(
@@ -1773,6 +1914,16 @@ export interface Router extends BaseContract {
       shares: PromiseOrValue<BigNumberish>,
       deadline: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    unstakeAndremoveLiquidityWithPermit(
+      token: PromiseOrValue<string>,
+      shares: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     unstakeWithPermit(
