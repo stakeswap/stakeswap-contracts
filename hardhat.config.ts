@@ -40,7 +40,9 @@ const DEFAULT_COMPILER_SETTINGS: SolcUserConfig = {
 const config: HardhatUserConfig = {
   namedAccounts: {
     deployer: {
-      default: 0
+      default: 0,
+      mainnet: '0x59C5Ceeb4090FDBd3DAa13A6224356527d682bc4',
+      'mainnet:local': '0x59C5Ceeb4090FDBd3DAa13A6224356527d682bc4'
     },
     trader0: {
       default: 1
@@ -90,6 +92,12 @@ const config: HardhatUserConfig = {
     },
     mainnet: {
       url: MAINNET_RPC_URL,
+      accounts: {
+        mnemonic: MAINNET_MNEMONIC
+      }
+    },
+    'mainnet:local': {
+      url: 'http://localhost:1888',
       accounts: {
         mnemonic: MAINNET_MNEMONIC
       }

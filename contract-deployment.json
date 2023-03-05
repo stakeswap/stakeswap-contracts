@@ -18,5 +18,25 @@
       "Factory": "0x58307511657c39F73C7A2193472EA12e86Da2dfD",
       "Router": "0x67B356DB221bb1d0E5cC5979f6092A0fF6954432"
     }
+  },
+  "mainnet": {
+    "chainId": 1,
+    "namedAccounts": {
+      "deployer": "0x59C5Ceeb4090FDBd3DAa13A6224356527d682bc4",
+      "trader0": "0x1814Cbc2045908514a9615BFdaE0EcbA2Cc2c659",
+      "trader1": "0x1F0DF1534618A13f52A5b678917Ab1092D6E73Da",
+      "trader2": "0xD4b87c7156777a683945c00ABE33D8e1670a5809",
+      "lps0": "0x36ca90cD907C881200fa3e4Eb08D6CD9451c4a32",
+      "lps1": "0x2167085577F1295F51AA4E39276b4E985d941cD0",
+      "lps2": "0x9cfBD7bb642c1803Fdd9a2516fEF5E5D77a6F007"
+    },
+    "contracts": {
+      "FraxAdaptor": "0xB58130DF43ab82C40aa5bB87BE204c404Ff6DF08",
+      "LidoAdaptor": "0x0C9A9EbfB6C9F5A46Eb55B1F038C857cda0CA39E",
+      "RocketPoolAdaptor": "0xFaBa6E9c5D9a1C2A03d99987ebaE89E15f2eBE70",
+      "LSDAggregator": "0xf05974963f4805038E9Da82429E7f551E9e484D6",
+      "Factory": "0x68b35bAEc7db54028bacE32aE0eD927149E6C1fE",
+      "Router": "0xe606ca437EA7Eac743f5304bd85261F7C5BB85A1"
+    }
   }
 }
